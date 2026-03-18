@@ -2,26 +2,37 @@
 @use "page" as *;
 
 // Page padding
-$padding-page: (
-  inline-start: rem(16px),
-  inline-end: rem(16px),
-  block-start: rem(16px),
-  block-end: rem(16px),
-);
+$padding-page: ();
 
 // Section padding
-$padding-section: (
-  md: rem(16px),
-);
+$padding-section: ();
 
 // Container padding
 $padding-container: (
-  md: rem(16px),
+  primary-header-inline-start: 0px,
+  primary-header-inline-end: rem(16px),
+  primary-header-block: rem(16px),
+  markdown-inline: rem(16px),
+  markdown-block: rem(12px),
+  preview-inline: rem(20px),
+  preview-block: rem(24px),
+  editor-header-inline: rem(12px),
+  editor-header-block: rem(12px),
+  sidebar-inline: rem(24px),
+  sidebar-block: rem(24px),
+  code: rem(24px),
+  callout-inline-start: rem(24px),
+  callout-inline-end: rem(20px),
+  callout-block: rem(24px),
+  confirmation-inline: rem(24px),
+  confirmation-block: rem(20px),
 );
 
 // Container spacing
 $spacer-container: (
-  md: rem(16px),
+  sm: rem(16px),
+  md: rem(20px),
+  lg: rem(24px),
 );
 
 // Offset

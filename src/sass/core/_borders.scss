@@ -7,8 +7,20 @@ $border-widths: (
 
 $border-colors: (
   default-focus: (
-    light: "brand-500",
-    dark: "brand-500",
+    light: "brand-400",
+    dark: "brand-400",
+  ),
+  header: (
+    light: "accent-500",
+    dark: "accent-500",
+  ),
+  editor: (
+    light: "neutral-200",
+    dark: "accent-500",
+  ),
+  document-name: (
+    light: "neutral-000",
+    dark: "neutral-000",
   ),
 );
 
@@ -17,5 +29,20 @@ $borders: (
     width: "lg",
     style: "solid",
     color: "default-focus",
+  ),
+  header: (
+    width: "md",
+    style: "solid",
+    color: "header",
+  ),
+  editor: (
+    width: "md",
+    style: "solid",
+    color: "editor",
+  ),
+  document-name: (
+    width: "md",
+    style: "solid",
+    color: "document-name",
   ),
 );

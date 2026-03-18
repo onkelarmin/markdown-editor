@@ -3,8 +3,8 @@
 
 // Wrapper max-widths
 $wrapper-sizes: (
-  default: 1170px,
-  narrow: 1088px,
+  default: 1440px,
+  narrow: 720px,
   wide: 1360px,
 );
 
@@ -34,12 +34,17 @@ $breakpoint-specific-sizes: (
 
 //  Logo
 $logo-sizes: (
-  default: rem(16px),
+  default: rem(130px),
 );
 
 // SVG
 $svg-sizes: (
-  theme: rem(16px),
+  moon: rem(17px),
+  sun: rem(18px),
+  delete: rem(18px),
+  document: rem(14px),
+  show-preview: rem(16px),
+  hide-preview: rem(16px),
 );
 
 $miscellaneous-sizes: (

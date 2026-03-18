@@ -33,13 +33,13 @@
     --ease-#{$ease}: #{$value};
   }
 
-  @each $name, $params-map in $transitions {
-    --trans-#{$name}: var(--motion-#{map.get($params-map, "motion")})
-      var(--ease-#{map.get($params-map, "ease")});
-    --trans-#{$name}-sensitive: var(
-        --motion-#{map.get($params-map, "motion")}-sensitive
-      )
-      var(--ease-#{map.get($params-map, "ease")});
+  // Transitions
+  @each $speed, $speed-value in $animation-durations {
+    @each $ease, $ease-value in $animation-easings {
+      --trans-#{$speed}-#{$ease}: var(--motion-#{$speed}) var(--ease-#{$ease});
+      --trans-#{$speed}-#{$ease}-sensitive: var(--motion-#{$speed}-sensitive)
+        var(--ease-#{$ease});
+    }
   }
 }
 

@@ -1,29 +1,35 @@
 // Primitives
 $color-core-neutral: (
-  "000": hsl(0, 0%, 100%),
-  "500": hsl(0, 0%, 50%),
-  "800": hsl(0, 0%, 19%),
-  "900": hsl(0, 0%, 0%),
+  "000": hsl(0 0% 100%),
+  "100": hsl(0 0% 96%),
+  "200": hsl(0 0% 89%),
+  "500": hsl(0 0% 44%),
+  "950": hsl(0 0% 0%),
 );
 
 $color-core-accent: (
-  "red": (
-    "500": hsl(0, 100%, 66%),
+  "slate": (
+    "300": hsl(222 9% 78%),
+    "400": hsl(213 4% 51%),
+    "500": hsl(216 8% 38%),
+    "700": hsl(216 9% 23%),
+    "800": hsl(220 7% 18%),
+    "950": hsl(216 8% 12%),
   ),
 );
 
 $color-core-brand: (
   "primary": (
-    "500": hsl(274, 82%, 60%),
-    "600": hsl(274, 82%, 50%),
+    "400": hsl(21 86% 67%),
+    "600": hsl(13 75% 58%),
   ),
 );
 
 $color-core-gradient: (
-  1: (
-    start: hsl(192, 100%, 67%),
-    end: hsl(280, 87%, 65%),
-  ),
+  // 1: (
+  //   start: hsl(192 100% 67%),
+  //   end: hsl(280 87% 65%),
+   // ),
 );
 
 // Has Themes
@@ -37,33 +43,39 @@ $background-colors: (
   canvas: (
     default: (
       light: "neutral-000",
-      dark: "neutral-900",
+      dark: "neutral-950",
     ),
   ),
   container: (
-    default: (
-      light: "neutral-000",
-      dark: "neutral-900",
+    primary-header: (
+      light: "accent-800",
+      dark: "accent-800",
     ),
-  ),
-  mobile-nav: (
-    menu: (
-      light: "neutral-000",
-      dark: "neutral-900",
+    editor-header: (
+      light: "neutral-100",
+      dark: "accent-950",
     ),
-    overlay: (
-      light: "transparent",
-      dark: "transparent",
+    sidebar: (
+      light: "accent-950",
+      dark: "accent-950",
+    ),
+    preview-block: (
+      light: "neutral-100",
+      dark: "accent-800",
+    ),
+    dialog: (
+      light: "neutral-000",
+      dark: "accent-950",
     ),
   ),
   text: (
     selection: (
-      light: "neutral-900",
-      dark: "neutral-000",
+      light: "primary-600",
+      dark: "primary-600",
     ),
     target: (
-      light: "neutral-900",
-      dark: "neutral-000",
+      light: "primary-600",
+      dark: "primary-600",
     ),
   ),
 );
@@ -72,20 +84,36 @@ $background-colors: (
 $foreground-colors: (
   text: (
     base: (
-      light: "neutral-600",
-      dark: "neutral-500",
+      light: "accent-400",
+      dark: "accent-300",
     ),
     strong: (
-      light: "neutral-600",
-      dark: "neutral-500",
+      light: "accent-700",
+      dark: "neutral-000",
+    ),
+    muted: (
+      light: "accent-400",
+      dark: "accent-400",
+    ),
+    neutral: (
+      light: "neutral-000",
+      dark: "neutral-000",
+    ),
+    highlight: (
+      light: "primary-600",
+      dark: "primary-600",
+    ),
+    markdown: (
+      light: "accent-700",
+      dark: "accent-300",
     ),
     selection: (
-      light: "neutral-000",
-      dark: "neutral-900",
+      light: "neutral-950",
+      dark: "neutral-950",
     ),
     target: (
-      light: "neutral-000",
-      dark: "neutral-900",
+      light: "neutral-950",
+      dark: "neutral-950",
     ),
   ),
 );

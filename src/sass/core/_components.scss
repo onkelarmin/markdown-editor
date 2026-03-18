@@ -5,58 +5,58 @@ $button-colors: (
   default: (
     idle: (
       bg: (
-        light: "neutral-000",
+        light: "primary-600",
+        dark: "primary-600",
       ),
       fg: (
-        light: "neutral-900",
+        light: "neutral-000",
+        dark: "neutral-000",
       ),
     ),
     hover: (
       bg: (
-        light: "neutral-000",
-      ),
-      fg: (
-        light: "neutral-900",
+        light: "primary-400",
+        dark: "primary-400",
       ),
     ),
-    focus: (
-      outline: (
-        light: "neutral-000",
-      ),
-      offset: (
-        light: "neutral-900",
-      ),
-    ),
+    // focus: (
+    //   outline: (
+    //     light: "neutral-000",
+    //   ),
+    //   offset: (
+    //     light: "neutral-900",
+    //   ),
+     // ),
   ),
 );
 
 $button-appearance: (
   padding-inline-start: (
-    default: rem(20px),
+    default: rem(16px),
   ),
   padding-inline-end: (
-    default: rem(8px),
+    default: rem(16px),
   ),
   padding-block: (
-    default: rem(8px),
+    default: rem(10px),
   ),
   border-width: (
     default: 0px,
   ),
-  outline-width: (
-    default: rem(2px),
-  ),
-  offset-width: (
-    default: rem(3px),
-  ),
+  // outline-width: (
+  //   default: rem(2px),
+  // ),
+  // offset-width: (
+  //   default: rem(3px),
+  // ),
   border-radius: (
-    default: 1000px,
-  ),
+      default: rem(4px),
+    ),
   svg-width: (
-    default: rem(14px),
+    default: rem(16px),
   ),
   gap: (
-    default: rem(12px),
+    default: rem(8px),
   ),
 );
 
