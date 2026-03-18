@@ -1,0 +1,113 @@
+@use "helper" as *;
+
+// Buttons
+$button-colors: (
+  default: (
+    idle: (
+      bg: (
+        light: "neutral-000",
+      ),
+      fg: (
+        light: "neutral-900",
+      ),
+    ),
+    hover: (
+      bg: (
+        light: "neutral-000",
+      ),
+      fg: (
+        light: "neutral-900",
+      ),
+    ),
+    focus: (
+      outline: (
+        light: "neutral-000",
+      ),
+      offset: (
+        light: "neutral-900",
+      ),
+    ),
+  ),
+);
+
+$button-appearance: (
+  padding-inline-start: (
+    default: rem(20px),
+  ),
+  padding-inline-end: (
+    default: rem(8px),
+  ),
+  padding-block: (
+    default: rem(8px),
+  ),
+  border-width: (
+    default: 0px,
+  ),
+  outline-width: (
+    default: rem(2px),
+  ),
+  offset-width: (
+    default: rem(3px),
+  ),
+  border-radius: (
+    default: 1000px,
+  ),
+  svg-width: (
+    default: rem(14px),
+  ),
+  gap: (
+    default: rem(12px),
+  ),
+);
+
+// Skip-nav-link
+$skip-nav-link-colors: (
+  bg: (
+    light: "neutral-000",
+  ),
+  fg: (
+    light: "neutral-900",
+  ),
+  border: (
+    light: "neutral-900",
+  ),
+);
+
+$skip-nav-link-appearance: (
+  padding-inline: rem(32px),
+  padding-block: rem(16px),
+  border-width: rem(2px),
+  border-radius: rem(16px),
+);
+
+// Nav-toggle
+$nav-toggle-colors: (
+  idle: (
+    bg: (
+      light: "neutral-500",
+    ),
+    fg: (
+      light: "neutral-900",
+    ),
+    border: (
+      light: "transparent",
+    ),
+  ),
+  focus: (
+    outline: (
+      light: "neutral-900",
+    ),
+  ),
+);
+
+$nav-toggle-appearance: (
+  width: rem(40px),
+  height: rem(40px),
+  border-width: rem(0px),
+  border-radius: rem(4px),
+  line-width: rem(18px),
+  line-height: rem(2px),
+  line-gap: rem(5px),
+  outline-width: rem(2px),
+  offset-width: rem(2px),
+);

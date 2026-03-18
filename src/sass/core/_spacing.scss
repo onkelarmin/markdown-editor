@@ -1,0 +1,30 @@
+@use "helper" as *;
+@use "page" as *;
+
+// Page padding
+$padding-page: (
+  inline-start: rem(16px),
+  inline-end: rem(16px),
+  block-start: rem(16px),
+  block-end: rem(16px),
+);
+
+// Section padding
+$padding-section: (
+  md: rem(16px),
+);
+
+// Container padding
+$padding-container: (
+  md: rem(16px),
+);
+
+// Container spacing
+$spacer-container: (
+  md: rem(16px),
+);
+
+// Offset
+$offset: (
+  default-focus: rem(3px),
+);

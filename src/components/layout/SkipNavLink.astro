@@ -1,0 +1,39 @@
+---
+
+---
+
+<a href="#main">Skip navigation</a>
+
+<style lang="scss">
+  a {
+    position: absolute;
+    z-index: 10000;
+    left: max(
+      (100% - var(--size-wrapper-default)) / 2,
+      var(--pad-page-inline-start)
+    );
+    width: fit-content;
+    background-color: var(--skip-nav-link-bg-color);
+    color: var(--skip-nav-link-fg-color);
+    border-style: solid;
+    border-width: var(--skip-nav-link-border-width);
+    border-color: var(--skip-nav-link-border-color);
+    border-top: none;
+    border-radius: 0 0 var(--skip-nav-link-border-radius)
+      var(--skip-nav-link-border-radius);
+    text-transform: uppercase;
+    padding-block: var(--skip-nav-link-padding-block);
+    padding-inline: var(--skip-nav-link-padding-inline);
+    transform: translateY(-120%);
+    opacity: 0;
+    transition:
+      transform var(--trans-default-sensitive),
+      opacity var(--trans-default);
+  }
+
+  a:focus {
+    transform: translateY(0);
+    opacity: 1;
+    outline: 0px solid transparent;
+  }
+</style>

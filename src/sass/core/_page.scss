@@ -1,0 +1,10 @@
+// Breakpoints
+$breakpoints: (
+  small: 480px,
+  medium: 720px,
+  large: 960px,
+);
+
+// Viewport limits
+$viewport-min: 320px;
+$viewport-max: 1440px;

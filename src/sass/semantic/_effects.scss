@@ -1,0 +1,31 @@
+@use "../core" as *;
+@use "sass:map";
+
+:root {
+  // Border-widths
+  @each $size, $value in $border-widths {
+    --bw-#{$size}: #{$value};
+  }
+
+  // Borders
+  @each $type, $property-map in $borders {
+    --border-#{$type}: var(--bw-#{map.get($property-map, "width")})
+      #{map.get($property-map, "style")}
+      var(--bc-#{map.get($property-map, "color")});
+  }
+
+  // Border-radius
+  @each $size, $value in $border-radius {
+    --br-#{$size}: #{$value};
+  }
+  --br-round: 50%;
+  --br-pill: 100vmax;
+
+  // Box-shadows
+  @each $semantic, $value in $box-shadows-offsets {
+    --bs-#{$semantic}: #{$value} var(--clr-bs-#{$semantic});
+  }
+  @each $semantic, $value in $box-shadows {
+    --bs-#{$semantic}: #{$value};
+  }
+}

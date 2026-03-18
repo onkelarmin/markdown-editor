@@ -1,0 +1,30 @@
+---
+// Stylesheet import
+import "@sass/main.scss";
+import "lenis/dist/lenis.css";
+
+// Type imports
+import type { HTMLAttributes } from "astro/types";
+
+// Component imports
+import BaseHead from "@layouts/BaseHead.astro";
+import SkipNavLink from "@/components/layout/SkipNavLink.astro";
+import Header from "@/components/layout/Header.astro";
+
+interface Props extends HTMLAttributes<"html"> {
+  title: string;
+  description: string;
+  ogImage: string;
+}
+---
+
+<html lang="en">
+  <BaseHead {...Astro.props} />
+  <SkipNavLink />
+  <Header />
+  <body>
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+---
+// Type imports
+import type { HTMLAttributes } from "astro/types";
+
+const sizes = {
+  h1: "h1",
+  h2: "h2",
+  h3: "h3",
+  h4: "h4",
+  h5: "h5",
+  h6: "h6",
+};
+
+interface Props extends HTMLAttributes<keyof typeof sizes> {
+  tag: keyof typeof sizes;
+  size: keyof typeof sizes;
+  text: string;
+  classes?: string;
+}
+
+const { tag, size, text, classes, ...rest } = Astro.props;
+const CustomTag = tag;
+---
+
+<CustomTag class:list={["heading", sizes[size], classes]} {...rest}>
+  {text}
+</CustomTag>
+
+<style lang="scss">
+  .heading {
+    color: var(--fg-text-strong);
+    text-wrap: balance;
+
+    &.h1 {
+      font: var(--font-1);
+    }
+    &.h2 {
+      font: var(--font-2);
+    }
+    &.h3 {
+    }
+    &.h4 {
+    }
+    &.h5 {
+    }
+    &.h6 {
+    }
+  }
+</style>

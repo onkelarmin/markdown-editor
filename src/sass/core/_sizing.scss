@@ -1,0 +1,47 @@
+@use "helper" as *;
+@use "page" as *;
+
+// Wrapper max-widths
+$wrapper-sizes: (
+  default: 1170px,
+  narrow: 1088px,
+  wide: 1360px,
+);
+
+// Static sizes
+$static-sizes: (
+  2: 2px,
+  4: 4px,
+  6: 6px,
+  8: 8px,
+  10: 10px,
+  12: 12px,
+  16: 16px,
+  20: 20px,
+  24: 24px,
+  32: 32px,
+  40: 40px,
+  48: 48px,
+  64: 64px,
+);
+
+// Breakpoint-specific sizes
+$breakpoint-specific-sizes: (
+  (20px, 24px, 24px),
+  (24px, 32px, 32px),
+  (24px, 32px, 48px)
+);
+
+//  Logo
+$logo-sizes: (
+  default: rem(16px),
+);
+
+// SVG
+$svg-sizes: (
+  theme: rem(16px),
+);
+
+$miscellaneous-sizes: (
+  test: rem(16px),
+);

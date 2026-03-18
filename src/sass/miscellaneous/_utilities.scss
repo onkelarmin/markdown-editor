@@ -1,0 +1,316 @@
+@use "../core/" as *;
+@use "media-queries" as *;
+@use "sass:map";
+
+// Background-color
+@each $context, $semantic-map in $background-colors {
+  @each $semantic, $value in $semantic-map {
+    .bg-#{$context}-#{$semantic} {
+      background-color: var(--bg-#{$context}-#{$semantic});
+    }
+  }
+}
+
+// Foreground-color
+@each $context, $semantic-map in $foreground-colors {
+  @each $semantic, $value in $semantic-map {
+    .fg-#{$context}-#{$semantic} {
+      color: var(--fg-#{$context}-#{$semantic});
+    }
+  }
+}
+
+// Border-radius
+@each $size, $value in $static-sizes {
+  .br-#{$size} {
+    border-radius: var(--size-#{$size});
+  }
+}
+@each $size, $value in $border-radius {
+  .br-#{$size} {
+    border-radius: var(--br-#{$size});
+  }
+}
+
+.br-none {
+  border-radius: 0;
+}
+
+.round {
+  border-radius: var(--br-round);
+  aspect-ratio: 1 / 1;
+}
+
+.pill {
+  border-radius: var(--br-pill);
+}
+
+// Borders
+@each $type, $property-map in $borders {
+  .border-#{$type} {
+    border: var(--border-#{$type});
+  }
+  .border-top-#{$type} {
+    border-top: var(--border-#{$type});
+  }
+  .border-bottom-#{$type} {
+    border-bottom: var(--border-#{$type});
+  }
+  .border-left-#{$type} {
+    border-left: var(--border-#{$type});
+  }
+  .border-right-#{$type} {
+    border-right: var(--border-#{$type});
+  }
+}
+
+.border-none {
+  border: none;
+}
+
+// Box-shadows
+@each $semantic, $option-map in $box-shadows {
+  .bs-#{$semantic} {
+    box-shadow: #{$option-map};
+  }
+}
+
+// Fonts
+@each $preset, $property-map in $fonts {
+  .font-#{$preset} {
+    font: var(--font-#{$preset});
+    letter-spacing: var(--ls-#{$preset});
+  }
+}
+
+// Text-center
+.text-center {
+  text-align: center;
+}
+.text-center-small {
+  @include mq(small) {
+    text-align: center;
+  }
+}
+.text-center-medium {
+  @include mq(medium) {
+    text-align: center;
+  }
+}
+.text-center-large {
+  @include mq(large) {
+    text-align: center;
+  }
+}
+
+// Uppercase
+.uppercase {
+  text-transform: uppercase;
+}
+
+// Center horizontally
+.mar-inline-auto {
+  margin-inline: auto;
+}
+.mar-inline-auto-small {
+  @include mq(small) {
+    margin-inline: auto;
+  }
+}
+.mar-inline-auto-medium {
+  @include mq(medium) {
+    margin-inline: auto;
+  }
+}
+.mar-inline-auto-large {
+  @include mq(large) {
+    margin-inline: auto;
+  }
+}
+
+// Center vertically
+.center-block {
+  align-content: center;
+}
+
+// Center children
+.grid-center {
+  display: grid;
+  place-items: center;
+}
+
+// List-style-none
+.list-style-none {
+  list-style: none;
+}
+
+// Page padding
+@each $direction, $value in $padding-page {
+  .pad-page-#{$direction} {
+    padding-#{$direction}: var(--pad-page-#{$direction});
+  }
+}
+
+// Section padding
+@each $size, $value in $padding-section {
+  .pad-sect-#{$size} {
+    padding-block: var(--pad-sect-#{$size});
+  }
+  .pad-sect-start-#{$size} {
+    padding-block-start: var(--pad-sect-#{$size});
+  }
+  .pad-sect-end-#{$size} {
+    padding-block-end: var(--pad-sect-#{$size});
+  }
+}
+
+// Container padding
+@each $size, $value in $static-sizes {
+  .pad-#{$size} {
+    padding: var(--size-#{$size});
+  }
+  .pad-block-#{$size} {
+    padding-block: var(--size-#{$size});
+  }
+  .pad-block-start-#{$size} {
+    padding-block-start: var(--size-#{$size});
+  }
+  .pad-block-end-#{$size} {
+    padding-block-end: var(--size-#{$size});
+  }
+  .pad-inline-#{$size} {
+    padding-inline: var(--size-#{$size});
+  }
+  .pad-inline-start-#{$size} {
+    padding-inline-start: var(--size-#{$size});
+  }
+  .pad-inline-end-#{$size} {
+    padding-inline-end: var(--size-#{$size});
+  }
+}
+
+@each $size, $value in $padding-container {
+  .pad-#{$size} {
+    padding: var(--pad-cont-#{$size});
+  }
+  .pad-block-#{$size} {
+    padding-block: var(--pad-cont-#{$size});
+  }
+  .pad-block-start-#{$size} {
+    padding-block-start: var(--pad-cont-#{$size});
+  }
+  .pad-block-end-#{$size} {
+    padding-block-end: var(--pad-cont-#{$size});
+  }
+  .pad-inline-#{$size} {
+    padding-inline: var(--pad-cont-#{$size});
+  }
+  .pad-inline-start-#{$size} {
+    padding-inline-start: var(--pad-cont-#{$size});
+  }
+  .pad-inline-end-#{$size} {
+    padding-inline-end: var(--pad-cont-#{$size});
+  }
+}
+
+// Container margin
+@each $size, $value in $static-sizes {
+  .mar-#{$size} {
+    margin: var(--size-#{$size});
+  }
+  .mar-block-#{$size} {
+    margin-block: var(--size-#{$size});
+  }
+  .mar-block-start-#{$size} {
+    margin-block-start: var(--size-#{$size});
+  }
+  .mar-block-end-#{$size} {
+    margin-block-end: var(--size-#{$size});
+  }
+  .mar-inline-#{$size} {
+    margin-inline: var(--size-#{$size});
+  }
+  .mar-inline-start-#{$size} {
+    margin-inline-start: var(--size-#{$size});
+  }
+  .mar-inline-end-#{$size} {
+    margin-inline-end: var(--size-#{$size});
+  }
+}
+
+@each $size, $value in $spacer-container {
+  .mar-#{$size} {
+    margin: var(--space-cont-#{$size});
+  }
+  .mar-block-#{$size} {
+    margin-block: var(--space-cont-#{$size});
+  }
+  .mar-block-start-#{$size} {
+    margin-block-start: var(--space-cont-#{$size});
+  }
+  .mar-block-end-#{$size} {
+    margin-block-end: var(--space-cont-#{$size});
+  }
+  .mar-inline-#{$size} {
+    margin-inline: var(--space-cont-#{$size});
+  }
+  .mar-inline-start-#{$size} {
+    margin-inline-start: var(--space-cont-#{$size});
+  }
+  .mar-inline-end-#{$size} {
+    margin-inline-end: var(--space-cont-#{$size});
+  }
+}
+
+// Flow
+@each $size, $value in $static-sizes {
+  .flow-#{$size} > * + * {
+    margin-block-start: var(--size-#{$size});
+  }
+}
+
+@each $size, $value in $spacer-container {
+  .flow-#{$size} > * + * {
+    margin-block-start: var(--space-cont-#{$size});
+  }
+}
+
+// Visually hidden
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+// Overflow clip
+.overflow-clip {
+  overflow: clip;
+}
+.overflow-x-clip {
+  overflow-x: clip;
+}
+.overflow-y-clip {
+  overflow-y: clip;
+}
+
+// Square
+.square {
+  aspect-ratio: 1;
+}
+
+// Fit-content
+.fit-content {
+  inline-size: fit-content;
+}
+
+// GSAP auto alpha
+.js .gsap-auto-alpha {
+  visibility: hidden;
+  opacity: 0;
+}
+
+// ============================= Project-specific utilities =============================

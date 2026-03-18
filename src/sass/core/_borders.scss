@@ -1,0 +1,21 @@
+@use "helper" as *;
+
+$border-widths: (
+  md: rem(1px),
+  lg: rem(2px),
+);
+
+$border-colors: (
+  default-focus: (
+    light: "brand-500",
+    dark: "brand-500",
+  ),
+);
+
+$borders: (
+  default-focus: (
+    width: "lg",
+    style: "solid",
+    color: "default-focus",
+  ),
+);

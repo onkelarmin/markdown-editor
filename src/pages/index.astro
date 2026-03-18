@@ -1,0 +1,17 @@
+---
+// Import Site data
+import { sitePages } from "@/data/siteData";
+
+// Layout import
+import MainLayout from "@layouts/MainLayout.astro";
+
+const page = sitePages.home;
+---
+
+<MainLayout
+  title={page.title}
+  description={page.description}
+  ogImage={page.ogImage}
+>
+  Main
+</MainLayout>

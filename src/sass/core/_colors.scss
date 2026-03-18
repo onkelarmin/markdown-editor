@@ -1,0 +1,91 @@
+// Primitives
+$color-core-neutral: (
+  "000": hsl(0, 0%, 100%),
+  "500": hsl(0, 0%, 50%),
+  "800": hsl(0, 0%, 19%),
+  "900": hsl(0, 0%, 0%),
+);
+
+$color-core-accent: (
+  "red": (
+    "500": hsl(0, 100%, 66%),
+  ),
+);
+
+$color-core-brand: (
+  "primary": (
+    "500": hsl(274, 82%, 60%),
+    "600": hsl(274, 82%, 50%),
+  ),
+);
+
+$color-core-gradient: (
+  1: (
+    start: hsl(192, 100%, 67%),
+    end: hsl(280, 87%, 65%),
+  ),
+);
+
+// Has Themes
+$has-themes: true;
+
+// Default-brand
+$default-brand: "primary";
+
+// Background-colors
+$background-colors: (
+  canvas: (
+    default: (
+      light: "neutral-000",
+      dark: "neutral-900",
+    ),
+  ),
+  container: (
+    default: (
+      light: "neutral-000",
+      dark: "neutral-900",
+    ),
+  ),
+  mobile-nav: (
+    menu: (
+      light: "neutral-000",
+      dark: "neutral-900",
+    ),
+    overlay: (
+      light: "transparent",
+      dark: "transparent",
+    ),
+  ),
+  text: (
+    selection: (
+      light: "neutral-900",
+      dark: "neutral-000",
+    ),
+    target: (
+      light: "neutral-900",
+      dark: "neutral-000",
+    ),
+  ),
+);
+
+// Foreground-colors
+$foreground-colors: (
+  text: (
+    base: (
+      light: "neutral-600",
+      dark: "neutral-500",
+    ),
+    strong: (
+      light: "neutral-600",
+      dark: "neutral-500",
+    ),
+    selection: (
+      light: "neutral-000",
+      dark: "neutral-900",
+    ),
+    target: (
+      light: "neutral-000",
+      dark: "neutral-900",
+    ),
+  ),
+);

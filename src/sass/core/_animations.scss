@@ -1,0 +1,56 @@
+$animation-durations: (
+  fast: 120ms,
+  default: 220ms,
+  slow: 500ms,
+);
+
+$animation-delays: (
+  fast: 120ms,
+  default: 220ms,
+  slow: 500ms,
+);
+
+$animation-easings: (
+  in: cubic-bezier(0.4, 0, 1, 1),
+  out: cubic-bezier(0, 0, 0.2, 1),
+  in-out: cubic-bezier(0.4, 0, 0.2, 1),
+);
+
+$transitions: (
+  default-out: (
+    motion: "default",
+    ease: "out",
+  ),
+  default-in: (
+    motion: "default",
+    ease: "in",
+  ),
+  default-in-out: (
+    motion: "default",
+    ease: "in-out",
+  ),
+  fast-out: (
+    motion: "fast",
+    ease: "out",
+  ),
+  fast-in: (
+    motion: "fast",
+    ease: "in",
+  ),
+  fast-in-out: (
+    motion: "fast",
+    ease: "in-out",
+  ),
+  slow-out: (
+    motion: "slow",
+    ease: "out",
+  ),
+  slow-in: (
+    motion: "slow",
+    ease: "in",
+  ),
+  slow-in-out: (
+    motion: "slow",
+    ease: "in-out",
+  ),
+);

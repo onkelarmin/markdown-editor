@@ -1,0 +1,93 @@
+@use "helper" as *;
+
+// Font-family
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+$font-family: (
+  base: "'Inter', system-ui, sans-serif",
+);
+
+// Font-weights
+$font-weights: (
+  thin: 100,
+  extra-light: 200,
+  light: 300,
+  regular: 400,
+  medium: 500,
+  semi-bold: 600,
+  bold: 700,
+  extra-bold: 800,
+  black: 900,
+);
+
+// Fonts
+$fonts: (
+  1: (
+    "family": "base",
+    "size": fluid(100px, 200px),
+    "weight": "bold",
+    "line-height": 0.73,
+    "letter-spacing": fluid(-2.5px, -5px),
+  ),
+  2: (
+    "family": "base",
+    "size": fluid(20px, 56px),
+    "weight": "bold",
+    "line-height": 1.2,
+    "letter-spacing": 0px,
+  ),
+  3: (
+    "family": "base",
+    "size": fluid(20px, 40px),
+    "weight": "light",
+    "line-height": 0.73,
+    "letter-spacing": 0px,
+  ),
+  4: (
+    "family": "base",
+    "size": fluid(15px, 24px),
+    "weight": "bold",
+    "line-height": 1.1,
+    "letter-spacing": fluid(3px, 4.8px),
+  ),
+  5: (
+    "family": "base",
+    "size": rem(20px),
+    "weight": "regular",
+    "line-height": 1.1,
+    "letter-spacing": rem(4px),
+  ),
+  6: (
+    "family": "base",
+    "size": rem(18px),
+    "weight": "regular",
+    "line-height": 1.5,
+    "letter-spacing": 0px,
+  ),
+  7: (
+    "family": "base",
+    "size": rem(18px),
+    "weight": "bold",
+    "line-height": 1.5,
+    "letter-spacing": 0px,
+  ),
+  8: (
+    "family": "base",
+    "size": rem(16px),
+    "weight": "bold",
+    "line-height": 1.4,
+    "letter-spacing": rem(5px),
+  ),
+  9: (
+    "family": "base",
+    "size": fluid(10px, 15px),
+    "weight": "regular",
+    "line-height": 1.5,
+    "letter-spacing": fluid(2px, 3px),
+  ),
+);

@@ -1,0 +1,48 @@
+@use "../core" as *;
+@use "sass:color";
+
+:root {
+  // Primitive colors
+  --clr-transparent: transparent;
+
+  @each $key, $value in $color-core-neutral {
+    --clr-neutral-#{$key}: #{color.to-space($value, oklch)};
+  }
+
+  @each $accent, $key-map in $color-core-accent {
+    @each $key, $value in $key-map {
+      --clr-#{$accent}-#{$key}: #{color.to-space($value, oklch)};
+    }
+  }
+
+  @each $brand, $key-map in $color-core-brand {
+    @each $key, $value in $key-map {
+      --clr-#{$brand}-#{$key}: #{color.to-space($value, oklch)};
+    }
+  }
+
+  @each $key, $position-map in $color-core-gradient {
+    @each $position, $value in $position-map {
+      --clr-gradient-#{$key}-#{$position}: #{color.to-space($value, oklch)};
+    }
+  }
+
+  // Light mode
+  @include theme-vars(light);
+
+  // Dark mode
+  @if $has-themes {
+    @media (prefers-color-scheme: dark) {
+      @include theme-vars(dark);
+    }
+  }
+
+  // Brand
+  @each $brand, $key-map in $color-core-brand {
+    @if $brand == $default-brand {
+      @each $key, $value in $key-map {
+        --clr-brand-#{$key}: var(--clr-brand-#{$brand}-#{$key});
+      }
+    }
+  }
+}

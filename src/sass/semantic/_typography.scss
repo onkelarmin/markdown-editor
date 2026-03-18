@@ -1,0 +1,25 @@
+@use "../core" as *;
+@use "sass:map";
+
+:root {
+  // Font-family
+  @each $semantic, $value in $font-family {
+    --ff-#{$semantic}: #{$value};
+  }
+
+  // Fonts
+  @each $preset, $property-map in $fonts {
+    --font-#{$preset}: #{map.get(
+        $font-weights,
+        #{map.get($property-map, "weight")}
+      )}
+      #{map.get($property-map, "size")} /
+      #{map.get($property-map, "line-height")}
+      var(--ff-#{map.get($property-map, "family")});
+  }
+
+  // Letter-spacing
+  @each $preset, $property-map in $fonts {
+    --ls-#{$preset}: #{map.get($property-map, "letter-spacing")};
+  }
+}

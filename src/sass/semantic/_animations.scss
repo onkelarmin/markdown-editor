@@ -1,0 +1,64 @@
+@use "../core" as *;
+@use "sass:map";
+
+:root {
+  // Durations
+  @each $speed, $value in $animation-durations {
+    --motion-#{$speed}: #{$value};
+    --motion-#{$speed}-sensitive: #{$value};
+  }
+
+  // Prefers-reduced-motion
+  @media (prefers-reduced-motion: reduce) {
+    @each $speed, $value in $animation-durations {
+      --motion-#{$speed}-sensitive: 0ms;
+    }
+  }
+
+  // Delays
+  @each $speed, $value in $animation-delays {
+    --delay-#{$speed}: #{$value};
+    --delay-#{$speed}-sensitive: #{$value};
+  }
+
+  // Prefers-reduced-motion
+  @media (prefers-reduced-motion: reduce) {
+    @each $speed, $value in $animation-durations {
+      --delay-#{$speed}-sensitive: 0ms;
+    }
+  }
+
+  // Easing
+  @each $ease, $value in $animation-easings {
+    --ease-#{$ease}: #{$value};
+  }
+
+  @each $name, $params-map in $transitions {
+    --trans-#{$name}: var(--motion-#{map.get($params-map, "motion")})
+      var(--ease-#{map.get($params-map, "ease")});
+    --trans-#{$name}-sensitive: var(
+        --motion-#{map.get($params-map, "motion")}-sensitive
+      )
+      var(--ease-#{map.get($params-map, "ease")});
+  }
+}
+
+// View transition theme switch
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) {
+    animation-delay: var(--motion-slow);
+  }
+
+  ::view-transition-new(root) {
+    animation: circle-in var(--motion-slow);
+  }
+
+  @keyframes circle-in {
+    from {
+      clip-path: circle(0% at 50% 0%);
+    }
+    to {
+      clip-path: circle(130% at 50% 0%);
+    }
+  }
+}

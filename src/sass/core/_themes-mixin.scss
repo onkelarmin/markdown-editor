@@ -1,0 +1,160 @@
+@use "borders" as *;
+@use "box-shadows" as *;
+@use "colors" as *;
+@use "components" as *;
+@use "sass:meta";
+@use "sass:list";
+
+@mixin theme-vars($theme) {
+  //  Background-colors
+  @each $context, $semantic-map in $background-colors {
+    @each $semantic, $mode-map in $semantic-map {
+      @each $mode, $value in $mode-map {
+        @if $mode == $theme {
+          @if meta.type-of($value) == list {
+            // account for opacity
+            --bg-#{$context}-#{$semantic}: oklch(
+              from var(--clr-#{list.nth($value, 1)})
+                l
+                c
+                h /
+                #{list.nth($value, 2)}
+            );
+          } @else {
+            --bg-#{$context}-#{$semantic}: var(--clr-#{$value});
+          }
+        }
+      }
+    }
+  }
+  // Foreground-colors
+  @each $context, $semantic-map in $foreground-colors {
+    @each $semantic, $mode-map in $semantic-map {
+      @each $mode, $value in $mode-map {
+        @if $mode == $theme {
+          @if meta.type-of($value) == list {
+            // account for opacity
+            --fg-#{$context}-#{$semantic}: oklch(
+              from var(--clr-#{list.nth($value, 1)})
+                l
+                c
+                h /
+                #{list.nth($value, 2)}
+            );
+          } @else {
+            --fg-#{$context}-#{$semantic}: var(--clr-#{$value});
+          }
+        }
+      }
+    }
+  }
+  // Border-colors
+  @each $semantic, $mode-map in $border-colors {
+    @each $mode, $value in $mode-map {
+      @if $mode == $theme {
+        @if meta.type-of($value) == list {
+          // account for opacity
+          --bc-#{$semantic}: oklch(
+            from var(--clr-#{list.nth($value, 1)})
+              l
+              c
+              h /
+              #{list.nth($value, 2)}
+          );
+        } @else {
+          --bc-#{$semantic}: var(--clr-#{$value});
+        }
+      }
+    }
+  }
+  // Box-shadows
+  @each $semantic, $mode-map in $box-shadow-colors {
+    @each $mode, $value in $mode-map {
+      @if $mode == $theme {
+        @if meta.type-of($value) == list {
+          // account for opacity
+          --clr-bs-#{$semantic}: oklch(
+            from var(--clr-#{list.nth($value, 1)})
+              l
+              c
+              h /
+              #{list.nth($value, 2)}
+          );
+        } @else {
+          --clr-bs-#{$semantic}: var(--clr-#{$value});
+        }
+      }
+    }
+  }
+  // Buttons
+  @each $variant, $state-map in $button-colors {
+    @each $state, $property-map in $state-map {
+      @each $property, $mode-map in $property-map {
+        @each $mode, $value in $mode-map {
+          @if $mode == $theme {
+            @if meta.type-of($value) == list {
+              // account for opacity
+              --btn-#{$property}-color-#{$state}-#{$variant}: oklch(
+                from var(--clr-#{list.nth($value, 1)})
+                  l
+                  c
+                  h /
+                  #{list.nth($value, 2)}
+              );
+            } @else {
+              --btn-#{$property}-color-#{$state}-#{$variant}: var(
+                --clr-#{$value}
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+  // Skip-nav-link
+  @if meta.variable-exists("skip-nav-link-colors") {
+    @each $property, $mode-map in $skip-nav-link-colors {
+      @each $mode, $value in $mode-map {
+        @if $mode == $theme {
+          @if meta.type-of($value) == list {
+            // account for opacity
+            --skip-nav-link-#{$property}-color: oklch(
+              from var(--clr-#{list.nth($value, 1)})
+                l
+                c
+                h /
+                #{list.nth($value, 2)}
+            );
+          } @else {
+            --skip-nav-link-#{$property}-color: var(--clr-#{$value});
+          }
+        }
+      }
+    }
+  }
+  // Nav-toggle
+  @if meta.variable-exists("nav-toggle-colors") {
+    @each $state, $property-map in $nav-toggle-colors {
+      @each $property, $mode-map in $property-map {
+        @each $mode, $value in $mode-map {
+          @if $mode == $theme {
+            @if meta.type-of($value) == list {
+              // account for opacity
+              --nav-toggle-#{$property}-color-#{$state}: oklch(
+                from var(--clr-#{list.nth($value, 1)})
+                  l
+                  c
+                  h /
+                  #{list.nth($value, 2)}
+              );
+            } @else {
+              --nav-toggle-#{$property}-color-#{$state}: var(--clr-#{$value});
+            }
+          }
+        }
+      }
+    }
+  }
+  // Color-scheme
+  color-scheme: #{$theme};
+}

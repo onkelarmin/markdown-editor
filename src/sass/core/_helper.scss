@@ -1,0 +1,65 @@
+@use "page" as *;
+@use "sass:math";
+@use "sass:color";
+@use "sass:map";
+
+// Rounding
+@function round($number, $decimals: 0) {
+  $n: 1;
+  @if $decimals > 0 {
+    @for $i from 1 through $decimals {
+      $n: $n * 10;
+    }
+  }
+  @return math.div(math.round($number * $n), $n);
+}
+
+//   px to rem
+@function rem($px) {
+  $rems: math.div($px, 16px) * 1rem;
+  @return $rems;
+}
+
+//   px to em
+@function em($px) {
+  $ems: math.div($px, 16px) * 1em;
+  @return $ems;
+}
+
+// breakpoint-specific
+@function bp($sm, $md, $lg) {
+  @return var(--size-#{$sm}-#{$md}-#{$lg});
+}
+
+// clamp
+@function fluid($min-size, $max-size, $start: "small", $end: "large") {
+  @if $min-size == $max-size {
+    @return rem($min-size);
+  } @else {
+    // Initialize
+    $min-breakpoint: null;
+    $max-breakpoint: null;
+
+    // Assign values
+    @if $start == "min" {
+      $min-breakpoint: $viewport-min;
+    } @else {
+      $min-breakpoint: map.get($breakpoints, $start);
+    }
+    @if $end == "max" {
+      $max-breakpoint: $viewport-max;
+    } @else {
+      $max-breakpoint: map.get($breakpoints, $end);
+    }
+
+    // Calculations
+    $slope: math.div($max-size - $min-size, $max-breakpoint - $min-breakpoint);
+    $intercept: rem($min-size - $slope * $min-breakpoint);
+
+    @return clamp(
+      rem(min($min-size, $max-size)),
+      calc(#{$intercept} + #{$slope * 100}vw),
+      rem(max($min-size, $max-size))
+    );
+  }
+}

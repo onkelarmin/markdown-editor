@@ -1,0 +1,64 @@
+---
+// Type imports
+import type { HTMLAttributes } from "astro/types";
+
+// Props
+interface Props extends HTMLAttributes<"head"> {
+  title: string;
+  description: string;
+  ogImage: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+
+const siteUrl = import.meta.env.SITE;
+---
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content={description} />
+  <meta name="viewport" content="width=device-width" />
+  <!-- Light favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon-light.svg" />
+  <!-- Dark favicon -->
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="/favicon-dark.svg"
+    media="(prefers-color-scheme: dark)"
+  />
+  <meta name="generator" content={Astro.generator} />
+  <title>{title}</title>
+
+  <!-- Inline script -->
+  <script is:inline>
+    // add js class to HTML
+    document.documentElement.classList.add("js");
+    // Set Light/Dark mode
+    (() => {
+      const stored = localStorage.getItem("theme-preference");
+      const system = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const theme = stored ?? (system ? "dark" : "light");
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+
+  <!-- Main script -->
+  <script src="../scripts/main.ts"></script>
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={Astro.url} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={`${siteUrl}${ogImage}`} />
+  <meta property="og:image:alt" content={title} />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content={Astro.url} />
+  <meta property="twitter:title" content={title} />
+  <meta property="twitter:description" content={description} />
+  <meta property="twitter:image" content={`${siteUrl}${ogImage}`} />
+  <meta property="twitter:image:alt" content={title} />
+</head>

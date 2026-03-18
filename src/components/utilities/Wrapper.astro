@@ -1,0 +1,40 @@
+---
+// Types
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  width?: "default" | "narrow" | "wide" | "full";
+  classes?: string;
+}
+
+const { width = "default", classes, ...rest } = Astro.props;
+---
+
+<div class:list={["wrapper", width, classes]} {...rest}>
+  <slot />
+</div>
+
+<style lang="scss">
+  .wrapper {
+    --padding: calc(var(--pad-page-inline-start) + var(--pad-page-inline-end));
+
+    width: min(100% - var(--padding), var(--max-width));
+    margin-inline: auto;
+
+    &.default {
+      --max-width: var(--size-wrapper-default);
+    }
+
+    &.narrow {
+      --max-width: var(--size-wrapper-narrow);
+    }
+
+    &.wide {
+      --max-width: var(--size-wrapper-wide);
+    }
+
+    &.full {
+      --max-width: 100%;
+    }
+  }
+</style>

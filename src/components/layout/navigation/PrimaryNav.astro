@@ -1,0 +1,203 @@
+---
+// Import Site data
+import { sitePages } from "@/data/siteData";
+
+// Component imports
+import ButtonLink from "@components/ui/ButtonLink.astro";
+import NavLink from "./NavLink.astro";
+import PrimaryNavToggle from "./PrimaryNavToggle.astro";
+
+const { ...rest } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="primary-nav" {...rest}>
+  <PrimaryNavToggle />
+  <div
+    id="primary-nav-menu"
+    class="menu"
+    aria-label="Navigation"
+    role="dialog"
+    data-open="false"
+  >
+    <ul class="list">
+      {
+        Object.values(sitePages).map((page) => (
+          <li>
+            <NavLink
+              href={page.url}
+              name={page.name}
+              aria-current={currentPath === page.url ? "page" : undefined}
+            />
+          </li>
+        ))
+      }
+    </ul>
+    <ButtonLink href="/recipes" variant="nav" text="Browse recipes" />
+  </div>
+</nav>
+<!-- Overlay -->
+<div id="mobile-nav-overlay"></div>
+
+<style lang="scss">
+  @use "@sass/miscellaneous" as *;
+
+  .primary-nav {
+    position: relative;
+    z-index: 10;
+
+    .menu {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: end;
+    }
+
+    .list {
+      justify-self: center;
+      display: flex;
+      align-items: center;
+      gap: var(--size-40);
+      list-style: none;
+    }
+
+    // Mobile
+    @include mq(large, max) {
+      .menu {
+        position: fixed;
+        left: max(
+          (100% - var(--size-wrapper-default)) / 2,
+          var(--pad-page-inline-start)
+        );
+        right: max(
+          (100% - var(--size-wrapper-default)) / 2,
+          var(--pad-page-inline-start)
+        );
+        top: var(--size-68-86-86);
+        display: flex;
+        flex-direction: column;
+        gap: var(--size-10);
+        background-color: var(--bg-mobile-nav-menu);
+        border-radius: var(--size-8);
+        border: var(--border-default);
+        box-shadow: var(--bs-mobile-nav-menu);
+        padding: var(--size-8);
+
+        transform: translateY(-100%);
+        opacity: 0;
+        transition:
+          transform var(--motion-slow-sensitive) var(--ease-in),
+          opacity var(--motion-slow-sensitive) var(--ease-in);
+
+        .btn {
+          width: 100%;
+        }
+
+        &[data-open="true"] {
+          transform: translateY(0);
+          opacity: 1;
+          transition:
+            transform var(--motion-slow-sensitive) var(--ease-out),
+            opacity var(--motion-slow) var(--ease-out);
+        }
+      }
+
+      .list {
+        flex-direction: column;
+        align-items: start;
+        gap: 0px;
+        // backdrop-filter: blur(16px);
+
+        li {
+          padding-block: var(--size-12);
+          padding-inline: var(--size-8);
+        }
+      }
+    }
+  }
+
+  // Overlay
+  #mobile-nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9;
+    background-color: var(--bg-mobile-nav-overlay);
+  }
+
+  .primary-nav:has([data-open="true"]) ~ #mobile-nav-overlay {
+    display: block;
+  }
+</style>
+
+<script>
+  // Imports
+  import { customProp } from "@/lib/helper";
+
+  // Variables
+  const btnToggle = document.querySelector(
+    "#primary-nav-toggle"
+  ) as HTMLButtonElement;
+  const primaryNav = document.querySelector(".primary-nav") as HTMLElement;
+  const primaryNavMenu = primaryNav.querySelector(
+    "#primary-nav-menu"
+  ) as HTMLElement;
+  const primaryNavLinks = [
+    ...primaryNavMenu.querySelectorAll("li > a"),
+  ] as HTMLAnchorElement[];
+  const mobileNavOverlay = document.querySelector(
+    "#mobile-nav-overlay"
+  ) as HTMLDivElement;
+  const main = document.querySelector("main") as HTMLElement;
+  const media = window.matchMedia(`(width < ${customProp("--bp-large")})`);
+  const isMobile = media.matches;
+
+  // Functions
+  function setupPrimaryNav(isMobile: boolean) {
+    if (isMobile) {
+      // is mobile
+      primaryNavMenu.setAttribute("inert", "");
+      primaryNavLinks.forEach((link) => {
+        link.addEventListener("click", closeMobileMenu);
+      });
+    } else {
+      // is tablet/desktop
+      primaryNavMenu.removeAttribute("inert");
+    }
+  }
+
+  function openMobileMenu() {
+    btnToggle.setAttribute("aria-expanded", "true");
+    primaryNavMenu.setAttribute("data-open", "true");
+    primaryNavMenu.removeAttribute("inert");
+    main.setAttribute("inert", "");
+    document.addEventListener("keydown", closeMenuOnEscapeKey);
+  }
+
+  function closeMobileMenu() {
+    btnToggle.setAttribute("aria-expanded", "false");
+    primaryNavMenu.setAttribute("data-open", "false");
+    primaryNavMenu.setAttribute("inert", "");
+    main.removeAttribute("inert");
+    document.removeEventListener("keydown", closeMenuOnEscapeKey);
+  }
+
+  function closeMenuOnEscapeKey(e: KeyboardEvent) {
+    if (e.key === "Escape") closeMobileMenu();
+  }
+
+  setupPrimaryNav(isMobile);
+
+  // EventListeners
+  btnToggle.addEventListener("click", () => {
+    if (btnToggle.getAttribute("aria-expanded") === "false") {
+      openMobileMenu();
+    } else {
+      closeMobileMenu();
+    }
+  });
+  mobileNavOverlay.addEventListener("click", closeMobileMenu);
+  media.addEventListener("change", (e) => {
+    setupPrimaryNav(e.matches);
+  });
+</script>

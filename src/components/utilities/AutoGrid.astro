@@ -1,0 +1,107 @@
+---
+// Types
+import type { HTMLAttributes } from "astro/types";
+
+const justifyItemsOptions = {
+  start: "start",
+  end: "end",
+  center: "center",
+};
+
+const alignItemsOptions = {
+  start: "start",
+  end: "end",
+  center: "center",
+};
+
+const justifyContentOptions = {
+  start: "start",
+  end: "end",
+  center: "center",
+};
+
+const alignContentOptions = {
+  start: "start",
+  end: "end",
+  center: "center",
+};
+
+interface Props extends HTMLAttributes<"div"> {
+  type: "fit" | "fill";
+  minWidth?: string;
+  itemX?: keyof typeof justifyItemsOptions;
+  itemY?: keyof typeof alignItemsOptions;
+  contentX?: keyof typeof justifyContentOptions;
+  contentY?: keyof typeof alignContentOptions;
+  gap?: string;
+  colGap?: string;
+  rowGap?: string;
+  classes?: string;
+}
+
+const {
+  type,
+  minWidth = "16rem",
+  itemX,
+  itemY,
+  contentX,
+  contentY,
+  gap,
+  colGap = gap,
+  rowGap = gap,
+  classes,
+  ...rest
+} = Astro.props;
+
+// Alignment
+const justifyItems = itemX && justifyItemsOptions[itemX];
+const alignItems = itemY && alignItemsOptions[itemY];
+const justifyContent = contentX && justifyContentOptions[contentX];
+const alignContent = contentY && alignContentOptions[contentY];
+
+// Gap
+const colGapStr = colGap && `var(--${colGap})`;
+const rowGapStr = colGap && `var(--${rowGap})`;
+---
+
+<div class:list={["auto-grid", type, classes]} {...rest}>
+  <slot />
+</div>
+
+<style
+  lang="scss"
+  define:vars={{
+    minWidth,
+    justifyItems,
+    alignItems,
+    justifyContent,
+    alignContent,
+    colGapStr,
+    rowGapStr,
+  }}
+>
+  .auto-grid {
+    display: grid;
+    justify-items: var(--justifyItems);
+    align-items: var(--alignItems);
+    justify-content: var(--justifyContent);
+    align-content: var(--alignContent);
+
+    column-gap: var(--colGapStr);
+    row-gap: var(--rowGapStr);
+
+    &.fit {
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(var(--minWidth), 100%), 1fr)
+      );
+    }
+
+    &.fill {
+      grid-template-columns: repeat(
+        auto-fill,
+        minmax(min(var(--minWidth), 100%), 1fr)
+      );
+    }
+  }
+</style>

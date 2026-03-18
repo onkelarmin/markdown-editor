@@ -1,0 +1,81 @@
+@use "../core" as *;
+@use "sass:list";
+@use "sass:map";
+
+:root {
+  // static sizes
+  @each $size, $value in $static-sizes {
+    --size-#{$size}: #{rem($value)};
+  }
+
+  // Breakpoint-specific sizes
+  @function get-breakpoint-specific-name($list) {
+    @return #{list.nth($list, 1)}-#{list.nth($list, 2)}-#{list.nth($list, 3)};
+  }
+  @each $size-list in $breakpoint-specific-sizes {
+    $name: get-breakpoint-specific-name($size-list);
+    --size-#{$name}: #{rem(list.nth($size-list, 1))};
+  }
+  @each $size-list in $breakpoint-specific-sizes {
+    $name: get-breakpoint-specific-name($size-list);
+    @media (min-width: #{em(map.get($breakpoints, "medium"))}) {
+      --size-#{$name}: #{rem(list.nth($size-list, 2))};
+    }
+  }
+  @each $size-list in $breakpoint-specific-sizes {
+    $name: get-breakpoint-specific-name($size-list);
+    @media (min-width: #{em(map.get($breakpoints, "large"))}) {
+      --size-#{$name}: #{rem(list.nth($size-list, 3))};
+    }
+  }
+
+  // Breakpoints
+  @each $size, $value in $breakpoints {
+    --bp-#{$size}: #{em($value)};
+  }
+
+  // Wrapper max-widths
+  @each $size, $value in $wrapper-sizes {
+    --size-wrapper-#{$size}: #{rem($value)};
+  }
+
+  // Logo
+  @each $size, $value in $logo-sizes {
+    --size-logo-#{$size}: #{$value};
+  }
+
+  // SVG
+  @each $size, $value in $svg-sizes {
+    --size-svg-#{$size}: #{$value};
+  }
+
+  // Miscellaneous
+  @each $size, $value in $miscellaneous-sizes {
+    --size-misc-#{$size}: #{$value};
+  }
+
+  // Page padding
+  @each $direction, $value in $padding-page {
+    --pad-page-#{$direction}: #{$value};
+  }
+
+  // Section
+  @each $size, $value in $padding-section {
+    --pad-sect-#{$size}: #{$value};
+  }
+
+  // Container padding
+  @each $size, $value in $padding-container {
+    --pad-cont-#{$size}: #{$value};
+  }
+
+  // Container spacing
+  @each $size, $value in $spacer-container {
+    --space-cont-#{$size}: #{$value};
+  }
+
+  // Offset
+  @each $size, $value in $offset {
+    --offset-#{$size}: #{$value};
+  }
+}
