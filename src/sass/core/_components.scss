@@ -64,12 +64,11 @@ $button-appearance: (
 $skip-nav-link-colors: (
   bg: (
     light: "neutral-000",
+    dark: "slate-950",
   ),
   fg: (
-    light: "neutral-900",
-  ),
-  border: (
-    light: "neutral-900",
+    light: "slate-400",
+    dark: "slate-300",
   ),
 );
 

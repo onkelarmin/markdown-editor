@@ -47,25 +47,25 @@ $background-colors: (
     ),
   ),
   container: (
-    primary-header: (
-      light: "accent-800",
-      dark: "accent-800",
+    main-header: (
+      light: "slate-800",
+      dark: "slate-800",
     ),
     editor-header: (
       light: "neutral-100",
-      dark: "accent-950",
+      dark: "slate-950",
     ),
     sidebar: (
-      light: "accent-950",
-      dark: "accent-950",
+      light: "slate-950",
+      dark: "slate-950",
     ),
     preview-block: (
       light: "neutral-100",
-      dark: "accent-800",
+      dark: "slate-800",
     ),
     dialog: (
       light: "neutral-000",
-      dark: "accent-950",
+      dark: "slate-950",
     ),
   ),
   text: (
@@ -84,16 +84,16 @@ $background-colors: (
 $foreground-colors: (
   text: (
     base: (
-      light: "accent-400",
-      dark: "accent-300",
+      light: "slate-400",
+      dark: "slate-300",
     ),
     strong: (
-      light: "accent-700",
+      light: "slate-700",
       dark: "neutral-000",
     ),
     muted: (
-      light: "accent-400",
-      dark: "accent-400",
+      light: "slate-400",
+      dark: "slate-400",
     ),
     neutral: (
       light: "neutral-000",
@@ -104,8 +104,8 @@ $foreground-colors: (
       dark: "primary-600",
     ),
     markdown: (
-      light: "accent-700",
-      dark: "accent-300",
+      light: "slate-700",
+      dark: "slate-300",
     ),
     selection: (
       light: "neutral-950",

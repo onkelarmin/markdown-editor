@@ -2,38 +2,50 @@
 
 ---
 
-<a href="#main">Skip navigation</a>
+<div class="container">
+  Skip to
+  <div class="links">
+    <a href="#sidebar">document naviagation</a>
+    <a href="#main">editor</a>
+  </div>
+</div>
 
 <style lang="scss">
-  a {
+  .container {
+    display: flex;
+    gap: var(--size-8);
     position: absolute;
     z-index: 10000;
-    left: max(
-      (100% - var(--size-wrapper-default)) / 2,
-      var(--pad-page-inline-start)
-    );
+    justify-self: center;
     width: fit-content;
+    font: var(--font-6);
     background-color: var(--skip-nav-link-bg-color);
-    color: var(--skip-nav-link-fg-color);
-    border-style: solid;
-    border-width: var(--skip-nav-link-border-width);
-    border-color: var(--skip-nav-link-border-color);
-    border-top: none;
+    border: none;
     border-radius: 0 0 var(--skip-nav-link-border-radius)
       var(--skip-nav-link-border-radius);
-    text-transform: uppercase;
     padding-block: var(--skip-nav-link-padding-block);
     padding-inline: var(--skip-nav-link-padding-inline);
+    margin-inline: auto;
     transform: translateY(-120%);
     opacity: 0;
     transition:
-      transform var(--trans-default-sensitive),
-      opacity var(--trans-default);
+      transform var(--trans-fast-out-sensitive),
+      opacity var(--trans-fast-out);
+
+    &:focus-within {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
 
-  a:focus {
-    transform: translateY(0);
-    opacity: 1;
-    outline: 0px solid transparent;
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--size-4);
+  }
+
+  a {
+    color: var(--skip-nav-link-fg-color);
+    text-transform: capitalize;
   }
 </style>
