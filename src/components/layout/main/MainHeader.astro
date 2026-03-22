@@ -24,7 +24,12 @@ import SaveSvg from "@assets/icon-save.svg";
         <span class="visually-hidden">Delete document</span>
         <DeleteSvg class="delete-icon" aria-hidden="true" />
       </button>
-      <Button text="Save Changes" icon={SaveSvg} aria-label="Save changes" />
+      <Button
+        text="Save Changes"
+        icon={SaveSvg}
+        id="save-changes-button"
+        aria-label="Save changes"
+      />
     </div>
   </div>
 </header>
@@ -40,8 +45,8 @@ import SaveSvg from "@assets/icon-save.svg";
       grid-template-columns: auto 1fr auto;
       justify-items: start;
       align-items: center;
-      padding-inline-start: var(--pad-cont-primary-header-inline-start);
-      padding-inline-end: var(--pad-cont-primary-header-inline-end);
+      padding-inline-start: var(--pad-cont-main-header-inline-start);
+      padding-inline-end: var(--pad-cont-main-header-inline-end);
     }
   }
 
