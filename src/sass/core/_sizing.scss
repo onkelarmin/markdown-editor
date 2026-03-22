@@ -27,9 +27,9 @@ $static-sizes: (
 
 // Breakpoint-specific sizes
 $breakpoint-specific-sizes: (
-  (20px, 24px, 24px),
-  (24px, 32px, 32px),
-  (24px, 32px, 48px)
+  (56px, 72px, 72px),
+  (23px, 30px, 30px),
+  (5px, 6px, 6px)
 );
 
 //  Logo
@@ -48,5 +48,5 @@ $svg-sizes: (
 );
 
 $miscellaneous-sizes: (
-  test: rem(16px),
+  sidebar-width: rem(250px),
 );

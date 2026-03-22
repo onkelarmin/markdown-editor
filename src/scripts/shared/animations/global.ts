@@ -14,10 +14,19 @@ export function initScrollTriggerRefresh() {
   });
 }
 
+// Durations
+export const DURATIONS = {
+  xFast: cssTime("--motion-x-fast"),
+  fast: cssTime("--motion-fast"),
+  default: cssTime("--motion-default"),
+  slow: cssTime("--motion-slow"),
+  xSlow: cssTime("--motion-x-slow"),
+};
+
 // Defaults
 export function initGsapDefaults() {
   gsap.defaults({
-    duration: cssTime("--motion-slow"),
+    duration: DURATIONS.slow,
     ease: "power2.out",
   });
 }

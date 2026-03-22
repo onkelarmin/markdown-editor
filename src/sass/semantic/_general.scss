@@ -1,10 +1,18 @@
 body {
   min-height: 100svh;
-  font: var(--font-5);
-  letter-spacing: var(--ls-md);
+  font: var(--font-8);
   color: var(--fg-text-base);
   background-color: var(--bg-canvas-default);
-  padding-block-end: var(--pad-page-block-end);
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
 }
 
 :where(
@@ -17,13 +25,19 @@ body {
   [tabindex]:not([tabindex="-1"]),
   [contenteditable="true"]
 ) {
+  border-radius: var(--br-default-focus);
+  outline: var(--border-none);
+  outline-offset: calc(var(--offset-default-focus) * -1);
+  transition:
+    outline-color var(--trans-fast-in),
+    outline-offset var(--trans-fast-out-sensitive);
+
   &:focus {
-    outline: 0px solid transparent;
+    outline: var(--border-none);
   }
   &:focus-visible {
     outline: var(--border-default-focus);
     outline-offset: var(--offset-default-focus);
-    border-radius: var(--br-default-focus);
   }
 }
 

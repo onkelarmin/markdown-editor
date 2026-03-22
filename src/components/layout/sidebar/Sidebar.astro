@@ -1,5 +1,100 @@
 ---
+// Component imports
+import Button from "@/components/ui/Button.astro";
+import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
 
+// Asset imports
+import DocumentSvg from "@assets/icon-document.svg";
 ---
 
-<aside id="sidebar">Side</aside>
+<aside id="sidebar">
+  <div class="layout">
+    <h2>My documents</h2>
+
+    <!-- Add new document -->
+    <Button text="+ New Document" />
+
+    <!-- Document list -->
+    <ul class="document-list">
+      <li class="document-list-item">
+        <a href="#" class="document-list-link">
+          <DocumentSvg class="document-list-link-icon" aria-hidden="true" />
+          <p class="document-list-link-time">01 April 2022</p>
+          <p class="document-list-link-name">untitled-document.md</p>
+        </a>
+      </li>
+      <li class="document-list-item">
+        <a href="#" class="document-list-link">
+          <DocumentSvg class="document-list-link-icon" aria-hidden="true" />
+          <p class="document-list-link-time">01 April 2022</p>
+          <p class="document-list-link-name">welcome.md</p>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Theme switch -->
+    <ThemeSwitch />
+  </div>
+</aside>
+
+<style lang="scss">
+  #sidebar {
+    background-color: var(--bg-container-sidebar);
+    padding-inline: var(--pad-cont-sidebar-inline);
+    padding-block: var(--pad-cont-sidebar-block);
+  }
+
+  .layout {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+  }
+
+  h2 {
+    font: var(--font-9);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-9);
+    color: var(--fg-text-muted);
+    margin-block-end: var(--space-cont-xl);
+  }
+
+  .document-list {
+    display: grid;
+    align-content: start;
+    gap: var(--space-cont-lg);
+    margin-block-start: var(--space-cont-lg);
+    list-style: none;
+
+    &-link {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      column-gap: var(--space-cont-sm);
+      text-decoration: none;
+
+      @media (hover: hover) {
+        &:hover {
+          .document-list-link-name {
+            color: var(--fg-text-highlight);
+          }
+        }
+      }
+
+      &-icon {
+        width: var(--size-svg-document);
+        grid-row: span 2;
+      }
+
+      &-time {
+        font: var(--font-11);
+        color: var(--fg-text-muted);
+      }
+
+      &-name {
+        font: var(--font-6);
+        color: var(--fg-text-neutral);
+        transition: color var(--trans-fast-out);
+      }
+    }
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+// Asset imports
+import SunSvg from "@assets/icon-sun.svg";
+import MoonSvg from "@assets/icon-moon.svg";
+---
+
+<label class="theme-switch" aria-label="Dark mode">
+  <SunSvg class="sun-svg" aria-hidden="true" />
+
+  <span class="track" aria-hidden="true"></span>
+  <input type="checkbox" role="switch" class="visually-hidden" />
+
+  <MoonSvg class="moon-svg" aria-hidden="true" />
+</label>
+
+<style lang="scss">
+  label {
+    display: flex;
+    gap: var(--theme-switch-gap);
+    color: var(--theme-switch-off-color);
+    transition: color var(--trans-default);
+    padding-inline-start: var(--size-16px-24px-24px);
+    > * {
+      cursor: pointer;
+    }
+
+    // Focus
+    &:has(:focus-visible) .track {
+      outline: var(--border-default-focus);
+      outline-offset: var(--offset-default-focus);
+    }
+
+    .track {
+      position: relative;
+      display: inline-grid;
+      align-items: center;
+      width: var(--theme-switch-track-width);
+      height: var(--theme-switch-track-height);
+      background-color: var(--theme-switch-off-color);
+      border-radius: var(--theme-switch-border-radius);
+      transition:
+        background-color var(--trans-fast-out),
+        outline-color var(--trans-fast-in),
+        outline-offset var(--trans-fast-out-sensitive);
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: var(--theme-switch-track-hover-color);
+        }
+      }
+
+      //   Thumb
+      &::before {
+        content: "";
+        position: absolute;
+        left: var(--theme-switch-thumb-inset);
+        width: var(--theme-switch-thumb-size);
+        aspect-ratio: 1;
+        border-radius: var(--br-round);
+        background-color: var(--theme-switch-thumb-color);
+        transition: transform var(--trans-fast-out-sensitive);
+      }
+    }
+
+    .sun-svg {
+      width: var(--size-svg-sun);
+      color: var(--theme-switch-on-color);
+      transition: color var(--trans-fast-out);
+    }
+    .moon-svg {
+      width: var(--size-svg-moon);
+      color: var(--theme-switch-off-color);
+      transition: color var(--trans-fast-out);
+    }
+
+    // Checked state
+    &:has(:checked) {
+      .track {
+        &::before {
+          transform: translateX(
+            calc(
+              var(--theme-switch-track-width) - var(--theme-switch-thumb-size) -
+                2 * var(--theme-switch-thumb-inset)
+            )
+          );
+        }
+      }
+
+      .sun-svg {
+        color: var(--theme-switch-off-color);
+      }
+      .moon-svg {
+        color: var(--theme-switch-on-color);
+      }
+    }
+  }
+</style>

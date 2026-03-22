@@ -16,10 +16,15 @@
     }
   }
 
+  // Theme-switch
+  @each $property, $value in $theme-switch-appearance {
+    --theme-switch-#{$property}: #{$value};
+  }
+
   // Nav-toggle
-  @if meta.variable-exists("nav-toggle-appearance") {
-    @each $property, $value in $nav-toggle-appearance {
-      --nav-toggle-#{$property}: #{$value};
+  @if meta.variable-exists("sidebar-toggle-appearance") {
+    @each $property, $value in $sidebar-toggle-appearance {
+      --sidebar-toggle-#{$property}: #{$value};
     }
   }
 }

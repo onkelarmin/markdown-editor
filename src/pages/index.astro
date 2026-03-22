@@ -5,6 +5,11 @@ import { sitePages } from "@/data/siteData";
 // Layout import
 import MainLayout from "@layouts/MainLayout.astro";
 
+// Component imports
+import Main from "@/components/layout/main/Main.astro";
+import Sidebar from "@/components/layout/sidebar/Sidebar.astro";
+import SkipNavLink from "@/components/layout/SkipNavLink.astro";
+
 const page = sitePages.home;
 ---
 
@@ -12,4 +17,27 @@ const page = sitePages.home;
   title={page.title}
   description={page.description}
   ogImage={page.ogImage}
-/>
+>
+  <SkipNavLink href="#sidebar" name="documents" />
+  <h1 class="visually-hidden">Markdown Editor</h1>
+
+  <div id="app-layout">
+    <Sidebar />
+    <Main />
+  </div>
+</MainLayout>
+
+<style lang="scss">
+  #app-layout {
+    height: 100dvh;
+    display: grid;
+    grid-template-columns: var(--size-misc-sidebar-width) 100%;
+    overflow: clip;
+    transform: translateX(calc(var(--size-misc-sidebar-width) * -1));
+    transition: transform var(--trans-default-out-sensitive);
+
+    &[data-open="true"] {
+      transform: translateX(0);
+    }
+  }
+</style>

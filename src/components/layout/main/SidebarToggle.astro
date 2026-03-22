@@ -1,0 +1,83 @@
+---
+
+---
+
+<button
+  id="sidebar-toggle"
+  aria-label="Open and Close Sidebar"
+  aria-expanded="false"
+  aria-controls="sidebar"
+>
+  <span class="line line-1"></span>
+  <span class="line line-2"></span>
+  <span class="line line-3"></span>
+</button>
+
+<style lang="scss">
+  button {
+    width: var(--sidebar-toggle-width);
+    height: var(--sidebar-toggle-height);
+    display: grid;
+    place-content: center;
+    gap: var(--sidebar-toggle-line-gap);
+    position: relative;
+    z-index: 1;
+    background-color: var(--sidebar-toggle-bg-color-idle);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--trans-fast-out);
+
+    .line {
+      width: var(--sidebar-toggle-line-width);
+      height: var(--sidebar-toggle-line-height);
+      background-color: var(--sidebar-toggle-fg-color-idle);
+      transition:
+        transform var(--trans-fast-in-out-sensitive),
+        opacity var(--trans-x-fast-in-out-sensitive)
+          var(--delay-x-fast-sensitive);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--sidebar-toggle-bg-color-active);
+      }
+    }
+
+    &:focus {
+      outline: 0px solid transparent;
+    }
+
+    &:focus-visible {
+      background-color: var(--sidebar-toggle-bg-color-active);
+    }
+
+    &[aria-expanded="true"] {
+      .line-1 {
+        transform: translateY(
+            calc(
+              var(--sidebar-toggle-line-gap) + var(--sidebar-toggle-line-height)
+            )
+          )
+          rotate(-225deg);
+      }
+
+      .line-2 {
+        opacity: 0;
+        transition: opacity var(--trans-x-fast-in);
+      }
+
+      .line-3 {
+        transform: translateY(
+            calc(
+              (
+                  var(--sidebar-toggle-line-gap) +
+                    var(--sidebar-toggle-line-height)
+                ) *
+                -1
+            )
+          )
+          rotate(225deg);
+      }
+    }
+  }
+</style>

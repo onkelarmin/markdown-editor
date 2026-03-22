@@ -132,15 +132,24 @@
       }
     }
   }
-  // Nav-toggle
-  @if meta.variable-exists("nav-toggle-colors") {
-    @each $state, $property-map in $nav-toggle-colors {
+  // Theme switch
+  @each $property, $mode-map in $theme-switch-colors {
+    @each $mode, $value in $mode-map {
+      @if $mode == $theme {
+        --theme-switch-#{$property}-color: var(--clr-#{$value});
+      }
+    }
+  }
+
+  // Sidebar-toggle
+  @if meta.variable-exists("sidebar-toggle-colors") {
+    @each $state, $property-map in $sidebar-toggle-colors {
       @each $property, $mode-map in $property-map {
         @each $mode, $value in $mode-map {
           @if $mode == $theme {
             @if meta.type-of($value) == list {
               // account for opacity
-              --nav-toggle-#{$property}-color-#{$state}: oklch(
+              --sidebar-toggle-#{$property}-color-#{$state}: oklch(
                 from var(--clr-#{list.nth($value, 1)})
                   l
                   c
@@ -148,7 +157,9 @@
                   #{list.nth($value, 2)}
               );
             } @else {
-              --nav-toggle-#{$property}-color-#{$state}: var(--clr-#{$value});
+              --sidebar-toggle-#{$property}-color-#{$state}: var(
+                --clr-#{$value}
+              );
             }
           }
         }

@@ -46,19 +46,29 @@
 // View transition theme switch
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root) {
-    animation-delay: var(--motion-slow);
+    animation: fade-out var(--motion-slow) var(--ease-in);
   }
 
   ::view-transition-new(root) {
-    animation: circle-in var(--motion-slow);
+    animation: fade-in var(--motion-slow) var(--ease-out);
   }
 
-  @keyframes circle-in {
+  @keyframes fade-in {
     from {
-      clip-path: circle(0% at 50% 0%);
+      opacity: 0;
+      filter: blur(16px);
     }
     to {
-      clip-path: circle(130% at 50% 0%);
+      opacity: 1;
+    }
+  }
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      filter: blur(16px);
     }
   }
 }

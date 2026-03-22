@@ -19,39 +19,19 @@ $button-colors: (
         dark: "primary-400",
       ),
     ),
-    // focus: (
-    //   outline: (
-    //     light: "neutral-000",
-    //   ),
-    //   offset: (
-    //     light: "neutral-900",
-    //   ),
-     // ),
   ),
 );
 
 $button-appearance: (
-  padding-inline-start: (
-    default: rem(16px),
-  ),
-  padding-inline-end: (
+  padding-inline: (
     default: rem(16px),
   ),
   padding-block: (
     default: rem(10px),
   ),
-  border-width: (
-    default: 0px,
-  ),
-  // outline-width: (
-  //   default: rem(2px),
-  // ),
-  // offset-width: (
-  //   default: rem(3px),
-  // ),
   border-radius: (
-      default: rem(4px),
-    ),
+    default: rem(4px),
+  ),
   svg-width: (
     default: rem(16px),
   ),
@@ -75,38 +55,63 @@ $skip-nav-link-colors: (
 $skip-nav-link-appearance: (
   padding-inline: rem(32px),
   padding-block: rem(16px),
-  border-width: rem(2px),
   border-radius: rem(16px),
 );
 
-// Nav-toggle
-$nav-toggle-colors: (
+// Theme-switch
+$theme-switch-colors: (
+  off: (
+    light: "slate-500",
+    dark: "slate-500",
+  ),
+  on: (
+    light: "primary-600",
+    dark: "primary-600",
+  ),
+  track-hover: (
+    light: "primary-400",
+    dark: "primary-400",
+  ),
+  thumb: (
+    light: "neutral-000",
+    dark: "neutral-000",
+  ),
+);
+
+$theme-switch-appearance: (
+  track-width: rem(48px),
+  track-height: rem(24px),
+  thumb-size: rem(12px),
+  thumb-inset: rem(6px),
+  border-radius: 1000vw,
+  gap: rem(10px),
+);
+
+// Sidebar-toggle
+$sidebar-toggle-colors: (
   idle: (
     bg: (
-      light: "neutral-500",
+      light: "slate-700",
+      dark: "slate-700",
     ),
     fg: (
-      light: "neutral-900",
-    ),
-    border: (
-      light: "transparent",
+      light: "neutral-000",
+      dark: "neutral-000",
     ),
   ),
-  focus: (
-    outline: (
-      light: "neutral-900",
+  active: (
+    bg: (
+      light: "primary-600",
+      dark: "primary-600",
     ),
   ),
 );
 
-$nav-toggle-appearance: (
-  width: rem(40px),
-  height: rem(40px),
+$sidebar-toggle-appearance: (
+  width: bp(56px, 72px, 72px),
+  height: bp(56px, 72px, 72px),
   border-width: rem(0px),
-  border-radius: rem(4px),
-  line-width: rem(18px),
+  line-width: bp(23px, 30px, 30px),
   line-height: rem(2px),
-  line-gap: rem(5px),
-  outline-width: rem(2px),
-  offset-width: rem(2px),
+  line-gap: bp(5px, 6px, 6px),
 );
