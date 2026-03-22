@@ -3,6 +3,7 @@ body {
   font: var(--font-8);
   color: var(--fg-text-base);
   background-color: var(--bg-canvas-default);
+  overflow: clip;
   text-wrap: pretty;
 }
 

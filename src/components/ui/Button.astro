@@ -14,15 +14,18 @@ const { type = "button", text, icon, classes, ...rest } = Astro.props;
 const Icon = icon;
 ---
 
-<button class:list={["btn", classes]} {type} {...rest}>
-  {text && <span class="text">{text}</span>}
+<button class:list={["btn", { hasIcon: icon }, classes]} {type} {...rest}>
   {Icon && <Icon class="icon" aria-hidden="true" />}
+  {text && <span class="text">{text}</span>}
 </button>
 
 <style lang="scss">
+  @use "../../sass/miscellaneous/" as *;
+
   .btn {
     width: 100%;
     display: flex;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: center;
     gap: var(--btn-gap-default);
@@ -50,9 +53,19 @@ const Icon = icon;
       }
     }
 
-    .icon {
-      width: var(--btn-icon-size-default);
-      color: inherit;
+    &.hasIcon {
+      .text {
+        display: none;
+
+        @include mq(medium) {
+          display: inline;
+        }
+      }
+
+      .icon {
+        width: var(--btn-svg-width-default);
+        color: inherit;
+      }
     }
   }
 </style>

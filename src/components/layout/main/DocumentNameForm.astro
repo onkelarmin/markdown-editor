@@ -1,0 +1,73 @@
+---
+// Asset imports
+import DocumentSvg from "@assets/icon-document.svg";
+---
+
+<form id="document-name-form" novalidate>
+  <DocumentSvg class="document-icon" aria-hidden="true" />
+  <label>
+    Document Name
+    <input
+      type="text"
+      name="document-name"
+      id="document-name-input"
+      autocomplete="off"
+      inputmode="text"
+      maxlength="100"
+      required
+      pattern="^[a-zA-Z0-9_-]+$"
+    />
+  </label>
+</form>
+
+<style lang="scss">
+  #document-name-form {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: var(--space-cont-sm);
+    padding-inline-start: var(--space-cont-lg);
+  }
+
+  .document-icon {
+    width: var(--size-svg-document);
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-2);
+    font: var(--font-11);
+    color: var(--fg-text-muted);
+    text-wrap: nowrap;
+
+    input {
+      width: min(100%, 25rem);
+      font: var(--font-6);
+      color: var(--fg-text-neutral);
+      caret-color: var(--fg-text-highlight);
+      background-color: transparent;
+      border-radius: 0px;
+      border: none;
+      border-bottom-width: var(--bw-md);
+      border-bottom-style: solid;
+      border-bottom-color: transparent;
+      transition: border-color var(--trans-fast-out);
+
+      @media (hover: hover) {
+        &:hover {
+          border-bottom-color: var(--bc-document-name-form-hover);
+        }
+      }
+
+      &:focus {
+        outline: 0px solid transparent;
+      }
+
+      &:focus-visible {
+        border-bottom-color: var(--bc-document-name-form-focus);
+      }
+    }
+  }
+</style>

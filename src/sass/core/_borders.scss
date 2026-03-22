@@ -23,7 +23,11 @@ $border-colors: (
     light: "neutral-200",
     dark: "slate-500",
   ),
-  document-name: (
+  document-name-form-hover: (
+    light: "slate-400",
+    dark: "slate-400",
+  ),
+  document-name-form-focus: (
     light: "neutral-000",
     dark: "neutral-000",
   ),
@@ -49,10 +53,5 @@ $borders: (
     width: "md",
     style: "solid",
     color: "editor",
-  ),
-  document-name: (
-    width: "md",
-    style: "solid",
-    color: "document-name",
   ),
 );

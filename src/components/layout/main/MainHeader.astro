@@ -1,7 +1,101 @@
 ---
+// Component imports
+import DocumentNameForm from "./DocumentNameForm.astro";
 import SidebarToggle from "./SidebarToggle.astro";
+import Button from "@/components/ui/Button.astro";
+
+// Asset imports
+import Logo from "@assets/logo.svg";
+import DeleteSvg from "@assets/icon-delete.svg";
+import SaveSvg from "@assets/icon-save.svg";
 ---
 
-<header>
-  <SidebarToggle />
+<header class="main-header">
+  <div class="layout">
+    <SidebarToggle />
+    <div class="left">
+      <div class="logo">
+        <Logo aria-hidden="true" />
+      </div>
+      <DocumentNameForm />
+    </div>
+    <div class="right">
+      <button type="button" id="delete-button">
+        <span class="visually-hidden">Delete document</span>
+        <DeleteSvg class="delete-icon" aria-hidden="true" />
+      </button>
+      <Button text="Save Changes" icon={SaveSvg} aria-label="Save changes" />
+    </div>
+  </div>
 </header>
+
+<style lang="scss">
+  @use "../../../sass/miscellaneous/" as *;
+
+  .main-header {
+    background-color: var(--bg-container-main-header);
+
+    .layout {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      justify-items: start;
+      align-items: center;
+      padding-inline-start: var(--pad-cont-primary-header-inline-start);
+      padding-inline-end: var(--pad-cont-primary-header-inline-end);
+    }
+  }
+
+  .left {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    .logo {
+      display: none;
+      border-right: var(--border-header);
+      padding-inline: var(--space-cont-lg);
+
+      svg {
+        width: var(--size-logo-default);
+      }
+
+      @include mq(medium) {
+        display: block;
+      }
+    }
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-cont-lg);
+
+    #delete-button {
+      display: grid;
+      place-items: center;
+      background-color: transparent;
+      color: var(--fg-text-muted);
+      border: none;
+      cursor: pointer;
+      transition: color var(--trans-fast-out);
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--fg-text-highlight);
+        }
+      }
+
+      &:focus {
+        outline: 0px solid transparent;
+      }
+
+      &:focus-visible {
+        color: var(--fg-text-highlight);
+      }
+
+      .delete-icon {
+        width: var(--size-svg-delete);
+      }
+    }
+  }
+</style>
