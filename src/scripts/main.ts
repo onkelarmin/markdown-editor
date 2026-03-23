@@ -1,11 +1,11 @@
 import { initAnimations } from "@shared/animations";
-import { initScroll } from "@shared/scroll";
 import { initTheme } from "@shared/theme";
 import { initNav } from "@/scripts/shared/sidebar";
+import { initMarkdown } from "./markdown";
 
 document.addEventListener("DOMContentLoaded", () => {
+  initMarkdown();
   initAnimations();
-  initScroll();
   initTheme();
   initNav();
 });

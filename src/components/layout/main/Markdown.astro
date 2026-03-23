@@ -1,0 +1,50 @@
+---
+
+---
+
+<section class="markdown" aria-labelledby="markdown-title">
+  <!-- Header -->
+  <header class="markdown-header">
+    <h2 id="markdown-title">Markdown</h2>
+  </header>
+  <label for="markdown-body" class="visually-hidden">Markdown content</label>
+
+  <!-- Body -->
+  <textarea class="markdown-body" id="markdown-body"> </textarea>
+</section>
+
+<style lang="scss">
+  .markdown {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border-right: var(--border-editor);
+    overflow: clip;
+
+    &-header {
+      font: var(--font-9);
+      letter-spacing: var(--ls-9);
+      color: var(--fg-text-base);
+      text-transform: uppercase;
+      background-color: var(--bg-container-editor-header);
+      padding-inline: var(--pad-cont-editor-header-inline);
+      padding-block: var(--pad-cont-editor-header-block);
+    }
+
+    &-body {
+      resize: none;
+      border: none;
+      font: var(--font-10);
+      color: var(--fg-text-markdown);
+      caret-color: var(--fg-text-highlight);
+      background-color: var(--bg-canvas-default);
+      padding-inline: var(--pad-cont-markdown-inline);
+      padding-block: var(--pad-cont-markdown-block);
+      overflow: auto;
+
+      &:focus {
+        outline: 0px solid transparent;
+      }
+    }
+  }
+</style>

@@ -12,7 +12,7 @@
       "@layouts/*": ["./src/layouts/*"],
       "@pages/*": ["./src/pages/*"],
       "@sass/*": ["./src/sass/*"],
-      "@features/*": ["./src/scripts/features/*"],
+      "@features/*": ["src/scripts/markdown/*"],
       "@shared/*": ["./src/scripts/shared/*"],
     }
   }

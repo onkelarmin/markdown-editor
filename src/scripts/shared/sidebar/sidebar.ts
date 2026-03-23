@@ -13,13 +13,16 @@ export function initSidebar() {
   const saveChangesButton = document.querySelector<HTMLButtonElement>(
     "#save-changes-button",
   );
+  const previewButton =
+    document.querySelector<HTMLButtonElement>("#preview-button");
 
   if (
     !btnToggle ||
     !appLayout ||
     !sidebar ||
     !deleteButton ||
-    !saveChangesButton
+    !saveChangesButton ||
+    !previewButton
   )
     return;
 
@@ -34,6 +37,7 @@ export function initSidebar() {
     sidebar.removeAttribute("inert");
     deleteButton.tabIndex = -1;
     saveChangesButton.tabIndex = -1;
+    previewButton.tabIndex = -1;
     document.addEventListener("keydown", onEscape);
   };
 
@@ -43,6 +47,7 @@ export function initSidebar() {
     sidebar.setAttribute("inert", "");
     deleteButton.tabIndex = 0;
     saveChangesButton.tabIndex = 0;
+    previewButton.tabIndex = 0;
     document.removeEventListener("keydown", onEscape);
 
     setTimeout(() => {

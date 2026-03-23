@@ -39,9 +39,11 @@ import DocumentSvg from "@assets/icon-document.svg";
 
 <style lang="scss">
   #sidebar {
+    min-height: 0;
     background-color: var(--bg-container-sidebar);
     padding-inline: var(--pad-cont-sidebar-inline);
     padding-block: var(--pad-cont-sidebar-block);
+    overflow: clip;
   }
 
   .layout {
