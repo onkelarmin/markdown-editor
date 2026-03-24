@@ -17,3 +17,13 @@ export function customProp(varName: string) {
 
   return value;
 }
+
+export function formatTime(timestamp: number) {
+  const formatter = new Intl.DateTimeFormat(undefined, {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
+  return formatter.format(timestamp);
+}

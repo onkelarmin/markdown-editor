@@ -1,77 +1,83 @@
 ---
-// Asset imports
-import ShowSvg from "@assets/icon-show-preview.svg";
-import HideSvg from "@assets/icon-hide-preview.svg";
+
 ---
 
 <section id="preview" class="preview" aria-labelledby="preview-title">
   <!-- Header -->
   <header class="preview-header">
     <h2 id="preview-title">Preview</h2>
-    <button
-      type="button"
-      id="preview-button"
-      class="preview-button"
-      aria-pressed="false"
-      aria-controls="preview"
-    >
-      <span class="visually-hidden">Show preview only</span>
-      <ShowSvg class="show-icon" aria-hidden="true" />
-      <HideSvg class="hide-icon" aria-hidden="true" />
-    </button>
   </header>
 
   <!-- Body -->
   <div class="preview-body">
-    <h1>Welcome to Markdown</h1>
-    <p>
-      Markdown is a lightweight markup language that you can use to add
-      formatting elements to plaintext text documents.
-    </p>
-    <h2>How to use this?</h2>
-    <ol>
-      <li>Write markdown in the markdown editor window</li>
-      <li>See the rendered markdown in the preview window</li>
-    </ol>
-    <h3>Features</h3>
-    <ul>
-      <li>
-        Create headings, paragraphs, links, blockquotes, inline-code, code
-        blocks, and lists
-      </li>
-      <li>Name and save the document to access again later</li>
-      <li>Choose between Light or Dark mode depending on your preference</li>
-    </ul>
-    <blockquote>
-      This is an example of a blockquote. If you would like to learn more about
-      markdown syntax, you can visit this markdown cheatsheet
-    </blockquote>
-    <h4>Headings</h4>
-    <p>
-      To create a heading, add the hash sign (#) before the heading. The number
-      of number signs you use should correspond to the heading level. You'll see
-      in this guide that we've used all six heading levels (not necessarily in
-      the correct way you should use headings!) to illustrate how they should
-      look.
-    </p>
-    <h5>Lists</h5>
-    <p>You can see examples of ordered and unordered lists above.</p>
-    <h6>Code Blocks</h6>
-    <p>
-      This markdown editor allows for inline-code snippets, like this:
-      <code> &lt;p&gt;I'm inline&lt;/p&gt;</code>. It also allows for larger
-      code blocks like this:
-    </p>
-    <pre><code>&lt;main&gt;
+    <div id="preview-content" class="preview-content">
+      <h1>Welcome to Markdown</h1>
+      <p>
+        Markdown is a lightweight markup language that you can use to add
+        formatting elements to plaintext text documents.
+      </p>
+      <h2>How to use this?</h2>
+      <ol>
+        <li>Write markdown in the markdown editor window</li>
+        <li>See the rendered markdown in the preview window</li>
+      </ol>
+      <h3>Features</h3>
+      <ul>
+        <li>
+          Create headings, paragraphs, links, blockquotes, inline-code, code
+          blocks, and lists
+        </li>
+        <li>Name and save the document to access again later</li>
+        <li>Choose between Light or Dark mode depending on your preference</li>
+      </ul>
+      <blockquote>
+        This is an example of a blockquote. If you would like to learn more
+        about markdown syntax, you can visit this markdown cheatsheet
+      </blockquote>
+      <h4>Headings</h4>
+      <p>
+        To create a heading, add the hash sign (#) before the heading. The
+        number of number signs you use should correspond to the heading level.
+        You'll see in this guide that we've used all six heading levels (not
+        necessarily in the correct way you should use headings!) to illustrate
+        how they should look.
+      </p>
+      <h5>Lists</h5>
+      <p>You can see examples of ordered and unordered lists above.</p>
+      <h6>Code Blocks</h6>
+      <p>
+        This markdown editor allows for inline-code snippets, like this:
+        <code> &lt;p&gt;I'm inline&lt;/p&gt;</code>. It also allows for larger
+        code blocks like this:
+      </p>
+      <pre><code>&lt;main&gt;
     &lt;h1&gt;This is a larger code block&lt;/h1&gt;
 &lt;/main&gt;</code></pre>
+    </div>
   </div>
 </section>
 
 <style lang="scss">
+  @use "../../../sass/miscellaneous/" as *;
+
+  :global(.editor[data-view="markdown"]) .preview {
+    display: none;
+
+    @include mq(medium) {
+      display: grid;
+    }
+  }
+
+  :global(.editor[data-view="preview"]) .preview {
+    display: grid;
+
+    &-content {
+      margin-inline: auto;
+    }
+  }
+
   .preview {
     min-height: 0;
-    display: grid;
     grid-template-rows: auto 1fr;
     overflow: hidden;
 
@@ -88,58 +94,14 @@ import HideSvg from "@assets/icon-hide-preview.svg";
       padding-block: var(--pad-cont-editor-header-block);
     }
 
-    &-button {
-      display: grid;
-      place-items: center;
-      color: var(--fg-text-base);
-      cursor: pointer;
-      background-color: transparent;
-      border: none;
-      transition: color var(--trans-fast-out);
-
-      @media (hover: hover) {
-        &:hover {
-          color: var(--fg-text-highlight);
-        }
-      }
-
-      &:focus {
-        outline: 0px solid transparent;
-      }
-
-      &:focus-visible {
-        color: var(--fg-text-highlight);
-      }
-
-      &[aria-pressed="false"] {
-        .show-icon {
-          display: block;
-        }
-        .hide-icon {
-          display: none;
-        }
-      }
-      &[aria-pressed="true"] {
-        .show-icon {
-          display: none;
-        }
-        .hide-icon {
-          display: block;
-        }
-      }
-
-      .show-icon {
-        width: var(--size-svg-show-preview);
-      }
-      .hide-icon {
-        width: var(--size-svg-hide-preview);
-      }
-    }
-
     &-body {
       padding-inline: var(--pad-cont-preview-inline);
       padding-block: var(--pad-cont-preview-block);
       overflow: auto;
+    }
+
+    &-content {
+      max-width: 45rem;
 
       > * + * {
         margin-block-start: var(--space-cont-md);

@@ -1,5 +1,4 @@
 // Imports
-import { customProp, cssTime } from "@shared/utils/helper";
 import { DURATIONS } from "../animations/global";
 
 export function initSidebar() {
@@ -13,8 +12,7 @@ export function initSidebar() {
   const saveChangesButton = document.querySelector<HTMLButtonElement>(
     "#save-changes-button",
   );
-  const previewButton =
-    document.querySelector<HTMLButtonElement>("#preview-button");
+  const viewToggle = document.querySelector<HTMLButtonElement>("#view-toggle");
 
   if (
     !btnToggle ||
@@ -22,7 +20,7 @@ export function initSidebar() {
     !sidebar ||
     !deleteButton ||
     !saveChangesButton ||
-    !previewButton
+    !viewToggle
   )
     return;
 
@@ -37,7 +35,7 @@ export function initSidebar() {
     sidebar.removeAttribute("inert");
     deleteButton.tabIndex = -1;
     saveChangesButton.tabIndex = -1;
-    previewButton.tabIndex = -1;
+    viewToggle.tabIndex = -1;
     document.addEventListener("keydown", onEscape);
   };
 
@@ -47,7 +45,7 @@ export function initSidebar() {
     sidebar.setAttribute("inert", "");
     deleteButton.tabIndex = 0;
     saveChangesButton.tabIndex = 0;
-    previewButton.tabIndex = 0;
+    viewToggle.tabIndex = 0;
     document.removeEventListener("keydown", onEscape);
 
     setTimeout(() => {

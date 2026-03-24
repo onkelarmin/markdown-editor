@@ -3,17 +3,34 @@
 import MainHeader from "./MainHeader.astro";
 import Markdown from "./Markdown.astro";
 import Preview from "./Preview.astro";
+
+// Asset imports
+import ShowSvg from "@assets/icon-show-preview.svg";
+import HideSvg from "@assets/icon-hide-preview.svg";
 ---
 
 <main id="main">
   <MainHeader />
-  <div class="editor">
+  <div class="editor" data-view="markdown">
     <Markdown />
     <Preview />
+    <button
+      type="button"
+      id="view-toggle"
+      class="view-toggle"
+      aria-pressed="false"
+      aria-controls="preview"
+    >
+      <span class="visually-hidden">Show preview only</span>
+      <ShowSvg class="show-icon" aria-hidden="true" />
+      <HideSvg class="hide-icon" aria-hidden="true" />
+    </button>
   </div>
 </main>
 
 <style lang="scss">
+  @use "../../../sass/miscellaneous/" as *;
+
   #main {
     min-height: 0;
     display: grid;
@@ -21,7 +38,69 @@ import Preview from "./Preview.astro";
   }
 
   .editor {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
+
+    @include mq(medium) {
+      &[data-view="markdown"] {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      }
+      &[data-view="preview"] {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .view-toggle {
+      position: absolute;
+      top: var(--size-20);
+      right: var(--pad-cont-editor-header-inline);
+      display: grid;
+      place-items: center;
+      color: var(--fg-text-base);
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+      transform: translateY(-50%);
+      transition: color var(--trans-fast-out);
+
+      @media (hover: hover) {
+        &:hover {
+          color: var(--fg-text-highlight);
+        }
+      }
+
+      &:focus {
+        outline: 0px solid transparent;
+      }
+
+      &:focus-visible {
+        color: var(--fg-text-highlight);
+      }
+
+      &[aria-pressed="false"] {
+        .show-icon {
+          display: block;
+        }
+        .hide-icon {
+          display: none;
+        }
+      }
+      &[aria-pressed="true"] {
+        .show-icon {
+          display: none;
+        }
+        .hide-icon {
+          display: block;
+        }
+      }
+
+      .show-icon {
+        width: var(--size-svg-show-preview);
+      }
+      .hide-icon {
+        width: var(--size-svg-hide-preview);
+      }
+    }
   }
 </style>
