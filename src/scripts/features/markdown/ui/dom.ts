@@ -3,6 +3,7 @@ export type DOM = {
   documentList: HTMLUListElement;
   documentListItemTemplate: HTMLTemplateElement;
   documentNameInput: HTMLInputElement;
+  documentNameError: HTMLParagraphElement;
   deleteButton: HTMLButtonElement;
   editor: HTMLElement;
   markdownContent: HTMLTextAreaElement;
@@ -23,6 +24,9 @@ export function getDOM() {
   const documentNameInput = document.querySelector<HTMLInputElement>(
     "#document-name-input",
   );
+  const documentNameError = document.querySelector<HTMLParagraphElement>(
+    "#document-name-error",
+  );
   const deleteButton =
     document.querySelector<HTMLButtonElement>("#delete-button");
   const editor = document.querySelector<HTMLElement>(".editor");
@@ -37,6 +41,7 @@ export function getDOM() {
     !documentList ||
     !documentListItemTemplate ||
     !documentNameInput ||
+    !documentNameError ||
     !deleteButton ||
     !editor ||
     !markdownContent ||
@@ -51,6 +56,7 @@ export function getDOM() {
     documentList,
     documentListItemTemplate,
     documentNameInput,
+    documentNameError,
     deleteButton,
     editor,
     markdownContent,

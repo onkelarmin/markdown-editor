@@ -11,7 +11,22 @@ export function render(state: State, dom: DOM) {
 
   if (!activeDocument) return;
 
-  dom.documentNameInput.value = activeDocument.name;
+  // Document name input
+  dom.documentNameInput.value = state.nameDraft;
+  if (state.nameError) {
+    dom.documentNameError.textContent = state.nameError;
+    dom.documentNameInput.setAttribute("aria-invalid", "true");
+    dom.documentNameInput.setAttribute(
+      "aria-describedby",
+      dom.documentNameError.id,
+    );
+  } else {
+    dom.documentNameError.textContent = "";
+    dom.documentNameInput.removeAttribute("aria-invalid");
+    dom.documentNameInput.removeAttribute("aria-describedby");
+  }
+
+  // Content
   dom.markdownContent.value = activeDocument.content;
 
   // Sidebar document list
@@ -36,6 +51,9 @@ export function render(state: State, dom: DOM) {
     button.dataset.id = document.id;
     time.textContent = formatTime(document.modifiedAt);
     name.textContent = document.name;
+
+    if (document.id === state.activeDocumentId)
+      button.setAttribute("aria-current", "true");
 
     dom.documentList.appendChild(clone);
 

@@ -1,4 +1,4 @@
-import { initialState } from "./initialState";
+import { getInitialState } from "./initialState";
 import { reducer } from "./reducer";
 import type { Action, State, subscribeOptions } from "./types";
 
@@ -12,7 +12,7 @@ export type Store = {
 };
 
 export function createStore(preloadedState?: State) {
-  let state = preloadedState ?? initialState;
+  let state = preloadedState ?? getInitialState();
   const listeners = new Set<(s: State) => void>();
 
   function getState() {

@@ -16,6 +16,9 @@ $color-core-accent: (
     "800": hsl(220 7% 18%),
     "950": hsl(216 8% 12%),
   ),
+  "red": (
+    "500": hsl(0 80% 60%),
+  ),
 );
 
 $color-core-brand: (
@@ -102,6 +105,10 @@ $foreground-colors: (
     highlight: (
       light: "primary-600",
       dark: "primary-600",
+    ),
+    error: (
+      light: "red-500",
+      dark: "red-500",
     ),
     markdown: (
       light: "slate-700",

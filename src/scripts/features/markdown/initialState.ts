@@ -1,7 +1,9 @@
 import type { State } from "./types";
 
-export const initialState: State = {
-  documents: [
+export function getInitialState(): State {
+  const now = Date.now();
+
+  const documents = [
     {
       id: "1",
       name: "untitled-document.md",
@@ -17,43 +19,20 @@ export const initialState: State = {
       createdAt: Date.now(),
       modifiedAt: Date.now(),
     },
-    {
-      id: "3",
-      name: "untitled.md",
-      content: "test 3",
-      createdAt: Date.now(),
-      modifiedAt: Date.now(),
-    },
-    {
-      id: "4",
-      name: "untitled-3.md",
-      content: "test 4",
-      createdAt: Date.now(),
-      modifiedAt: Date.now(),
-    },
-    {
-      id: "5",
-      name: "untitled-2.md",
-      content: "test 5",
-      createdAt: Date.now(),
-      modifiedAt: Date.now(),
-    },
-    {
-      id: "6",
-      name: "untitled-1.md",
-      content: "test 6",
-      createdAt: Date.now(),
-      modifiedAt: Date.now(),
-    },
-    {
-      id: "7",
-      name: "untitled-9.md",
-      content: "test 7",
-      createdAt: Date.now(),
-      modifiedAt: Date.now(),
-    },
-  ],
-  activeDocumentId: "2",
-  view: "markdown",
-  isDeleteModalOpen: false,
-};
+  ];
+
+  const activeDocumentId = "2";
+
+  const activeDocument = documents.find(
+    (document) => document.id === activeDocumentId,
+  );
+
+  return {
+    documents,
+    activeDocumentId,
+    nameDraft: activeDocument?.name ?? "",
+    nameError: null,
+    view: "markdown",
+    isDeleteModalOpen: false,
+  };
+}

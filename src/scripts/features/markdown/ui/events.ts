@@ -1,3 +1,5 @@
+import { normalizeDocumentName } from "../lib/normalizeDocumentName";
+import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
 import type { Store } from "../store";
 import type { DOM } from "./dom";
 
@@ -7,6 +9,54 @@ export function bindEvents(dom: DOM, store: Store) {
     store.dispatch({ type: "document/create" });
   };
   dom.newDocumentButton.addEventListener("click", onNewDocumentClick);
+
+  // Change document name
+  const onDocumentNameInput = (e: Event) => {
+    const input = e.currentTarget;
+
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const { value } = input;
+
+    const result = documentNameSchemaLight.safeParse(value);
+    if (!result.success) {
+      const message = result.error.issues[0]?.message ?? "Invalid value";
+
+      store.dispatch({
+        type: "document/updateNameDraft",
+        payload: { name: value, error: message },
+      });
+    } else {
+      store.dispatch({
+        type: "document/updateNameDraft",
+        payload: { name: value },
+      });
+    }
+  };
+  const onDocumentNameChange = (e: Event) => {
+    const input = e.currentTarget;
+
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const normalized = normalizeDocumentName(input.value);
+
+    const result = documentNameSchemaFull.safeParse(normalized);
+    if (!result.success) {
+      const message = result.error.issues[0]?.message ?? "Invalid value";
+
+      store.dispatch({
+        type: "document/updateNameDraft",
+        payload: { name: normalized, error: message },
+      });
+    } else {
+      store.dispatch({
+        type: "document/updateName",
+        payload: { name: normalized },
+      });
+    }
+  };
+  dom.documentNameInput.addEventListener("input", onDocumentNameInput);
+  dom.documentNameInput.addEventListener("change", onDocumentNameChange);
 
   // Select document
   const onDocumentClick = (e: MouseEvent) => {
@@ -44,6 +94,8 @@ export function bindEvents(dom: DOM, store: Store) {
 
   return () => {
     dom.newDocumentButton.removeEventListener("click", onNewDocumentClick);
+    dom.documentNameInput.removeEventListener("input", onDocumentNameInput);
+    dom.documentNameInput.removeEventListener("change", onDocumentNameChange);
     dom.documentList.removeEventListener("click", onDocumentClick);
     dom.deleteButton.addEventListener("click", onDeleteClick);
     dom.viewToggle.removeEventListener("click", onPreviewClick);

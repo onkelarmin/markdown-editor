@@ -1,5 +1,5 @@
 import type { Action, Document, State } from "./types";
-import { getNewDocumentName } from "./utils";
+import { getNewDocumentName } from "./lib/getNewDocumentName";
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -25,14 +25,42 @@ export function reducer(state: State, action: Action): State {
       };
     }
 
+    // Update document name
+    case "document/updateNameDraft": {
+      return {
+        ...state,
+        nameDraft: action.payload.name,
+        nameError: action.payload.error ? action.payload.error : null,
+      };
+    }
+
+    case "document/updateName": {
+      return {
+        ...state,
+        documents: state.documents.map((document) =>
+          document.id === state.activeDocumentId
+            ? { ...document, name: action.payload.name }
+            : document,
+        ),
+        nameDraft: action.payload.name,
+        nameError: null,
+      };
+    }
+
     // Select document
     case "document/select": {
-      if (
-        !state.documents.some((document) => document.id === action.payload.id)
-      )
-        return state;
+      const id = action.payload.id;
 
-      return { ...state, activeDocumentId: action.payload.id };
+      const selected = state.documents.find((document) => document.id === id);
+
+      if (!selected) return state;
+
+      return {
+        ...state,
+        activeDocumentId: id,
+        nameDraft: selected.name,
+        nameError: null,
+      };
     }
 
     // set View

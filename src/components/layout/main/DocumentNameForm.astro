@@ -13,9 +13,11 @@ import DocumentSvg from "@assets/icon-document.svg";
       id="document-name-input"
       autocomplete="off"
       inputmode="text"
-      maxlength="100"
+      minlength="1"
+      maxlength="50"
       required
     />
+    <p id="document-name-error" class="error"></p>
   </label>
 </form>
 
@@ -34,6 +36,7 @@ import DocumentSvg from "@assets/icon-document.svg";
   }
 
   label {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--size-2);
@@ -67,6 +70,25 @@ import DocumentSvg from "@assets/icon-document.svg";
       &:focus-visible {
         border-bottom-color: var(--bc-document-name-form-focus);
       }
+
+      &[aria-invalid="true"] {
+        border-bottom-color: var(--bc-document-name-form-error);
+
+        + .error {
+          display: block;
+        }
+      }
+    }
+
+    .error {
+      display: none;
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      bottom: 0;
+      font: var(--font-11);
+      color: var(--fg-text-error);
+      transform: translateY(calc(100% + var(--size-2)));
     }
   }
 </style>

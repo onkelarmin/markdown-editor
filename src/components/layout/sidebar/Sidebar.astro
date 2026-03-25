@@ -68,10 +68,13 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
     display: grid;
     align-content: start;
     gap: var(--space-cont-lg);
-    margin-block-start: var(--space-cont-lg);
+    margin-block: var(--space-cont-lg);
     list-style: none;
+    overflow-x: clip;
+    overflow-y: auto;
 
     &-button {
+      width: 100%;
       display: grid;
       grid-template-columns: auto 1fr;
       justify-items: start;
@@ -81,6 +84,10 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
       border: none;
       cursor: pointer;
       text-decoration: none;
+
+      &[aria-current="true"] .document-list-button-name {
+        color: var(--fg-text-highlight);
+      }
 
       @media (hover: hover) {
         &:hover {
@@ -103,6 +110,7 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
       &-name {
         font: var(--font-6);
         color: var(--fg-text-neutral);
+        text-align: start;
         transition: color var(--trans-fast-out);
       }
     }

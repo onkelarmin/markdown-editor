@@ -11,6 +11,8 @@ export type View = "markdown" | "preview";
 export type State = {
   documents: Document[];
   activeDocumentId: string | null;
+  nameDraft: string;
+  nameError: string | null;
   view: View;
   isDeleteModalOpen: boolean;
 };
@@ -21,7 +23,14 @@ export type Action =
     }
   | { type: "document/select"; payload: { id: string } }
   | { type: "document/delete"; payload: { id: string } }
-  | { type: "document/updateName"; payload: { id: string; name: string } }
+  | {
+      type: "document/updateName";
+      payload: { name: string };
+    }
+  | {
+      type: "document/updateNameDraft";
+      payload: { name: string; error?: string };
+    }
   | {
       type: "document/updateContent";
       payload: { id: string; content: string };
