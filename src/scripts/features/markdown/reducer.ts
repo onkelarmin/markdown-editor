@@ -22,6 +22,8 @@ export function reducer(state: State, action: Action): State {
         ...state,
         documents: [...state.documents, document],
         activeDocumentId: document.id,
+        nameDraft: document.name,
+        nameError: null,
       };
     }
 
