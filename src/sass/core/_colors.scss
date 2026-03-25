@@ -66,9 +66,15 @@ $background-colors: (
       light: "neutral-100",
       dark: "slate-800",
     ),
-    dialog: (
+    modal: (
       light: "neutral-000",
       dark: "slate-950",
+    ),
+  ),
+  overlay: (
+    modal: (
+      light: "neutral-950" 0.5,
+      dark: "slate-400" 0.5,
     ),
   ),
   text: (

@@ -5,7 +5,7 @@ import type { DOM } from "./dom";
 
 export function bindEvents(dom: DOM, store: Store) {
   // Create document
-  const onNewDocumentClick = (e: MouseEvent) => {
+  const onNewDocumentClick = () => {
     store.dispatch({ type: "document/create" });
   };
   dom.newDocumentButton.addEventListener("click", onNewDocumentClick);
@@ -77,16 +77,62 @@ export function bindEvents(dom: DOM, store: Store) {
   };
   dom.documentList.addEventListener("click", onDocumentClick);
 
+  // Open delete modal
+  const onDeleteModalButtonClick = () => {
+    store.dispatch({ type: "modal/openDelete" });
+  };
+  dom.openDeleteModalButton.addEventListener("click", onDeleteModalButtonClick);
+
+  // Close delete modal
+  const onDeleteModalOverlayClick = (e: MouseEvent) => {
+    const modal = e.currentTarget;
+
+    if (!(modal instanceof HTMLDialogElement)) return;
+
+    const dialogDimensions = modal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      store.dispatch({ type: "modal/closeDelete" });
+    }
+  };
+  dom.deleteModal.addEventListener("click", onDeleteModalOverlayClick);
+
   // Delete document
-  const onDeleteClick = (e: MouseEvent) => {};
-  dom.deleteButton.addEventListener("click", onDeleteClick);
+  const onDeleteConfirmationClick = (e: MouseEvent) => {
+    if (!(e.target instanceof Element)) return;
+
+    const button = e.target.closest<HTMLButtonElement>(
+      "#delete-modal-confirmation-button",
+    );
+
+    if (!button) return;
+
+    const id = button.dataset.id;
+
+    if (!id) {
+      console.error("Confirmation button missing data-id");
+      store.dispatch({ type: "modal/closeDelete" });
+    } else {
+      store.dispatch({ type: "document/delete", payload: { id } });
+    }
+  };
+  dom.deleteModalConfirmationButton.addEventListener(
+    "click",
+    onDeleteConfirmationClick,
+  );
 
   // Preview toggle
   const onPreviewClick = (e: MouseEvent) => {
+    const button = e.currentTarget;
+
+    if (!(button instanceof HTMLButtonElement)) return;
+
     const newView =
-      dom.viewToggle.getAttribute("aria-pressed") === "false"
-        ? "preview"
-        : "markdown";
+      button.getAttribute("aria-pressed") === "false" ? "preview" : "markdown";
 
     store.dispatch({ type: "view/set", payload: { view: newView } });
   };
@@ -97,7 +143,16 @@ export function bindEvents(dom: DOM, store: Store) {
     dom.documentNameInput.removeEventListener("input", onDocumentNameInput);
     dom.documentNameInput.removeEventListener("change", onDocumentNameChange);
     dom.documentList.removeEventListener("click", onDocumentClick);
-    dom.deleteButton.addEventListener("click", onDeleteClick);
+    dom.openDeleteModalButton.removeEventListener(
+      "click",
+      onDeleteModalButtonClick,
+    );
+    dom.deleteModal.removeEventListener("click", onDeleteModalOverlayClick);
+
+    dom.deleteModalConfirmationButton.removeEventListener(
+      "click",
+      onDeleteConfirmationClick,
+    );
     dom.viewToggle.removeEventListener("click", onPreviewClick);
   };
 }

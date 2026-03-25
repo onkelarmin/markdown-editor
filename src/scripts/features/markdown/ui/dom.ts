@@ -4,7 +4,10 @@ export type DOM = {
   documentListItemTemplate: HTMLTemplateElement;
   documentNameInput: HTMLInputElement;
   documentNameError: HTMLParagraphElement;
-  deleteButton: HTMLButtonElement;
+  openDeleteModalButton: HTMLButtonElement;
+  deleteModal: HTMLDialogElement;
+  deleteModalDocumentName: HTMLSpanElement;
+  deleteModalConfirmationButton: HTMLButtonElement;
   editor: HTMLElement;
   markdownContent: HTMLTextAreaElement;
   previewContent: HTMLElement;
@@ -27,8 +30,17 @@ export function getDOM() {
   const documentNameError = document.querySelector<HTMLParagraphElement>(
     "#document-name-error",
   );
-  const deleteButton =
-    document.querySelector<HTMLButtonElement>("#delete-button");
+  const openDeleteModalButton =
+    document.querySelector<HTMLButtonElement>("#open-delete-modal");
+  const deleteModal =
+    document.querySelector<HTMLDialogElement>("#delete-modal");
+  const deleteModalDocumentName = document.querySelector<HTMLSpanElement>(
+    "#delete-modal-document-name",
+  );
+  const deleteModalConfirmationButton =
+    document.querySelector<HTMLButtonElement>(
+      "#delete-modal-confirmation-button",
+    );
   const editor = document.querySelector<HTMLElement>(".editor");
   const markdownContent =
     document.querySelector<HTMLTextAreaElement>("#markdown-content");
@@ -42,7 +54,10 @@ export function getDOM() {
     !documentListItemTemplate ||
     !documentNameInput ||
     !documentNameError ||
-    !deleteButton ||
+    !openDeleteModalButton ||
+    !deleteModal ||
+    !deleteModalDocumentName ||
+    !deleteModalConfirmationButton ||
     !editor ||
     !markdownContent ||
     !previewContent ||
@@ -57,7 +72,10 @@ export function getDOM() {
     documentListItemTemplate,
     documentNameInput,
     documentNameError,
-    deleteButton,
+    openDeleteModalButton,
+    deleteModal,
+    deleteModalDocumentName,
+    deleteModalConfirmationButton,
     editor,
     markdownContent,
     previewContent,

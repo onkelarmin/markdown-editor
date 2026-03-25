@@ -20,7 +20,7 @@ import SaveSvg from "@assets/icon-save.svg";
       <DocumentNameForm />
     </div>
     <div class="right">
-      <button type="button" id="delete-button">
+      <button type="button" id="open-delete-modal" class="open-delete-modal">
         <span class="visually-hidden">Delete document</span>
         <DeleteSvg class="delete-icon" aria-hidden="true" />
       </button>
@@ -75,7 +75,7 @@ import SaveSvg from "@assets/icon-save.svg";
     align-items: center;
     gap: var(--space-cont-lg);
 
-    #delete-button {
+    .open-delete-modal {
       display: grid;
       place-items: center;
       background-color: transparent;

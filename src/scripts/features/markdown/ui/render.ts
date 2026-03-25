@@ -26,6 +26,14 @@ export function render(state: State, dom: DOM) {
     dom.documentNameInput.removeAttribute("aria-describedby");
   }
 
+  // Delete modal
+  dom.deleteModalDocumentName.textContent = activeDocument.name;
+  dom.deleteModalConfirmationButton.dataset.id = activeDocument.id;
+
+  if (state.isDeleteModalOpen) {
+    dom.deleteModal.showModal();
+  } else dom.deleteModal.close();
+
   // Content
   dom.markdownContent.value = activeDocument.content;
 

@@ -3,6 +3,7 @@
 import MainHeader from "./MainHeader.astro";
 import Markdown from "./Markdown.astro";
 import Preview from "./Preview.astro";
+import Button from "@/components/ui/Button.astro";
 
 // Asset imports
 import ShowSvg from "@assets/icon-show-preview.svg";
@@ -14,6 +15,8 @@ import HideSvg from "@assets/icon-hide-preview.svg";
   <div class="editor" data-view="markdown">
     <Markdown />
     <Preview />
+
+    <!-- Preview toggle -->
     <button
       type="button"
       id="view-toggle"
@@ -25,6 +28,16 @@ import HideSvg from "@assets/icon-hide-preview.svg";
       <ShowSvg class="show-icon" aria-hidden="true" />
       <HideSvg class="hide-icon" aria-hidden="true" />
     </button>
+    <!-- Delete modal -->
+    <dialog id="delete-modal" class="delete-modal">
+      <h2>Delete this document?</h2>
+      <p>
+        Are you sure you want to delete the ‘<span
+          id="delete-modal-document-name"></span>’ document and its contents?
+        This action cannot be reversed.
+      </p>
+      <Button text="Confirm & Delete" id="delete-modal-confirmation-button" />
+    </dialog>
   </div>
 </main>
 
@@ -100,6 +113,58 @@ import HideSvg from "@assets/icon-hide-preview.svg";
       }
       .hide-icon {
         width: var(--size-svg-hide-preview);
+      }
+    }
+
+    .delete-modal {
+      place-self: center;
+      width: min(21.5rem, 100%);
+      background-color: var(--bg-container-modal);
+      border: none;
+      border-radius: var(--br-md);
+      padding-inline: var(--pad-cont-modal-inline);
+      padding-block: var(--pad-cont-modal-block);
+      margin-inline: var(--space-cont-sm);
+      opacity: 0;
+      transition:
+        opacity var(--trans-fast-out),
+        overlay var(--trans-fast-out) allow-discrete,
+        display var(--trans-fast-out) allow-discrete;
+
+      h2 {
+        font: var(--font-4);
+        color: var(--fg-text-strong);
+      }
+
+      p {
+        font: var(--font-8);
+        color: var(--fg-text-base);
+        margin-block-start: var(--space-cont-sm);
+        margin-block-end: var(--space-cont-md);
+      }
+
+      &::backdrop {
+        background-color: transparent;
+        transition:
+          background-color var(--trans-fast-out),
+          overlay var(--trans-fast-out) allow-discrete,
+          display var(--trans-fast-out) allow-discrete;
+      }
+
+      &[open] {
+        opacity: 1;
+
+        &::backdrop {
+          background-color: var(--bg-overlay-modal);
+        }
+
+        @starting-style {
+          opacity: 0;
+
+          &::backdrop {
+            background-color: transparent;
+          }
+        }
       }
     }
   }

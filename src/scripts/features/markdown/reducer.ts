@@ -1,22 +1,29 @@
 import type { Action, Document, State } from "./types";
 import { getNewDocumentName } from "./lib/getNewDocumentName";
 
+function createEmptyDocument(documents?: Document[]): Document {
+  const now = Date.now();
+
+  let names: string[] = [];
+
+  if (documents) names = documents.map((document) => document.name);
+
+  const newName = getNewDocumentName(names);
+
+  return {
+    id: crypto.randomUUID(),
+    name: newName,
+    content: "",
+    createdAt: now,
+    modifiedAt: now,
+  };
+}
+
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
     // Create document
     case "document/create": {
-      const now = Date.now();
-
-      const names = state.documents.map((document) => document.name);
-      const newName = getNewDocumentName(names);
-
-      const document: Document = {
-        id: crypto.randomUUID(),
-        name: newName,
-        content: "",
-        createdAt: now,
-        modifiedAt: now,
-      };
+      const document = createEmptyDocument(state.documents);
 
       return {
         ...state,
@@ -62,6 +69,54 @@ export function reducer(state: State, action: Action): State {
         activeDocumentId: id,
         nameDraft: selected.name,
         nameError: null,
+      };
+    }
+
+    // Open delete modal
+    case "modal/openDelete": {
+      return { ...state, isDeleteModalOpen: true };
+    }
+
+    // Close delete modal
+    case "modal/closeDelete": {
+      return { ...state, isDeleteModalOpen: false };
+    }
+
+    // Delete document
+    case "document/delete": {
+      const id = action.payload.id;
+      const toBeDeleted = state.documents.find(
+        (document) => document.id === id,
+      );
+
+      if (!toBeDeleted) return { ...state, isDeleteModalOpen: false };
+
+      if (state.documents.length === 1) {
+        const document = createEmptyDocument();
+
+        return {
+          ...state,
+          documents: [document],
+          activeDocumentId: document.id,
+          isDeleteModalOpen: false,
+          nameDraft: document.name,
+          nameError: null,
+        };
+      }
+
+      const index = state.documents.indexOf(toBeDeleted);
+
+      const newIndex = index === 0 ? 1 : index - 1;
+      const newId = state.documents[newIndex].id;
+
+      return {
+        ...state,
+        documents: state.documents.filter(
+          (document) => document !== toBeDeleted,
+        ),
+        activeDocumentId: newId,
+        isDeleteModalOpen: false,
+        nameDraft: state.documents[newIndex].name,
       };
     }
 

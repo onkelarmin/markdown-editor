@@ -8,7 +8,7 @@ export function initSidebar() {
   const appLayout = document.querySelector<HTMLElement>("#app-layout");
   const sidebar = document.querySelector<HTMLElement>("#sidebar");
   const deleteButton =
-    document.querySelector<HTMLButtonElement>("#delete-button");
+    document.querySelector<HTMLButtonElement>("#open-delete-modal");
   const saveChangesButton = document.querySelector<HTMLButtonElement>(
     "#save-changes-button",
   );
