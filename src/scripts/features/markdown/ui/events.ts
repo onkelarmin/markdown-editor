@@ -3,6 +3,27 @@ import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
 import type { Store } from "../store";
 import type { DOM } from "./dom";
 
+function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
+  const normalized = normalizeDocumentName(input.value);
+
+  const result = documentNameSchemaFull.safeParse(normalized);
+  if (!result.success) {
+    const message = result.error.issues[0]?.message ?? "Invalid value";
+
+    store.dispatch({
+      type: "document/updateNameDraft",
+      payload: { name: normalized, error: message },
+    });
+  } else {
+    store.dispatch({
+      type: "document/updateName",
+      payload: { name: normalized },
+    });
+
+    input.blur();
+  }
+}
+
 export function bindEvents(dom: DOM, store: Store) {
   // Create document
   const onNewDocumentClick = () => {
@@ -33,30 +54,40 @@ export function bindEvents(dom: DOM, store: Store) {
       });
     }
   };
+
   const onDocumentNameChange = (e: Event) => {
     const input = e.currentTarget;
 
     if (!(input instanceof HTMLInputElement)) return;
 
-    const normalized = normalizeDocumentName(input.value);
-
-    const result = documentNameSchemaFull.safeParse(normalized);
-    if (!result.success) {
-      const message = result.error.issues[0]?.message ?? "Invalid value";
-
-      store.dispatch({
-        type: "document/updateNameDraft",
-        payload: { name: normalized, error: message },
-      });
-    } else {
-      store.dispatch({
-        type: "document/updateName",
-        payload: { name: normalized },
-      });
-    }
+    handleDocumentNameChange(store, input);
   };
+
+  const onDocumentNameSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+
+    if (!(form instanceof HTMLFormElement)) return;
+
+    const input = form.elements.namedItem("document-name");
+
+    if (!(input instanceof HTMLInputElement)) return;
+
+    handleDocumentNameChange(store, input);
+  };
+
   dom.documentNameInput.addEventListener("input", onDocumentNameInput);
   dom.documentNameInput.addEventListener("change", onDocumentNameChange);
+  dom.documentNameForm.addEventListener("submit", onDocumentNameSubmit);
+
+  // Update content
+  const onMarkdownInput = (e: Event) => {
+    const textArea = e.currentTarget;
+
+    if (!(textArea instanceof HTMLTextAreaElement)) return;
+  };
+  dom.markdownContent.addEventListener("input", onMarkdownInput);
 
   // Select document
   const onDocumentClick = (e: MouseEvent) => {
@@ -142,6 +173,8 @@ export function bindEvents(dom: DOM, store: Store) {
     dom.newDocumentButton.removeEventListener("click", onNewDocumentClick);
     dom.documentNameInput.removeEventListener("input", onDocumentNameInput);
     dom.documentNameInput.removeEventListener("change", onDocumentNameChange);
+    dom.documentNameForm.removeEventListener("submit", onDocumentNameSubmit);
+    dom.markdownContent.removeEventListener("input", onMarkdownInput);
     dom.documentList.removeEventListener("click", onDocumentClick);
     dom.openDeleteModalButton.removeEventListener(
       "click",

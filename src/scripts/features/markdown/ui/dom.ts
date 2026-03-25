@@ -2,6 +2,7 @@ export type DOM = {
   newDocumentButton: HTMLButtonElement;
   documentList: HTMLUListElement;
   documentListItemTemplate: HTMLTemplateElement;
+  documentNameForm: HTMLFormElement;
   documentNameInput: HTMLInputElement;
   documentNameError: HTMLParagraphElement;
   openDeleteModalButton: HTMLButtonElement;
@@ -23,6 +24,9 @@ export function getDOM() {
   );
   const documentListItemTemplate = document.querySelector<HTMLTemplateElement>(
     "#document-list-item-template",
+  );
+  const documentNameForm = document.querySelector<HTMLFormElement>(
+    "#document-name-form",
   );
   const documentNameInput = document.querySelector<HTMLInputElement>(
     "#document-name-input",
@@ -52,6 +56,7 @@ export function getDOM() {
     !newDocumentButton ||
     !documentList ||
     !documentListItemTemplate ||
+    !documentNameForm ||
     !documentNameInput ||
     !documentNameError ||
     !openDeleteModalButton ||
@@ -70,6 +75,7 @@ export function getDOM() {
     newDocumentButton,
     documentList,
     documentListItemTemplate,
+    documentNameForm,
     documentNameInput,
     documentNameError,
     openDeleteModalButton,
