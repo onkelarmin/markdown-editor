@@ -10,57 +10,14 @@
 
   <!-- Body -->
   <div class="preview-body">
-    <div id="preview-content" class="preview-content">
-      <h1>Welcome to Markdown</h1>
-      <p>
-        Markdown is a lightweight markup language that you can use to add
-        formatting elements to plaintext text documents.
-      </p>
-      <h2>How to use this?</h2>
-      <ol>
-        <li>Write markdown in the markdown editor window</li>
-        <li>See the rendered markdown in the preview window</li>
-      </ol>
-      <h3>Features</h3>
-      <ul>
-        <li>
-          Create headings, paragraphs, links, blockquotes, inline-code, code
-          blocks, and lists
-        </li>
-        <li>Name and save the document to access again later</li>
-        <li>Choose between Light or Dark mode depending on your preference</li>
-      </ul>
-      <blockquote>
-        This is an example of a blockquote. If you would like to learn more
-        about markdown syntax, you can visit this markdown cheatsheet
-      </blockquote>
-      <h4>Headings</h4>
-      <p>
-        To create a heading, add the hash sign (#) before the heading. The
-        number of number signs you use should correspond to the heading level.
-        You'll see in this guide that we've used all six heading levels (not
-        necessarily in the correct way you should use headings!) to illustrate
-        how they should look.
-      </p>
-      <h5>Lists</h5>
-      <p>You can see examples of ordered and unordered lists above.</p>
-      <h6>Code Blocks</h6>
-      <p>
-        This markdown editor allows for inline-code snippets, like this:
-        <code> &lt;p&gt;I'm inline&lt;/p&gt;</code>. It also allows for larger
-        code blocks like this:
-      </p>
-      <pre><code>&lt;main&gt;
-    &lt;h1&gt;This is a larger code block&lt;/h1&gt;
-&lt;/main&gt;</code></pre>
-    </div>
+    <div id="preview-content" class="preview-content"></div>
   </div>
 </section>
 
-<style lang="scss">
+<style is:global lang="scss">
   @use "../../../sass/miscellaneous/" as *;
 
-  :global(.editor[data-view="markdown"]) .preview {
+  .editor[data-view="markdown"] .preview {
     display: none;
 
     @include mq(medium) {
@@ -68,7 +25,7 @@
     }
   }
 
-  :global(.editor[data-view="preview"]) .preview {
+  .editor[data-view="preview"] .preview {
     display: grid;
 
     &-content {
@@ -99,104 +56,114 @@
       padding-block: var(--pad-cont-preview-block);
       overflow: auto;
     }
+  }
 
-    &-content {
-      max-width: 45rem;
+  .preview-content {
+    max-width: 45rem;
 
-      > * + * {
-        margin-block-start: var(--space-cont-md);
-      }
+    > * + * {
+      margin-block-start: var(--space-cont-md);
+    }
 
-      p {
-        font: var(--font-8);
-        color: var(--fg-text-base);
-      }
+    p {
+      font: var(--font-8);
+      color: var(--fg-text-base);
+    }
 
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
-        color: var(--fg-text-strong);
-      }
+    a {
+      color: var(--fg-text-strong);
+      transition: var(--trans-fast-out);
 
-      h1 {
-        font: var(--font-1);
-      }
-
-      h2 {
-        font: var(--font-2);
-        letter-spacing: var(--ls-2);
-      }
-
-      h3 {
-        font: var(--font-3);
-      }
-
-      h4 {
-        font: var(--font-4);
-      }
-
-      h5 {
-        font: var(--font-5);
-      }
-
-      h6 {
-        font: var(--font-7);
-        color: var(--fg-text-highlight);
-      }
-
-      ol {
-        list-style-position: inside;
-        padding-inline: var(--pad-cont-preview-lists-inline);
-      }
-
-      ul {
-        list-style-position: inside;
-        padding-inline: var(--pad-cont-preview-lists-inline);
-
-        li::marker {
+      @media (hover: hover) {
+        &:hover {
           color: var(--fg-text-highlight);
         }
       }
+    }
 
-      blockquote {
-        position: relative;
-        font: var(--font-7);
-        color: var(--fg-text-strong);
-        background-color: var(--bg-container-preview-block);
-        padding-inline-start: var(--pad-cont-blockquote-inline-start);
-        padding-inline-end: var(--pad-cont-blockquote-inline-end);
-        padding-block: var(--pad-cont-blockquote-block);
-        border-radius: var(--br-md);
-        overflow: clip;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--fg-text-strong);
+    }
 
-        &::before {
-          content: "";
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: var(--size-4);
-          height: 100%;
-          background-color: var(--fg-text-highlight);
-        }
+    h1 {
+      font: var(--font-1);
+    }
+
+    h2 {
+      font: var(--font-2);
+      letter-spacing: var(--ls-2);
+    }
+
+    h3 {
+      font: var(--font-3);
+    }
+
+    h4 {
+      font: var(--font-4);
+    }
+
+    h5 {
+      font: var(--font-5);
+    }
+
+    h6 {
+      font: var(--font-7);
+    }
+
+    ol {
+      list-style-position: inside;
+      padding-inline: var(--pad-cont-preview-lists-inline);
+    }
+
+    ul {
+      list-style-position: inside;
+      padding-inline: var(--pad-cont-preview-lists-inline);
+
+      li::marker {
+        color: var(--fg-text-highlight);
       }
+    }
 
-      code {
-        font: var(--font-10);
-        color: var(--fg-text-strong);
-      }
+    blockquote {
+      position: relative;
+      font: var(--font-7);
+      color: var(--fg-text-strong);
+      background-color: var(--bg-container-preview-block);
+      padding-inline-start: var(--pad-cont-blockquote-inline-start);
+      padding-inline-end: var(--pad-cont-blockquote-inline-end);
+      padding-block: var(--pad-cont-blockquote-block);
+      border-radius: var(--br-md);
+      overflow: clip;
 
-      pre {
-        font: var(--font-10);
-        color: var(--fg-text-strong);
-        background-color: var(--bg-container-preview-block);
-        padding-inline-start: var(--pad-cont-blockquote-inline-start);
-        padding-inline-end: var(--pad-cont-blockquote-inline-end);
-        padding-block: var(--pad-cont-blockquote-block);
-        border-radius: var(--br-md);
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: var(--size-4);
+        height: 100%;
+        background-color: var(--fg-text-highlight);
       }
+    }
+
+    code {
+      font: var(--font-10);
+      color: var(--fg-text-strong);
+    }
+
+    pre {
+      font: var(--font-10);
+      color: var(--fg-text-strong);
+      background-color: var(--bg-container-preview-block);
+      padding-inline-start: var(--pad-cont-blockquote-inline-start);
+      padding-inline-end: var(--pad-cont-blockquote-inline-end);
+      padding-block: var(--pad-cont-blockquote-block);
+      border-radius: var(--br-md);
     }
   }
 </style>

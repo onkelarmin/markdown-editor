@@ -12,6 +12,7 @@ export type DOM = {
   editor: HTMLElement;
   markdownContent: HTMLTextAreaElement;
   previewContent: HTMLElement;
+  downloadPdfButton: HTMLInputElement;
   viewToggle: HTMLButtonElement;
 };
 
@@ -50,6 +51,9 @@ export function getDOM() {
     document.querySelector<HTMLTextAreaElement>("#markdown-content");
   const previewContent =
     document.querySelector<HTMLElement>("#preview-content");
+  const downloadPdfButton = document.querySelector<HTMLButtonElement>(
+    "#download-pdf-button",
+  );
   const viewToggle = document.querySelector<HTMLButtonElement>("#view-toggle");
 
   if (
@@ -66,6 +70,7 @@ export function getDOM() {
     !editor ||
     !markdownContent ||
     !previewContent ||
+    !downloadPdfButton ||
     !viewToggle
   ) {
     throw new Error("Required DOM element missing");
@@ -85,6 +90,7 @@ export function getDOM() {
     editor,
     markdownContent,
     previewContent,
+    downloadPdfButton,
     viewToggle,
   };
 }

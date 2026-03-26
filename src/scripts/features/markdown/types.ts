@@ -33,7 +33,7 @@ export type Action =
     }
   | {
       type: "document/updateContent";
-      payload: { id: string; content: string };
+      payload: { content: string };
     }
   | { type: "view/set"; payload: { view: View } }
   | { type: "modal/openDelete" }

@@ -7,7 +7,7 @@ import Button from "@/components/ui/Button.astro";
 // Asset imports
 import Logo from "@assets/logo.svg";
 import DeleteSvg from "@assets/icon-delete.svg";
-import SaveSvg from "@assets/icon-save.svg";
+import DownloadSvg from "@assets/icon-download.svg";
 ---
 
 <header class="main-header">
@@ -25,10 +25,10 @@ import SaveSvg from "@assets/icon-save.svg";
         <DeleteSvg class="delete-icon" aria-hidden="true" />
       </button>
       <Button
-        text="Save Changes"
-        icon={SaveSvg}
-        id="save-changes-button"
-        aria-label="Save changes"
+        text="Download PDF"
+        icon={DownloadSvg}
+        id="download-pdf-button"
+        aria-label="Download as PDF"
       />
     </div>
   </div>

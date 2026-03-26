@@ -2,6 +2,8 @@ import { formatTime } from "@/scripts/shared/utils/helper";
 import type { State } from "../types";
 import type { DOM } from "./dom";
 import { selectActiveDocument, selectHasDocuments } from "../selectors";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
 export function render(state: State, dom: DOM) {
   if (!selectHasDocuments) return;
@@ -36,6 +38,13 @@ export function render(state: State, dom: DOM) {
 
   // Content
   dom.markdownContent.value = activeDocument.content;
+
+  marked.use({
+    async: false,
+  });
+  dom.previewContent.innerHTML = DOMPurify.sanitize(
+    marked.parse(activeDocument.content) as string,
+  );
 
   // Sidebar document list
   dom.documentList.replaceChildren();

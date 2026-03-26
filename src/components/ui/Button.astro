@@ -15,8 +15,8 @@ const Icon = icon;
 ---
 
 <button class:list={["btn", { hasIcon: icon }, classes]} {type} {...rest}>
-  {Icon && <Icon class="icon" aria-hidden="true" />}
   {text && <span class="text">{text}</span>}
+  {Icon && <Icon class="icon" aria-hidden="true" />}
 </button>
 
 <style lang="scss">

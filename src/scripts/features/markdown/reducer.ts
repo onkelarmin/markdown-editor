@@ -48,11 +48,27 @@ export function reducer(state: State, action: Action): State {
         ...state,
         documents: state.documents.map((document) =>
           document.id === state.activeDocumentId
-            ? { ...document, name: action.payload.name }
+            ? { ...document, name: action.payload.name, modifiedAt: Date.now() }
             : document,
         ),
         nameDraft: action.payload.name,
         nameError: null,
+      };
+    }
+
+    // Update document content
+    case "document/updateContent": {
+      return {
+        ...state,
+        documents: state.documents.map((document) =>
+          document.id === state.activeDocumentId
+            ? {
+                ...document,
+                content: action.payload.content,
+                modifiedAt: Date.now(),
+              }
+            : document,
+        ),
       };
     }
 

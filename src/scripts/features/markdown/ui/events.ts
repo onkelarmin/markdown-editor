@@ -1,5 +1,6 @@
 import { normalizeDocumentName } from "../lib/normalizeDocumentName";
 import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
+import { selectActiveDocument } from "../selectors";
 import type { Store } from "../store";
 import type { DOM } from "./dom";
 
@@ -86,6 +87,11 @@ export function bindEvents(dom: DOM, store: Store) {
     const textArea = e.currentTarget;
 
     if (!(textArea instanceof HTMLTextAreaElement)) return;
+
+    store.dispatch({
+      type: "document/updateContent",
+      payload: { content: textArea.value },
+    });
   };
   dom.markdownContent.addEventListener("input", onMarkdownInput);
 
@@ -156,6 +162,13 @@ export function bindEvents(dom: DOM, store: Store) {
     onDeleteConfirmationClick,
   );
 
+  // Download PDF
+  const onDownloadPdfClick = (e: MouseEvent) => {
+    // const activeDocument = selectActiveDocument(store.getState());
+    window.print();
+  };
+  dom.downloadPdfButton.addEventListener("click", onDownloadPdfClick);
+
   // Preview toggle
   const onPreviewClick = (e: MouseEvent) => {
     const button = e.currentTarget;
@@ -186,6 +199,7 @@ export function bindEvents(dom: DOM, store: Store) {
       "click",
       onDeleteConfirmationClick,
     );
+    dom.downloadPdfButton.removeEventListener("click", onDownloadPdfClick);
     dom.viewToggle.removeEventListener("click", onPreviewClick);
   };
 }
