@@ -2,12 +2,11 @@
 // Component imports
 import DocumentNameForm from "./DocumentNameForm.astro";
 import SidebarToggle from "./SidebarToggle.astro";
-import Button from "@/components/ui/Button.astro";
+import SaveButton from "@/components/ui/SaveButton.astro";
 
 // Asset imports
 import Logo from "@assets/logo.svg";
 import DeleteSvg from "@assets/icon-delete.svg";
-import DownloadSvg from "@assets/icon-download.svg";
 ---
 
 <header class="main-header">
@@ -24,12 +23,7 @@ import DownloadSvg from "@assets/icon-download.svg";
         <span class="visually-hidden">Delete document</span>
         <DeleteSvg class="delete-icon" aria-hidden="true" />
       </button>
-      <Button
-        text="Download PDF"
-        icon={DownloadSvg}
-        id="download-pdf-button"
-        aria-label="Download as PDF"
-      />
+      <SaveButton />
     </div>
   </div>
 </header>
@@ -82,10 +76,13 @@ import DownloadSvg from "@assets/icon-download.svg";
       color: var(--fg-text-muted);
       border: none;
       cursor: pointer;
-      transition: color var(--trans-fast-out);
+      transition:
+        scale var(--trans-fast-out-sensitive),
+        color var(--trans-fast-out);
 
       @media (hover: hover) {
         &:hover {
+          scale: 1.05;
           color: var(--fg-text-highlight);
         }
       }

@@ -15,8 +15,8 @@ const Icon = icon;
 ---
 
 <button class:list={["btn", { hasIcon: icon }, classes]} {type} {...rest}>
-  {text && <span class="text">{text}</span>}
   {Icon && <Icon class="icon" aria-hidden="true" />}
+  {text && <span class="text">{text}</span>}
 </button>
 
 <style lang="scss">
@@ -39,6 +39,7 @@ const Icon = icon;
     padding-inline: var(--btn-padding-inline-default);
     padding-block: var(--btn-padding-block-default);
     transition:
+      transform var(--trans-fast-out-sensitive),
       background-color var(--trans-fast-out),
       outline-color var(--trans-fast-in),
       outline-offset var(--trans-fast-out-sensitive);
@@ -48,7 +49,8 @@ const Icon = icon;
     }
 
     @media (hover: hover) {
-      &:hover {
+      &:not(:disabled):hover {
+        transform: scale(1.02);
         background-color: var(--btn-bg-color-hover-default);
       }
     }

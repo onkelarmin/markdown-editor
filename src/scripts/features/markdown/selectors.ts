@@ -11,3 +11,7 @@ export function selectActiveDocument(state: State) {
 export function selectHasDocuments(state: State) {
   return state.documents.length > 0;
 }
+
+export function selectSidebarOpen(state: State) {
+  return state.sidebarOpen;
+}

@@ -1,4 +1,6 @@
 export type DOM = {
+  appLayout: HTMLElement;
+  sidebar: HTMLElement;
   newDocumentButton: HTMLButtonElement;
   documentList: HTMLUListElement;
   documentListItemTemplate: HTMLTemplateElement;
@@ -12,11 +14,14 @@ export type DOM = {
   editor: HTMLElement;
   markdownContent: HTMLTextAreaElement;
   previewContent: HTMLElement;
-  downloadPdfButton: HTMLInputElement;
+  saveChangesButton: HTMLButtonElement;
+  sidebarToggle: HTMLButtonElement;
   viewToggle: HTMLButtonElement;
 };
 
 export function getDOM() {
+  const appLayout = document.querySelector<HTMLElement>("#app-layout");
+  const sidebar = document.querySelector<HTMLElement>("#sidebar");
   const newDocumentButton = document.querySelector<HTMLButtonElement>(
     "#new-document-button",
   );
@@ -51,12 +56,16 @@ export function getDOM() {
     document.querySelector<HTMLTextAreaElement>("#markdown-content");
   const previewContent =
     document.querySelector<HTMLElement>("#preview-content");
-  const downloadPdfButton = document.querySelector<HTMLButtonElement>(
-    "#download-pdf-button",
+  const saveChangesButton = document.querySelector<HTMLButtonElement>(
+    "#save-changes-button",
   );
+  const sidebarToggle =
+    document.querySelector<HTMLButtonElement>("#sidebar-toggle");
   const viewToggle = document.querySelector<HTMLButtonElement>("#view-toggle");
 
   if (
+    !appLayout ||
+    !sidebar ||
     !newDocumentButton ||
     !documentList ||
     !documentListItemTemplate ||
@@ -70,13 +79,16 @@ export function getDOM() {
     !editor ||
     !markdownContent ||
     !previewContent ||
-    !downloadPdfButton ||
+    !saveChangesButton ||
+    !sidebarToggle ||
     !viewToggle
   ) {
     throw new Error("Required DOM element missing");
   }
 
   return {
+    appLayout,
+    sidebar,
     newDocumentButton,
     documentList,
     documentListItemTemplate,
@@ -90,7 +102,8 @@ export function getDOM() {
     editor,
     markdownContent,
     previewContent,
-    downloadPdfButton,
+    saveChangesButton,
+    sidebarToggle,
     viewToggle,
   };
 }

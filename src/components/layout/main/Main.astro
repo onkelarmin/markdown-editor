@@ -75,10 +75,13 @@ import HideSvg from "@assets/icon-hide-preview.svg";
       background-color: transparent;
       border: none;
       transform: translateY(-50%);
-      transition: color var(--trans-fast-out);
+      transition:
+        scale var(--trans-fast-out-sensitive),
+        color var(--trans-fast-out);
 
       @media (hover: hover) {
         &:hover {
+          scale: 1.05;
           color: var(--fg-text-highlight);
         }
       }

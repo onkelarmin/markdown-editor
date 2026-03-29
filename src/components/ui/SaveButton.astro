@@ -1,0 +1,143 @@
+---
+import SaveSvg from "@assets/icon-save.svg";
+import SpinnerSvg from "@assets/icon-spinner.svg";
+import TickSvg from "@assets/icon-tick.svg";
+import WarningSvg from "@assets/icon-warning.svg";
+---
+
+<button
+  type="button"
+  id="save-changes-button"
+  class="btn"
+  data-status="save"
+  aria-label="Save Changes"
+>
+  <SaveSvg class="icon icon-save" aria-hidden="true" />
+  <SpinnerSvg class="icon icon-spinner" aria-hidden="true" />
+  <TickSvg class="icon icon-tick" aria-hidden="true" />
+  <WarningSvg class="icon icon-warning" aria-hidden="true" />
+  <span class="text">Save Changes</span>
+</button>
+
+<style lang="scss">
+  @use "../../sass/miscellaneous/" as *;
+
+  .btn {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--btn-gap-default);
+    background-color: var(--btn-bg-color-idle-default);
+    color: var(--btn-fg-color-idle-default);
+    font: var(--font-6);
+    text-transform: none;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--btn-border-radius-default);
+    padding-inline: var(--btn-padding-inline-default);
+    padding-block: var(--btn-padding-block-default);
+    transition:
+      transform var(--trans-fast-out-sensitive),
+      background-color var(--trans-fast-out),
+      outline-color var(--trans-fast-in),
+      outline-offset var(--trans-fast-out-sensitive);
+
+    &:not(:disabled) {
+      cursor: pointer;
+    }
+
+    @media (hover: hover) {
+      &:not(:disabled):hover {
+        transform: scale(1.02);
+        background-color: var(--btn-bg-color-hover-default);
+      }
+    }
+
+    .text {
+      display: none;
+
+      @include mq(medium) {
+        display: inline;
+      }
+    }
+
+    .icon {
+      display: none;
+      color: inherit;
+
+      &-save {
+        width: var(--size-svg-save);
+      }
+      &-spinner {
+        width: var(--size-svg-spinner);
+      }
+      &-tick {
+        width: var(--size-svg-tick);
+      }
+      &-warning {
+        width: var(--size-svg-warning);
+      }
+    }
+
+    &[data-status="idle"],
+    &[data-status="dirty"] {
+      .icon-save {
+        display: block;
+      }
+    }
+
+    &[data-status="saving"] {
+      background-color: var(--btn-bg-color-disabled-default);
+      cursor: not-allowed;
+
+      .icon-spinner {
+        @media (prefers-reduced-motion: no-preference) {
+          display: block;
+          animation: spinner 1.5s steps(12) infinite;
+        }
+      }
+    }
+
+    &[data-status="saved"] {
+      .icon-tick {
+        display: block;
+      }
+    }
+
+    &[data-status="error"] {
+      @media (prefers-reduced-motion: no-preference) {
+        animation: shake var(--trans-x-fast-in-out) var(--delay-slow) 3;
+      }
+
+      .icon-warning {
+        display: block;
+      }
+    }
+  }
+
+  @keyframes spinner {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  @keyframes shake {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(3deg);
+    }
+    50% {
+      transform: rotate(0eg);
+    }
+    75% {
+      transform: rotate(-3deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+</style>

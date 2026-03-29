@@ -1,3 +1,5 @@
+export type SaveStatus = "idle" | "dirty" | "saving" | "saved" | "error";
+
 export type Document = {
   id: string;
   name: string;
@@ -13,11 +15,18 @@ export type State = {
   activeDocumentId: string | null;
   nameDraft: string;
   nameError: string | null;
+  sidebarOpen: boolean;
   view: View;
   isDeleteModalOpen: boolean;
+  isLoading: boolean;
+  errorMessage: string | null;
+  saveStatus: SaveStatus;
 };
 
 export type Action =
+  | { type: "documents/loadStart" }
+  | { type: "documents/loadSuccess"; payload: { documents: Document[] } }
+  | { type: "documents/loadError"; payload: { message: string } }
   | {
       type: "document/create";
     }
@@ -35,7 +44,10 @@ export type Action =
       type: "document/updateContent";
       payload: { content: string };
     }
+  | { type: "save/start" }
   | { type: "view/set"; payload: { view: View } }
+  | { type: "sidebar/open" }
+  | { type: "sidebar/close" }
   | { type: "modal/openDelete" }
   | { type: "modal/closeDelete" };
 

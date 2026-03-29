@@ -1,4 +1,9 @@
 {
     "cssvar.files" : ["src/sass/semantic/*.scss"],
-    "cssvar.extensions": ["astro", "scss", "css"]
+    "cssvar.extensions": [
+        "astro",
+        "scss",
+        "css"
+    ],
+    "postman.settings.dotenv-detection-notification-visibility": false
 }

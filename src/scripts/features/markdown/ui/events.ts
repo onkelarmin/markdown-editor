@@ -1,6 +1,7 @@
+import { saveActiveDocument } from "../effects/saveDocument";
 import { normalizeDocumentName } from "../lib/normalizeDocumentName";
 import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
-import { selectActiveDocument } from "../selectors";
+import { selectSidebarOpen } from "../selectors";
 import type { Store } from "../store";
 import type { DOM } from "./dom";
 
@@ -26,6 +27,13 @@ function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
 }
 
 export function bindEvents(dom: DOM, store: Store) {
+  // Save changes
+  const onSaveClick = (e: MouseEvent) => {
+    store.dispatch({ type: "save/start" });
+    void saveActiveDocument(store);
+  };
+  dom.saveChangesButton.addEventListener("click", onSaveClick);
+
   // Create document
   const onNewDocumentClick = () => {
     store.dispatch({ type: "document/create" });
@@ -57,6 +65,7 @@ export function bindEvents(dom: DOM, store: Store) {
   };
 
   const onDocumentNameChange = (e: Event) => {
+    console.log("change");
     const input = e.currentTarget;
 
     if (!(input instanceof HTMLInputElement)) return;
@@ -66,6 +75,7 @@ export function bindEvents(dom: DOM, store: Store) {
 
   const onDocumentNameSubmit = (e: SubmitEvent) => {
     e.preventDefault();
+    console.log("submit");
 
     const form = e.currentTarget;
 
@@ -162,12 +172,25 @@ export function bindEvents(dom: DOM, store: Store) {
     onDeleteConfirmationClick,
   );
 
-  // Download PDF
-  const onDownloadPdfClick = (e: MouseEvent) => {
-    // const activeDocument = selectActiveDocument(store.getState());
-    window.print();
+  // Sidebar toggle
+  const onSidebarToggleClick = (e: MouseEvent) => {
+    const toggle = e.currentTarget;
+
+    if (!(toggle instanceof HTMLButtonElement)) return;
+
+    if (toggle.getAttribute("aria-expanded") === "true")
+      store.dispatch({ type: "sidebar/close" });
+    else store.dispatch({ type: "sidebar/open" });
   };
-  dom.downloadPdfButton.addEventListener("click", onDownloadPdfClick);
+
+  const onEscape = (e: KeyboardEvent) => {
+    if (selectSidebarOpen(store.getState()) && e.key === "Escape") {
+      store.dispatch({ type: "sidebar/close" });
+    }
+  };
+
+  dom.sidebarToggle.addEventListener("click", onSidebarToggleClick);
+  document.addEventListener("keydown", onEscape);
 
   // Preview toggle
   const onPreviewClick = (e: MouseEvent) => {
@@ -183,6 +206,7 @@ export function bindEvents(dom: DOM, store: Store) {
   dom.viewToggle.addEventListener("click", onPreviewClick);
 
   return () => {
+    dom.saveChangesButton.removeEventListener("click", onSaveClick);
     dom.newDocumentButton.removeEventListener("click", onNewDocumentClick);
     dom.documentNameInput.removeEventListener("input", onDocumentNameInput);
     dom.documentNameInput.removeEventListener("change", onDocumentNameChange);
@@ -199,7 +223,8 @@ export function bindEvents(dom: DOM, store: Store) {
       "click",
       onDeleteConfirmationClick,
     );
-    dom.downloadPdfButton.removeEventListener("click", onDownloadPdfClick);
+    dom.sidebarToggle.removeEventListener("click", onSidebarToggleClick);
+    document.removeEventListener("keydown", onEscape);
     dom.viewToggle.removeEventListener("click", onPreviewClick);
   };
 }

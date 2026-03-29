@@ -1,3 +1,4 @@
+import { loadDocuments } from "./effects/loadDocuments";
 import { createStore, type Store } from "./store";
 import { getDOM, type DOM } from "./ui/dom";
 import { bindEvents } from "./ui/events";
@@ -9,6 +10,8 @@ export function initMarkdown() {
 
   const cleanupSubscribers = registerMarkdownSubscribers(dom, store);
   const cleanupInteractions = registerMarkdownInteractions(dom, store);
+
+  void loadDocuments(store);
 
   return () => {
     cleanupSubscribers();

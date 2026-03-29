@@ -9,6 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/db": "^0.20.1",
+    "@astrojs/netlify": "^7.0.5",
     "astro": "^6.0.5",
     "dompurify": "^3.3.3",
     "marked": "^17.0.5"

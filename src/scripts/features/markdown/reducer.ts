@@ -21,6 +21,52 @@ function createEmptyDocument(documents?: Document[]): Document {
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
+    // Load documents
+    case "documents/loadStart": {
+      return { ...state, isLoading: true, errorMessage: null };
+    }
+    case "documents/loadError": {
+      return {
+        ...state,
+        isLoading: false,
+        errorMessage: action.payload.message,
+      };
+    }
+    case "documents/loadSuccess": {
+      const activeDocument = action.payload.documents.find(
+        (document) => document.id === state.activeDocumentId,
+      );
+
+      if (activeDocument) {
+        return {
+          ...state,
+          documents: action.payload.documents,
+          activeDocumentId: state.activeDocumentId,
+          nameDraft: activeDocument.name,
+          isLoading: false,
+          errorMessage: null,
+        };
+      } else if (action.payload.documents.length > 0) {
+        return {
+          ...state,
+          documents: action.payload.documents,
+          activeDocumentId: action.payload.documents[0].id,
+          nameDraft: action.payload.documents[0].name,
+          isLoading: false,
+          errorMessage: null,
+        };
+      } else {
+        return {
+          ...state,
+          documents: [],
+          activeDocumentId: null,
+          nameDraft: "",
+          isLoading: false,
+          errorMessage: null,
+        };
+      }
+    }
+
     // Create document
     case "document/create": {
       const document = createEmptyDocument(state.documents);
@@ -44,6 +90,15 @@ export function reducer(state: State, action: Action): State {
     }
 
     case "document/updateName": {
+      const names = state.documents
+        .filter((document) => document.id !== state.activeDocumentId)
+        .map((document) => document.name);
+
+      console.log(names);
+
+      if (names.includes(action.payload.name))
+        return { ...state, nameError: "Document name already exists" };
+
       return {
         ...state,
         documents: state.documents.map((document) =>
@@ -88,16 +143,6 @@ export function reducer(state: State, action: Action): State {
       };
     }
 
-    // Open delete modal
-    case "modal/openDelete": {
-      return { ...state, isDeleteModalOpen: true };
-    }
-
-    // Close delete modal
-    case "modal/closeDelete": {
-      return { ...state, isDeleteModalOpen: false };
-    }
-
     // Delete document
     case "document/delete": {
       const id = action.payload.id;
@@ -134,6 +179,28 @@ export function reducer(state: State, action: Action): State {
         isDeleteModalOpen: false,
         nameDraft: state.documents[newIndex].name,
       };
+    }
+
+    case "save/start": {
+      return { ...state, saveStatus: "saving" };
+    }
+
+    // Open delete modal
+    case "modal/openDelete": {
+      return { ...state, isDeleteModalOpen: true };
+    }
+
+    // Close delete modal
+    case "modal/closeDelete": {
+      return { ...state, isDeleteModalOpen: false };
+    }
+
+    // Sidebar
+    case "sidebar/open": {
+      return { ...state, sidebarOpen: true };
+    }
+    case "sidebar/close": {
+      return { ...state, sidebarOpen: false };
     }
 
     // set View

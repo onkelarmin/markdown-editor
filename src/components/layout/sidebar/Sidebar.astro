@@ -41,78 +41,102 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
   </div>
 </aside>
 
-<style lang="scss">
+<style is:global lang="scss">
   #sidebar {
     min-height: 0;
     background-color: var(--bg-container-sidebar);
     padding-inline: var(--pad-cont-sidebar-inline);
     padding-block: var(--pad-cont-sidebar-block);
     overflow: clip;
-  }
 
-  .layout {
-    height: 100%;
-    display: grid;
-    grid-template-rows: auto auto 1fr auto;
-  }
-
-  h2 {
-    font: var(--font-9);
-    text-transform: uppercase;
-    letter-spacing: var(--ls-9);
-    color: var(--fg-text-muted);
-    margin-block-end: var(--space-cont-xl);
-  }
-
-  .document-list {
-    display: grid;
-    align-content: start;
-    gap: var(--space-cont-lg);
-    margin-block: var(--space-cont-lg);
-    list-style: none;
-    overflow-x: clip;
-    overflow-y: auto;
-
-    &-button {
-      width: 100%;
+    .layout {
+      height: 100%;
       display: grid;
-      grid-template-columns: auto 1fr;
-      justify-items: start;
-      align-items: center;
-      column-gap: var(--space-cont-sm);
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
+      grid-template-rows: auto auto 1fr auto;
+    }
 
-      &[aria-current="true"] .document-list-button-name {
-        color: var(--fg-text-highlight);
-      }
+    h2 {
+      font: var(--font-9);
+      text-transform: uppercase;
+      letter-spacing: var(--ls-9);
+      color: var(--fg-text-muted);
+      margin-block-end: var(--space-cont-xl);
+    }
 
-      @media (hover: hover) {
-        &:hover {
-          .document-list-button-name {
-            color: var(--fg-text-highlight);
+    .document-list {
+      display: grid;
+      align-content: start;
+      gap: var(--space-cont-lg);
+      margin-block: var(--space-cont-lg);
+      list-style: none;
+      overflow-x: clip;
+      overflow-y: auto;
+
+      .status {
+        display: flex;
+        gap: var(--space-cont-sm);
+
+        svg {
+          width: var(--size-svg-spinner);
+
+          @media (prefers-reduced-motion: no-preference) {
+            display: block;
+            animation: spinner 1.5s steps(12) infinite;
           }
+        }
+
+        p {
+          font: var(--font-6);
         }
       }
 
-      &-icon {
-        width: var(--size-svg-document);
-        grid-row: span 2;
-      }
+      &-button {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        justify-items: start;
+        align-items: center;
+        column-gap: var(--space-cont-sm);
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
 
-      &-time {
-        font: var(--font-11);
-        color: var(--fg-text-muted);
-      }
+        &[aria-current="true"] .document-list-button-name {
+          color: var(--fg-text-highlight);
+        }
 
-      &-name {
-        font: var(--font-6);
-        color: var(--fg-text-neutral);
-        text-align: start;
-        transition: color var(--trans-fast-out);
+        @media (hover: hover) {
+          &:hover {
+            .document-list-button-name {
+              color: var(--fg-text-highlight);
+            }
+          }
+        }
+
+        &-icon {
+          width: var(--size-svg-document);
+          grid-row: span 2;
+        }
+
+        &-time {
+          font: var(--font-11);
+          color: var(--fg-text-muted);
+        }
+
+        &-name {
+          font: var(--font-6);
+          color: var(--fg-text-neutral);
+          text-align: start;
+          transition: color var(--trans-fast-out);
+        }
       }
+    }
+  }
+
+  @keyframes spinner {
+    to {
+      rotate: 360deg;
     }
   }
 </style>
