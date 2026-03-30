@@ -19,7 +19,4 @@ export async function loadDocuments(store: Store) {
       payload: { documents: data },
     });
   }
-
-  // console.log("Data: ", data);
-  // console.log("Error: ", error);
 }

@@ -94,8 +94,6 @@ export function reducer(state: State, action: Action): State {
         .filter((document) => document.id !== state.activeDocumentId)
         .map((document) => document.name);
 
-      console.log(names);
-
       if (names.includes(action.payload.name))
         return { ...state, nameError: "Document name already exists" };
 
@@ -125,6 +123,20 @@ export function reducer(state: State, action: Action): State {
             : document,
         ),
       };
+    }
+
+    // Save document
+    case "save/start": {
+      return { ...state, saveStatus: "saving" };
+    }
+    case "save/success": {
+      return { ...state, saveStatus: "saved" };
+    }
+    case "save/reset": {
+      return { ...state, saveStatus: "idle" };
+    }
+    case "save/error": {
+      return { ...state, saveStatus: "error" };
     }
 
     // Select document
@@ -179,10 +191,6 @@ export function reducer(state: State, action: Action): State {
         isDeleteModalOpen: false,
         nameDraft: state.documents[newIndex].name,
       };
-    }
-
-    case "save/start": {
-      return { ...state, saveStatus: "saving" };
     }
 
     // Open delete modal

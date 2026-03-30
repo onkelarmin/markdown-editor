@@ -51,6 +51,9 @@ export type Action =
       payload: { content: string };
     }
   | { type: "save/start" }
+  | { type: "save/success" }
+  | { type: "save/reset" }
+  | { type: "save/error" }
   | { type: "view/set"; payload: { view: View } }
   | { type: "sidebar/open" }
   | { type: "sidebar/close" }

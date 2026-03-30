@@ -65,7 +65,6 @@ export function bindEvents(dom: DOM, store: Store) {
   };
 
   const onDocumentNameChange = (e: Event) => {
-    console.log("change");
     const input = e.currentTarget;
 
     if (!(input instanceof HTMLInputElement)) return;
@@ -75,7 +74,6 @@ export function bindEvents(dom: DOM, store: Store) {
 
   const onDocumentNameSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    console.log("submit");
 
     const form = e.currentTarget;
 

@@ -9,7 +9,7 @@ export default async function seed() {
     {
       id: "doc-1",
       userId: "demo-user-1",
-      name: "Welcome",
+      name: "Welcome.md",
       content: "# Hello world",
       createdAt: now,
       modifiedAt: now,

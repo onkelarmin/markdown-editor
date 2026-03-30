@@ -5,7 +5,6 @@ import { selectActiveDocument, selectHasDocuments } from "../selectors";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { DURATIONS } from "@/scripts/shared/animations/global";
-import type { Theme } from "../lib/constants";
 
 function showStatus(dom: DOM, message: string, showSpinner: boolean) {
   const spinner =
@@ -43,9 +42,36 @@ function showDocuments(dom: DOM, state: State) {
   });
 }
 
-export function render(state: State, dom: DOM) {
-  console.log(state);
+function updateSaveButton(dom: DOM, state: State) {
+  const button = dom.saveChangesButton;
+  const text = dom.saveChangesText;
 
+  button.dataset.status = state.saveStatus;
+
+  switch (state.saveStatus) {
+    case "saving": {
+      text.textContent = "Saving...";
+      button.disabled = true;
+      break;
+    }
+    case "saved": {
+      text.textContent = "Saved";
+      button.disabled = false;
+      break;
+    }
+    case "error": {
+      text.textContent = "Retry";
+      button.disabled = false;
+      break;
+    }
+    default: {
+      text.textContent = "Save Changes";
+      button.disabled = false;
+    }
+  }
+}
+
+export function render(state: State, dom: DOM) {
   //Sidebar
   if (state.sidebarOpen) {
     dom.sidebarToggle.setAttribute("aria-expanded", "true");
@@ -123,7 +149,7 @@ export function render(state: State, dom: DOM) {
   );
 
   // Save changes button
-  dom.saveChangesButton.dataset.status = state.saveStatus;
+  updateSaveButton(dom, state);
 
   // Set view
   dom.editor.dataset.view = state.view;

@@ -15,6 +15,7 @@ export type DOM = {
   markdownContent: HTMLTextAreaElement;
   previewContent: HTMLElement;
   saveChangesButton: HTMLButtonElement;
+  saveChangesText: HTMLSpanElement;
   sidebarToggle: HTMLButtonElement;
   viewToggle: HTMLButtonElement;
   themeToggle: HTMLInputElement;
@@ -60,6 +61,9 @@ export function getDOM() {
   const saveChangesButton = document.querySelector<HTMLButtonElement>(
     "#save-changes-button",
   );
+  const saveChangesText = document.querySelector<HTMLButtonElement>(
+    "#save-changes-button > .text",
+  );
   const sidebarToggle =
     document.querySelector<HTMLButtonElement>("#sidebar-toggle");
   const viewToggle = document.querySelector<HTMLButtonElement>("#view-toggle");
@@ -84,6 +88,7 @@ export function getDOM() {
     !markdownContent ||
     !previewContent ||
     !saveChangesButton ||
+    !saveChangesText ||
     !sidebarToggle ||
     !viewToggle ||
     !themeToggle
@@ -108,6 +113,7 @@ export function getDOM() {
     markdownContent,
     previewContent,
     saveChangesButton,
+    saveChangesText,
     sidebarToggle,
     viewToggle,
     themeToggle,
