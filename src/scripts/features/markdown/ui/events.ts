@@ -205,6 +205,12 @@ export function bindEvents(dom: DOM, store: Store) {
   };
   dom.viewToggle.addEventListener("click", onPreviewClick);
 
+  // Theme toggle
+  const onThemeToggleClick = (e: Event) => {
+    store.dispatch({ type: "theme/toggle" });
+  };
+  dom.themeToggle.addEventListener("change", onThemeToggleClick);
+
   return () => {
     dom.saveChangesButton.removeEventListener("click", onSaveClick);
     dom.newDocumentButton.removeEventListener("click", onNewDocumentClick);
@@ -226,5 +232,6 @@ export function bindEvents(dom: DOM, store: Store) {
     dom.sidebarToggle.removeEventListener("click", onSidebarToggleClick);
     document.removeEventListener("keydown", onEscape);
     dom.viewToggle.removeEventListener("click", onPreviewClick);
+    dom.themeToggle.removeEventListener("click", onThemeToggleClick);
   };
 }

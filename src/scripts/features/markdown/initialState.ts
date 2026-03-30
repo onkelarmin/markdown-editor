@@ -1,4 +1,5 @@
-import type { State, Document } from "./types";
+import { isTheme, themeStorageKey, type Theme } from "./lib/constants";
+import type { State, Document, ThemeSource } from "./types";
 
 export function getInitialState(): State {
   const now = Date.now();
@@ -11,6 +12,11 @@ export function getInitialState(): State {
     (document) => document.id === activeDocumentId,
   );
 
+  let theme: Theme = "light";
+
+  const dataTheme = document.documentElement.dataset.theme;
+  if (dataTheme && isTheme(dataTheme)) theme = dataTheme;
+
   return {
     documents,
     activeDocumentId,
@@ -22,5 +28,7 @@ export function getInitialState(): State {
     isLoading: false,
     errorMessage: null,
     saveStatus: "idle",
+    theme: theme,
+    themeSource: localStorage.getItem(themeStorageKey) ? "user" : "system",
   };
 }

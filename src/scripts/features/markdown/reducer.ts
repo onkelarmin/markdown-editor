@@ -209,6 +209,24 @@ export function reducer(state: State, action: Action): State {
 
       return { ...state, view: action.payload.view };
     }
+
+    // Themes
+    case "theme/toggle": {
+      return {
+        ...state,
+        theme: state.theme === "light" ? "dark" : "light",
+        themeSource: "user",
+      };
+    }
+
+    case "theme/set": {
+      return {
+        ...state,
+        theme: action.payload.theme,
+        themeSource: action.payload.themeSource,
+      };
+    }
+
     default:
       return state;
   }

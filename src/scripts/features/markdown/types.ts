@@ -1,3 +1,5 @@
+import { type Theme } from "./lib/constants";
+
 export type SaveStatus = "idle" | "dirty" | "saving" | "saved" | "error";
 
 export type Document = {
@@ -10,6 +12,8 @@ export type Document = {
 
 export type View = "markdown" | "preview";
 
+export type ThemeSource = "system" | "user";
+
 export type State = {
   documents: Document[];
   activeDocumentId: string | null;
@@ -21,6 +25,8 @@ export type State = {
   isLoading: boolean;
   errorMessage: string | null;
   saveStatus: SaveStatus;
+  theme: Theme;
+  themeSource: ThemeSource;
 };
 
 export type Action =
@@ -49,7 +55,9 @@ export type Action =
   | { type: "sidebar/open" }
   | { type: "sidebar/close" }
   | { type: "modal/openDelete" }
-  | { type: "modal/closeDelete" };
+  | { type: "modal/closeDelete" }
+  | { type: "theme/toggle" }
+  | { type: "theme/set"; payload: { theme: Theme; themeSource: ThemeSource } };
 
 export type subscribeOptions = {
   fireImmediately?: boolean;

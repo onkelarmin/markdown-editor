@@ -17,6 +17,7 @@ export type DOM = {
   saveChangesButton: HTMLButtonElement;
   sidebarToggle: HTMLButtonElement;
   viewToggle: HTMLButtonElement;
+  themeToggle: HTMLInputElement;
 };
 
 export function getDOM() {
@@ -62,6 +63,9 @@ export function getDOM() {
   const sidebarToggle =
     document.querySelector<HTMLButtonElement>("#sidebar-toggle");
   const viewToggle = document.querySelector<HTMLButtonElement>("#view-toggle");
+  const themeToggle = document.querySelector<HTMLInputElement>(
+    ".theme-switch > input",
+  );
 
   if (
     !appLayout ||
@@ -81,7 +85,8 @@ export function getDOM() {
     !previewContent ||
     !saveChangesButton ||
     !sidebarToggle ||
-    !viewToggle
+    !viewToggle ||
+    !themeToggle
   ) {
     throw new Error("Required DOM element missing");
   }
@@ -105,5 +110,6 @@ export function getDOM() {
     saveChangesButton,
     sidebarToggle,
     viewToggle,
+    themeToggle,
   };
 }

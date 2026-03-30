@@ -5,6 +5,7 @@ import { selectActiveDocument, selectHasDocuments } from "../selectors";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { DURATIONS } from "@/scripts/shared/animations/global";
+import type { Theme } from "../lib/constants";
 
 function showStatus(dom: DOM, message: string, showSpinner: boolean) {
   const spinner =
@@ -43,6 +44,8 @@ function showDocuments(dom: DOM, state: State) {
 }
 
 export function render(state: State, dom: DOM) {
+  console.log(state);
+
   //Sidebar
   if (state.sidebarOpen) {
     dom.sidebarToggle.setAttribute("aria-expanded", "true");
@@ -77,6 +80,9 @@ export function render(state: State, dom: DOM) {
     showStatus(dom, "No documents yet", false);
     return;
   } else showDocuments(dom, state);
+
+  // Theme toggle
+  dom.themeToggle.checked = state.theme === "dark" ? true : false;
 
   //   Active document
   const activeDocument = selectActiveDocument(state);
