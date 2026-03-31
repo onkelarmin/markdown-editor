@@ -1,4 +1,5 @@
 import { queueAutoSave } from "../effects/autoSave";
+import { createNewDocument } from "../effects/createDocument";
 import { saveActiveDocument } from "../effects/saveDocument";
 import { normalizeDocumentName } from "../lib/normalizeDocumentName";
 import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
@@ -22,7 +23,7 @@ function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
       type: "document/updateName",
       payload: { name: normalized },
     });
-    saveActiveDocument(store);
+    void saveActiveDocument(store);
     input.blur();
   }
 }
@@ -38,6 +39,7 @@ export function bindEvents(dom: DOM, store: Store) {
   // Create document
   const onNewDocumentClick = () => {
     store.dispatch({ type: "document/create" });
+    void createNewDocument(store);
   };
   dom.newDocumentButton.addEventListener("click", onNewDocumentClick);
 

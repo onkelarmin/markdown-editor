@@ -14,7 +14,7 @@ import DeleteSvg from "@assets/icon-delete.svg";
     <SidebarToggle />
     <div class="left">
       <div class="logo">
-        <Logo aria-hidden="true" />
+        <Logo aria-hidden="true" id="test" />
       </div>
       <DocumentNameForm />
     </div>
@@ -101,3 +101,9 @@ import DeleteSvg from "@assets/icon-delete.svg";
     }
   }
 </style>
+
+<script>
+  document.querySelector("#test")?.addEventListener("click", () => {
+    document.querySelector("#toast")?.classList.toggle("show");
+  });
+</script>

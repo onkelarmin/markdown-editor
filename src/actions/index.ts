@@ -5,6 +5,29 @@ import { defineAction } from "astro:actions";
 import { and, db, Document, eq } from "astro:db";
 
 export const server = {
+  createDocument: defineAction({
+    input: z.object({
+      id: z.string(),
+      name: documentNameSchemaFull,
+      content: z.string(),
+      createdAt: z.number(),
+      modifiedAt: z.number(),
+      userId: z.string(),
+    }),
+    handler: async ({ id, name, content, createdAt, modifiedAt, userId }) => {
+      await db.insert(Document).values({
+        id,
+        name,
+        content,
+        createdAt,
+        modifiedAt,
+        userId,
+      });
+
+      return { success: true, id };
+    },
+  }),
+
   getDocuments: defineAction({
     handler: async () => {
       const userId = DEMO_USER_ID;

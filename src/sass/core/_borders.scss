@@ -35,6 +35,10 @@ $border-colors: (
     light: "red-500",
     dark: "red-500",
   ),
+  toast: (
+    light: "primary-600",
+    dark: "primary-600",
+  ),
 );
 
 $borders: (
@@ -57,5 +61,10 @@ $borders: (
     width: "md",
     style: "solid",
     color: "editor",
+  ),
+  toast: (
+    width: "lg",
+    style: "solid",
+    color: "toast",
   ),
 );

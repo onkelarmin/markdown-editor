@@ -24,7 +24,6 @@ import WarningSvg from "@assets/icon-warning.svg";
 
   .btn {
     width: 100%;
-    min-width: 9.375rem;
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
@@ -58,10 +57,6 @@ import WarningSvg from "@assets/icon-warning.svg";
 
     .text {
       display: none;
-
-      @include mq(medium) {
-        display: inline;
-      }
     }
 
     .icon {
@@ -79,6 +74,14 @@ import WarningSvg from "@assets/icon-warning.svg";
       }
       &-warning {
         width: var(--size-svg-warning);
+      }
+    }
+
+    @include mq(medium) {
+      min-width: 9.375rem;
+
+      .text {
+        display: inline;
       }
     }
 

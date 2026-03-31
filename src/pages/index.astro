@@ -9,6 +9,7 @@ import MainLayout from "@layouts/MainLayout.astro";
 import Main from "@/components/layout/main/Main.astro";
 import Sidebar from "@/components/layout/sidebar/Sidebar.astro";
 import SkipNavLink from "@/components/layout/SkipNavLink.astro";
+import Toast from "@/components/ui/Toast.astro";
 
 const page = sitePages.home;
 ---
@@ -24,6 +25,7 @@ const page = sitePages.home;
   <div id="app-layout">
     <Sidebar />
     <Main />
+    <Toast />
   </div>
 </MainLayout>
 

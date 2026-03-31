@@ -7,6 +7,6 @@ export function queueAutoSave(store: Store, delay = 600) {
   if (saveTimer) clearTimeout(saveTimer);
 
   saveTimer = setTimeout(() => {
-    saveActiveDocument(store);
+    void saveActiveDocument(store);
   }, delay);
 }
