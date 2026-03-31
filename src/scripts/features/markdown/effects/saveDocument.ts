@@ -19,14 +19,24 @@ export async function saveActiveDocument(store: Store) {
   });
 
   if (error) {
-    console.error(error.message);
-    store.dispatch({ type: "save/error" });
+    console.error("Save document failed: ", error);
+
+    store.dispatch({ type: "document/saveError" });
+
+    store.dispatch({
+      type: "toast/enqueue",
+      payload: {
+        id: crypto.randomUUID(),
+        message: "Failed to save changes. Your edits are still in the editor.",
+        variant: "error",
+      },
+    });
   }
 
   if (data) {
-    store.dispatch({ type: "save/success" });
+    store.dispatch({ type: "document/saveSuccess" });
     setTimeout(() => {
-      store.dispatch({ type: "save/reset" });
+      store.dispatch({ type: "document/saveReset" });
     }, 2000);
   }
 }

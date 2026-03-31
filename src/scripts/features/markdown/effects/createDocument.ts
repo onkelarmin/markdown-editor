@@ -20,7 +20,16 @@ export async function createNewDocument(store: Store) {
   });
 
   if (error) {
-    console.error(error.message);
+    console.error("Create document failed: ", error);
+
+    store.dispatch({
+      type: "toast/enqueue",
+      payload: {
+        id: crypto.randomUUID(),
+        message: "Failed to create document.",
+        variant: "error",
+      },
+    });
   }
   if (data) {
   }

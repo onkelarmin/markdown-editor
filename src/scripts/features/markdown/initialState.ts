@@ -30,5 +30,6 @@ export function getInitialState(): State {
     saveStatus: "idle",
     theme: theme,
     themeSource: localStorage.getItem(themeStorageKey) ? "user" : "system",
+    toasts: [],
   };
 }

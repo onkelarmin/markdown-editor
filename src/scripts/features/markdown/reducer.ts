@@ -126,16 +126,16 @@ export function reducer(state: State, action: Action): State {
     }
 
     // Save document
-    case "save/start": {
+    case "document/saveStart": {
       return { ...state, saveStatus: "saving" };
     }
-    case "save/success": {
+    case "document/saveSuccess": {
       return { ...state, saveStatus: "saved" };
     }
-    case "save/reset": {
+    case "document/saveReset": {
       return { ...state, saveStatus: "idle" };
     }
-    case "save/error": {
+    case "document/saveError": {
       return { ...state, saveStatus: "error" };
     }
 
@@ -232,6 +232,27 @@ export function reducer(state: State, action: Action): State {
         ...state,
         theme: action.payload.theme,
         themeSource: action.payload.themeSource,
+      };
+    }
+
+    case "toast/enqueue": {
+      return {
+        ...state,
+        toasts: [
+          ...state.toasts,
+          {
+            id: action.payload.id,
+            message: action.payload.message,
+            variant: action.payload.variant,
+          },
+        ],
+      };
+    }
+
+    case "toast/dismiss": {
+      return {
+        ...state,
+        toasts: state.toasts.filter((toast) => toast?.id !== action.payload.id),
       };
     }
 

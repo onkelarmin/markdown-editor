@@ -2,6 +2,18 @@ import { type Theme } from "./lib/constants";
 
 export type SaveStatus = "idle" | "dirty" | "saving" | "saved" | "error";
 
+export type View = "markdown" | "preview";
+
+export type ThemeSource = "system" | "user";
+
+export type ToastVariant = "success" | "error" | "info";
+
+export type Toast = {
+  id: string;
+  message: string;
+  variant: ToastVariant;
+} | null;
+
 export type Document = {
   id: string;
   name: string;
@@ -9,10 +21,6 @@ export type Document = {
   createdAt: number;
   modifiedAt: number;
 };
-
-export type View = "markdown" | "preview";
-
-export type ThemeSource = "system" | "user";
 
 export type State = {
   documents: Document[];
@@ -27,6 +35,7 @@ export type State = {
   saveStatus: SaveStatus;
   theme: Theme;
   themeSource: ThemeSource;
+  toasts: Toast[];
 };
 
 export type Action =
@@ -50,17 +59,22 @@ export type Action =
       type: "document/updateContent";
       payload: { content: string };
     }
-  | { type: "save/start" }
-  | { type: "save/success" }
-  | { type: "save/reset" }
-  | { type: "save/error" }
+  | { type: "document/saveStart" }
+  | { type: "document/saveSuccess" }
+  | { type: "document/saveReset" }
+  | { type: "document/saveError" }
   | { type: "view/set"; payload: { view: View } }
   | { type: "sidebar/open" }
   | { type: "sidebar/close" }
   | { type: "modal/openDelete" }
   | { type: "modal/closeDelete" }
   | { type: "theme/toggle" }
-  | { type: "theme/set"; payload: { theme: Theme; themeSource: ThemeSource } };
+  | { type: "theme/set"; payload: { theme: Theme; themeSource: ThemeSource } }
+  | {
+      type: "toast/enqueue";
+      payload: { id: string; message: string; variant: ToastVariant };
+    }
+  | { type: "toast/dismiss"; payload: { id: string } };
 
 export type subscribeOptions = {
   fireImmediately?: boolean;

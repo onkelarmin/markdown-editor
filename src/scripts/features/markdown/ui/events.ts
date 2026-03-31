@@ -30,8 +30,8 @@ function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
 
 export function bindEvents(dom: DOM, store: Store) {
   // Save changes
-  const onSaveClick = (e: MouseEvent) => {
-    store.dispatch({ type: "save/start" });
+  const onSaveClick = () => {
+    store.dispatch({ type: "document/saveStart" });
     void saveActiveDocument(store);
   };
   dom.saveChangesButton.addEventListener("click", onSaveClick);
@@ -213,6 +213,24 @@ export function bindEvents(dom: DOM, store: Store) {
   };
   dom.themeToggle.addEventListener("change", onThemeToggleClick);
 
+  // Close toast button
+  const onCloseToastClick = (e: MouseEvent) => {
+    const button = e.currentTarget;
+
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    const toast = button.closest("#toast");
+
+    if (!(toast instanceof HTMLElement)) return;
+
+    const id = toast.dataset.id;
+
+    if (!id) return;
+
+    store.dispatch({ type: "toast/dismiss", payload: { id } });
+  };
+  dom.closeToastButton.addEventListener("click", onCloseToastClick);
+
   return () => {
     dom.saveChangesButton.removeEventListener("click", onSaveClick);
     dom.newDocumentButton.removeEventListener("click", onNewDocumentClick);
@@ -235,5 +253,6 @@ export function bindEvents(dom: DOM, store: Store) {
     document.removeEventListener("keydown", onEscape);
     dom.viewToggle.removeEventListener("click", onPreviewClick);
     dom.themeToggle.removeEventListener("click", onThemeToggleClick);
+    dom.closeToastButton.removeEventListener("click", onCloseToastClick);
   };
 }

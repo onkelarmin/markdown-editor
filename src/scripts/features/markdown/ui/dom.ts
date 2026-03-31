@@ -19,6 +19,9 @@ export type DOM = {
   sidebarToggle: HTMLButtonElement;
   viewToggle: HTMLButtonElement;
   themeToggle: HTMLInputElement;
+  toastContainer: HTMLElement;
+  toastMessage: HTMLParagraphElement;
+  closeToastButton: HTMLButtonElement;
 };
 
 export function getDOM() {
@@ -70,6 +73,12 @@ export function getDOM() {
   const themeToggle = document.querySelector<HTMLInputElement>(
     ".theme-switch > input",
   );
+  const toastContainer = document.querySelector<HTMLElement>("#toast");
+  const toastMessage =
+    document.querySelector<HTMLParagraphElement>("#toast  .message");
+  const closeToastButton = document.querySelector<HTMLButtonElement>(
+    "#close-toast-button",
+  );
 
   if (
     !appLayout ||
@@ -91,7 +100,10 @@ export function getDOM() {
     !saveChangesText ||
     !sidebarToggle ||
     !viewToggle ||
-    !themeToggle
+    !themeToggle ||
+    !toastContainer ||
+    !toastMessage ||
+    !closeToastButton
   ) {
     throw new Error("Required DOM element missing");
   }
@@ -117,5 +129,8 @@ export function getDOM() {
     sidebarToggle,
     viewToggle,
     themeToggle,
+    toastContainer,
+    toastMessage,
+    closeToastButton,
   };
 }

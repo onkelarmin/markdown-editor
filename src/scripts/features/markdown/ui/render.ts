@@ -1,7 +1,11 @@
 import { formatTime } from "@/scripts/shared/utils/helper";
 import type { State } from "../types";
 import type { DOM } from "./dom";
-import { selectActiveDocument, selectHasDocuments } from "../selectors";
+import {
+  selectActiveDocument,
+  selectActiveToast,
+  selectHasDocuments,
+} from "../selectors";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { DURATIONS } from "@/scripts/shared/animations/global";
@@ -157,4 +161,14 @@ export function render(state: State, dom: DOM) {
     "aria-pressed",
     state.view === "preview" ? "true" : "false",
   );
+
+  // Toasts
+  const activeToast = selectActiveToast(state);
+  if (activeToast) {
+    dom.toastContainer.classList.add("show");
+    dom.toastContainer.dataset.id = activeToast.id;
+    dom.toastMessage.textContent = activeToast.message;
+  } else {
+    dom.toastContainer.classList.remove("show");
+  }
 }

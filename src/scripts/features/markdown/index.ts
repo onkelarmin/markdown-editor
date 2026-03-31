@@ -4,6 +4,7 @@ import {
   saveThemePreference,
   setupSystemThemeListener,
 } from "./effects/theme";
+import { clearToastTimer, startToastTimer } from "./effects/toast";
 import { createStore, type Store } from "./store";
 import { getDOM, type DOM } from "./ui/dom";
 import { bindEvents } from "./ui/events";
@@ -40,6 +41,8 @@ function createMarkdownStore() {
 function registerMarkdownSubscribers(dom: DOM, store: Store) {
   let previousTheme = store.getState().theme;
 
+  let activeToastId: string | null = null;
+
   let unsubscribes: Array<() => void> = [];
 
   unsubscribes.push(
@@ -59,6 +62,26 @@ function registerMarkdownSubscribers(dom: DOM, store: Store) {
     store.subscribe(
       (state) => {
         render(state, dom);
+      },
+      { fireImmediately: true },
+    ),
+  );
+  unsubscribes.push(
+    store.subscribe(
+      (state) => {
+        console.log(state.toasts);
+        const activeToast = state.toasts[0] ?? null;
+
+        if (!activeToast) {
+          clearToastTimer();
+          activeToastId = null;
+          return;
+        }
+
+        if (activeToast.id === activeToastId) return;
+
+        activeToastId = activeToast.id;
+        startToastTimer(store, activeToastId);
       },
       { fireImmediately: true },
     ),

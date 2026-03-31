@@ -15,3 +15,7 @@ export function selectHasDocuments(state: State) {
 export function selectSidebarOpen(state: State) {
   return state.sidebarOpen;
 }
+
+export function selectActiveToast(state: State) {
+  return state.toasts[0] ?? null;
+}
