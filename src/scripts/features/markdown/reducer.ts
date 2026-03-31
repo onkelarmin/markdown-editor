@@ -16,6 +16,7 @@ function createEmptyDocument(documents?: Document[]): Document {
     content: "",
     createdAt: now,
     modifiedAt: now,
+    persistStatus: "creating",
   };
 }
 
@@ -77,6 +78,28 @@ export function reducer(state: State, action: Action): State {
         activeDocumentId: document.id,
         nameDraft: document.name,
         nameError: null,
+      };
+    }
+
+    case "document/createSuccess": {
+      return {
+        ...state,
+        documents: state.documents.map((document) =>
+          document.id === action.payload.id
+            ? { ...document, persistStatus: "saved" }
+            : document,
+        ),
+      };
+    }
+
+    case "document/createError": {
+      return {
+        ...state,
+        documents: state.documents.map((document) =>
+          document.id === action.payload.id
+            ? { ...document, persistStatus: "error" }
+            : document,
+        ),
       };
     }
 

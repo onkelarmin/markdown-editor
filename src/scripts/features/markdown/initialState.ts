@@ -2,8 +2,6 @@ import { isTheme, themeStorageKey, type Theme } from "./lib/constants";
 import type { State, Document, ThemeSource } from "./types";
 
 export function getInitialState(): State {
-  const now = Date.now();
-
   const documents: Document[] = [];
 
   const activeDocumentId = null;

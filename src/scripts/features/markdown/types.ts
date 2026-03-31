@@ -2,6 +2,8 @@ import { type Theme } from "./lib/constants";
 
 export type SaveStatus = "idle" | "dirty" | "saving" | "saved" | "error";
 
+export type PersistStatus = "creating" | "saved" | "error";
+
 export type View = "markdown" | "preview";
 
 export type ThemeSource = "system" | "user";
@@ -20,6 +22,7 @@ export type Document = {
   content: string;
   createdAt: number;
   modifiedAt: number;
+  persistStatus: PersistStatus;
 };
 
 export type State = {
@@ -44,6 +47,14 @@ export type Action =
   | { type: "documents/loadError"; payload: { message: string } }
   | {
       type: "document/create";
+    }
+  | {
+      type: "document/createSuccess";
+      payload: { id: string };
+    }
+  | {
+      type: "document/createError";
+      payload: { id: string };
     }
   | { type: "document/select"; payload: { id: string } }
   | { type: "document/delete"; payload: { id: string } }

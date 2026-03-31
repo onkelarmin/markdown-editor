@@ -4,6 +4,8 @@ import type { Store } from "../store";
 import { DEMO_USER_ID } from "@/server/config";
 
 export async function saveActiveDocument(store: Store) {
+  store.dispatch({ type: "document/saveStart" });
+
   const state = store.getState();
 
   const activeDocument = selectActiveDocument(state);

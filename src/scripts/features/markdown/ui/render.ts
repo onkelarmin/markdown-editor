@@ -36,6 +36,7 @@ function showDocuments(dom: DOM, state: State) {
     if (!button || !time || !name) return;
 
     button.dataset.id = document.id;
+    button.dataset.status = document.persistStatus;
     time.textContent = formatTime(document.modifiedAt);
     name.textContent = document.name;
 

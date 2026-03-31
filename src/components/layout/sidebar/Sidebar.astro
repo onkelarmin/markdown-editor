@@ -17,7 +17,7 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
         <li class="document-list-item">
           <button type="button" class="document-list-button">
             <svg
-              class="document-list-button-icon"
+              class="document-list-button-icon saved"
               aria-hidden="true"
               viewBox="0 0 14 16"
               fill="none"
@@ -29,6 +29,46 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
                 d="M13.1071 3.39286C13.2738 3.55952 13.4167 3.78571 13.5357 4.07143C13.6548 4.35714 13.7143 4.61905 13.7143 4.85714V15.1429C13.7143 15.381 13.631 15.5833 13.4643 15.75C13.2976 15.9167 13.0952 16 12.8571 16H0.857143C0.619048 16 0.416667 15.9167 0.25 15.75C0.0833333 15.5833 0 15.381 0 15.1429V0.857143C0 0.619048 0.0833333 0.416667 0.25 0.25C0.416667 0.0833333 0.619048 0 0.857143 0H8.85714C9.09524 0 9.35714 0.0595238 9.64286 0.178571C9.92857 0.297619 10.1548 0.440476 10.3214 0.607143L13.1071 3.39286ZM9.14286 1.21429V4.57143H12.5C12.4405 4.39881 12.375 4.27679 12.3036 4.20536L9.50893 1.41071C9.4375 1.33929 9.31548 1.27381 9.14286 1.21429ZM12.5714 5.71429V14.8571H1.14286V1.14286H8V4.85714C8 5.09524 8.08333 5.29762 8.25 5.46429C8.41667 5.63095 8.61905 5.71429 8.85714 5.71429H12.5714Z"
                 fill="white"></path>
             </svg>
+            <svg
+              class="document-list-button-icon creating"
+              aria-hidden="true"
+              viewBox="0 0 34 34"
+            >
+              <circle cx="17" cy="2" r="2" fill="currentColor"></circle>
+              <circle cx="17" cy="32" r="2" fill="currentColor" opacity="0.3"
+              ></circle>
+              <circle cx="24.5" cy="4" r="2" fill="currentColor" opacity="0.3"
+              ></circle>
+              <circle cx="9.5" cy="30" r="2" fill="currentColor" opacity="0.3"
+              ></circle>
+              <circle cx="9.5" cy="4" r="2" fill="currentColor" opacity="0.93"
+              ></circle>
+              <circle cx="24.5" cy="30" r="2" fill="currentColor" opacity="0.3"
+              ></circle>
+              <circle cx="2" cy="17" r="2" fill="currentColor" opacity="0.65"
+              ></circle>
+              <circle cx="32" cy="17" r="2" fill="currentColor" opacity="0.3"
+              ></circle>
+              <circle cx="4" cy="9.5" r="2" fill="currentColor" opacity="0.86"
+              ></circle>
+              <circle cx="30" cy="24.5" r="2" fill="currentColor" opacity="0.3"
+              ></circle>
+              <circle cx="4" cy="24.5" r="2" fill="currentColor" opacity="0.44"
+              ></circle>
+              <circle cx="30" cy="9.5" r="2" fill="currentColor" opacity="0.3"
+              ></circle>
+            </svg>
+            <svg
+              class="document-list-button-icon error"
+              aria-hidden="true"
+              viewBox="0 0 28 26"
+              fill="none"
+            >
+              <path
+                d="M15.2481 19.9985C15.2481 20.33 15.1164 20.648 14.882 20.8824C14.6475 21.1168 14.3296 21.2485 13.9981 21.2485C13.6666 21.2485 13.3486 21.1168 13.1142 20.8824C12.8798 20.648 12.7481 20.33 12.7481 19.9985C12.7481 19.667 12.8798 19.349 13.1142 19.1146C13.3486 18.8802 13.6666 18.7485 13.9981 18.7485C14.3296 18.7485 14.6475 18.8802 14.882 19.1146C15.1164 19.349 15.2481 19.667 15.2481 19.9985ZM13.9981 6.9985C13.7329 6.9985 13.4785 7.10386 13.291 7.29139C13.1034 7.47893 12.9981 7.73328 12.9981 7.9985V15.9985C12.9981 16.2637 13.1034 16.5181 13.291 16.7056C13.4785 16.8931 13.7329 16.9985 13.9981 16.9985C14.2633 16.9985 14.5176 16.8931 14.7052 16.7056C14.8927 16.5181 14.9981 16.2637 14.9981 15.9985V7.9985C14.9981 7.73328 14.8927 7.47893 14.7052 7.29139C14.5176 7.10386 14.2633 6.9985 13.9981 6.9985ZM10.9341 1.8075C12.2661 -0.6025 15.7301 -0.6025 17.0621 1.8075L27.5551 20.8065C28.8441 23.1385 27.1561 25.9985 24.4921 25.9985H3.50507C0.840074 25.9985 -0.846926 23.1385 0.441074 20.8065L10.9341 1.8075ZM15.3111 2.7745C15.1814 2.53981 14.9913 2.34415 14.7603 2.2079C14.5294 2.07165 14.2662 1.99978 13.9981 1.99978C13.73 1.99978 13.4667 2.07165 13.2358 2.2079C13.0049 2.34415 12.8147 2.53981 12.6851 2.7745L2.19207 21.7735C2.06599 22.0019 2.00164 22.2592 2.00538 22.52C2.00912 22.7808 2.08081 23.0362 2.21339 23.2608C2.34596 23.4855 2.53483 23.6717 2.76135 23.8011C2.98787 23.9304 3.24422 23.9985 3.50507 23.9985H24.4921C24.7529 23.9985 25.0093 23.9304 25.2358 23.8011C25.4623 23.6717 25.6512 23.4855 25.7838 23.2608C25.9163 23.0362 25.988 22.7808 25.9918 22.52C25.9955 22.2592 25.9312 22.0019 25.8051 21.7735L15.3111 2.7745Z"
+                fill="currentColor"></path>
+            </svg>
+
             <p class="document-list-button-time"></p>
             <p class="document-list-button-name"></p>
           </button>
@@ -98,6 +138,7 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
         align-items: center;
         column-gap: var(--space-cont-sm);
         background-color: transparent;
+        color: var(--fg-text-neutral);
         border: none;
         cursor: pointer;
         text-decoration: none;
@@ -115,8 +156,20 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
         }
 
         &-icon {
+          display: none;
           width: var(--size-svg-document);
           grid-row: span 2;
+        }
+
+        &[data-status="creating"] .creating {
+          display: block;
+          animation: spinner 1.5s steps(12) infinite;
+        }
+        &[data-status="saved"] .saved {
+          display: block;
+        }
+        &[data-status="error"] .error {
+          display: block;
         }
 
         &-time {

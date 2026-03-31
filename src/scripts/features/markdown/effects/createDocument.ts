@@ -23,6 +23,11 @@ export async function createNewDocument(store: Store) {
     console.error("Create document failed: ", error);
 
     store.dispatch({
+      type: "document/createError",
+      payload: { id: newDocument.id },
+    });
+
+    store.dispatch({
       type: "toast/enqueue",
       payload: {
         id: crypto.randomUUID(),
@@ -32,5 +37,9 @@ export async function createNewDocument(store: Store) {
     });
   }
   if (data) {
+    store.dispatch({
+      type: "document/createSuccess",
+      payload: { id: newDocument.id },
+    });
   }
 }

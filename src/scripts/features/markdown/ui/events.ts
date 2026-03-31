@@ -31,7 +31,6 @@ function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
 export function bindEvents(dom: DOM, store: Store) {
   // Save changes
   const onSaveClick = () => {
-    store.dispatch({ type: "document/saveStart" });
     void saveActiveDocument(store);
   };
   dom.saveChangesButton.addEventListener("click", onSaveClick);

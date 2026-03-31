@@ -14,9 +14,13 @@ export async function loadDocuments(store: Store) {
     });
   }
   if (data) {
+    const documents = data.map((document) => ({
+      ...document,
+      persistStatus: "saved" as const,
+    }));
     store.dispatch({
       type: "documents/loadSuccess",
-      payload: { documents: data },
+      payload: { documents },
     });
   }
 }
