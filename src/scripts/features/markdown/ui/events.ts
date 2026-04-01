@@ -1,5 +1,6 @@
 import { queueAutoSave } from "../effects/autoSave";
 import { createNewDocument } from "../effects/createDocument";
+import { deleteActiveDocument } from "../effects/deleteDocument";
 import { saveActiveDocument } from "../effects/saveDocument";
 import { normalizeDocumentName } from "../lib/normalizeDocumentName";
 import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
@@ -150,23 +151,19 @@ export function bindEvents(dom: DOM, store: Store) {
   dom.deleteModal.addEventListener("click", onDeleteModalOverlayClick);
 
   // Delete document
-  const onDeleteConfirmationClick = (e: MouseEvent) => {
-    if (!(e.target instanceof Element)) return;
+  const onDeleteConfirmationClick = () => {
+    const state = store.getState();
 
-    const button = e.target.closest<HTMLButtonElement>(
-      "#delete-modal-confirmation-button",
+    const activeDocument = state.documents.find(
+      (document) => document.id === state.activeDocumentId,
     );
 
-    if (!button) return;
+    if (!activeDocument) return;
 
-    const id = button.dataset.id;
+    store.dispatch({ type: "document/delete" });
+    store.dispatch({ type: "modal/closeDelete" });
 
-    if (!id) {
-      console.error("Confirmation button missing data-id");
-      store.dispatch({ type: "modal/closeDelete" });
-    } else {
-      store.dispatch({ type: "document/delete", payload: { id } });
-    }
+    void deleteActiveDocument(store, activeDocument);
   };
   dom.deleteModalConfirmationButton.addEventListener(
     "click",

@@ -145,6 +145,7 @@ export function reducer(state: State, action: Action): State {
               }
             : document,
         ),
+        saveStatus: "dirty",
       };
     }
 
@@ -180,7 +181,7 @@ export function reducer(state: State, action: Action): State {
 
     // Delete document
     case "document/delete": {
-      const id = action.payload.id;
+      const id = state.activeDocumentId;
       const toBeDeleted = state.documents.find(
         (document) => document.id === id,
       );
@@ -213,6 +214,15 @@ export function reducer(state: State, action: Action): State {
         activeDocumentId: newId,
         isDeleteModalOpen: false,
         nameDraft: state.documents[newIndex].name,
+      };
+    }
+
+    case "document/deleteRollback": {
+      return {
+        ...state,
+        documents: [...state.documents, action.payload.document],
+        activeDocumentId: action.payload.document.id,
+        nameDraft: action.payload.document.name,
       };
     }
 

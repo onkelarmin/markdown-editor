@@ -57,7 +57,8 @@ export type Action =
       payload: { id: string };
     }
   | { type: "document/select"; payload: { id: string } }
-  | { type: "document/delete"; payload: { id: string } }
+  | { type: "document/delete" }
+  | { type: "document/deleteRollback"; payload: { document: Document } }
   | {
       type: "document/updateName";
       payload: { name: string };

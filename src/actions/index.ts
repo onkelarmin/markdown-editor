@@ -48,6 +48,7 @@ export const server = {
       return documents;
     },
   }),
+
   saveDocument: defineAction({
     input: z.object({
       id: z.string(),
@@ -61,6 +62,15 @@ export const server = {
         .update(Document)
         .set({ name, content, modifiedAt })
         .where(and(eq(Document.id, id), eq(Document.userId, userId)));
+
+      return { success: true, id };
+    },
+  }),
+
+  deleteDocument: defineAction({
+    input: z.object({ id: z.string() }),
+    handler: async ({ id }) => {
+      await db.delete(Document).where(eq(Document.id, id));
 
       return { success: true, id };
     },
