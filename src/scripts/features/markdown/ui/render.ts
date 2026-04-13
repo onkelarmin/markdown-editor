@@ -60,6 +60,33 @@ function updateDocumentList(state: State, dom: DOM) {
   }
 }
 
+function updateAuthPanel(state: State, dom: DOM) {
+  dom.authContainer.dataset.state = state.auth.status;
+
+  switch (state.auth.status) {
+    case "guest": {
+      dom.authEmailSpan.textContent = "";
+      dom.authButtonText.textContent = "Sign in";
+      dom.authButton.disabled = false;
+      break;
+    }
+
+    case "loading": {
+      dom.authEmailSpan.textContent = "";
+      dom.authButtonText.textContent = "Signing in";
+      dom.authButton.disabled = true;
+      break;
+    }
+
+    case "authenticated": {
+      dom.authEmailSpan.textContent = state.auth.email ?? "";
+      dom.authButtonText.textContent = "Sign out";
+      dom.authButton.disabled = false;
+      break;
+    }
+  }
+}
+
 function updateSaveButton(state: State, dom: DOM) {
   const button = dom.saveChangesButton;
   const text = dom.saveChangesText;
@@ -145,31 +172,8 @@ export function render(state: State, dom: DOM) {
     }, DURATIONS.default * 1000);
   }
 
-  // Login
-  dom.loginContainer.dataset.state = state.auth.status;
-
-  switch (state.auth.status) {
-    case "guest": {
-      dom.loginEmailSpan.textContent = "";
-      dom.loginButtonText.textContent = "Sign in";
-      dom.loginButton.disabled = false;
-      break;
-    }
-
-    case "loading": {
-      dom.loginEmailSpan.textContent = "";
-      dom.loginButtonText.textContent = "Signing in";
-      dom.loginButton.disabled = true;
-      break;
-    }
-
-    case "authenticated": {
-      dom.loginEmailSpan.textContent = state.auth.userId ?? "";
-      dom.loginButtonText.textContent = "Sign out";
-      dom.loginButton.disabled = false;
-      break;
-    }
-  }
+  // Auth panel
+  updateAuthPanel(state, dom);
 
   // Toasts
   const activeToast = selectActiveToast(state);

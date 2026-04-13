@@ -26,6 +26,50 @@ $button-colors: (
       ),
     ),
   ),
+  secondary: (
+    idle: (
+      bg: (
+        light: "transparent",
+        dark: "transparent",
+      ),
+      fg: (
+        light: "primary-600",
+        dark: "primary-600",
+      ),
+      border: (
+        light: "primary-600",
+        dark: "primary-600",
+      ),
+    ),
+    hover: (
+      bg: (
+        light: "primary-600",
+        dark: "primary-600",
+      ),
+      fg: (
+        light: "neutral-000",
+        dark: "neutral-000",
+      ),
+      border: (
+        light: "primary-600",
+        dark: "primary-600",
+      ),
+    ),
+    disabled: (
+      bg: (
+        light: "transparent",
+        dark: "transparent",
+      ),
+      fg: (
+        light: "slate-500",
+        dark: "slate-500",
+      ),
+      border: (
+        light: "slate-500",
+        dark: "slate-500",
+      ),
+    ),
+  ),
 );
 
 $button-appearance: (
@@ -37,6 +81,9 @@ $button-appearance: (
   ),
   border-radius: (
     default: rem(4px),
+  ),
+  border-width: (
+    default: rem(2px),
   ),
   gap: (
     default: rem(8px),

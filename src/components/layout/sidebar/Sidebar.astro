@@ -90,12 +90,12 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
     </ul>
 
     <!-- Login -->
-    <div id="login-container" class="login-container" data-state="guest">
+    <div id="auth-container" class="auth-container" data-state="guest">
       <p class="info sign-in">Save your documents</p>
       <p class="info sign-out">
-        Signed in as<br /><span id="login-email-span"></span>
+        Signed in as<br /><span id="auth-email-span"></span>
       </p>
-      <button type="button" id="login-button" class="button">
+      <button type="button" id="auth-button" class="button secondary">
         <SpinnerSvg class="icon-spinner" aria-hidden="true" />
         <span class="text">Sign in</span></button
       >
@@ -150,6 +150,7 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
       transition:
         transform var(--trans-fast-out-sensitive),
         background-color var(--trans-fast-out),
+        border-color var(--trans-fast-out),
         outline-color var(--trans-fast-in),
         outline-offset var(--trans-fast-out-sensitive);
 
@@ -162,6 +163,30 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
         &:not(:disabled):hover {
           transform: scale(1.02);
           background-color: var(--btn-bg-color-hover-default);
+        }
+      }
+
+      &.secondary {
+        background-color: var(--btn-bg-color-idle-secondary);
+        color: var(--btn-fg-color-idle-secondary);
+        border-width: var(--btn-border-width-default);
+        border-style: solid;
+        border-color: var(--btn-border-color-idle-secondary);
+
+        &:disabled {
+          background-color: var(--btn-bg-color-disabled-secondary);
+          color: var(--btn-fg-color-disabled-secondary);
+          border-color: var(--btn-border-color-disabled-secondary);
+          cursor: not-allowed;
+        }
+
+        @media (hover: hover) {
+          &:not(:disabled):hover {
+            transform: scale(1);
+            background-color: var(--btn-bg-color-hover-secondary);
+            color: var(--btn-fg-color-hover-secondary);
+            border-color: var(--btn-border-color-hover-secondary);
+          }
         }
       }
     }
@@ -275,7 +300,7 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
       }
     }
 
-    .login-container {
+    .auth-container {
       display: grid;
       gap: var(--space-cont-sm);
       border-block-end: var(--border-sidebar);

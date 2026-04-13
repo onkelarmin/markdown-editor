@@ -5,6 +5,7 @@ type AuthStatus = "guest" | "authenticated" | "loading";
 export type AuthState = {
   status: AuthStatus;
   userId: string | null;
+  email: string | null;
 };
 
 export type View = "markdown" | "preview";

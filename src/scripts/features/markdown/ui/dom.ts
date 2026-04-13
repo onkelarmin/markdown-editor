@@ -4,10 +4,10 @@ export type DOM = {
   newDocumentButton: HTMLButtonElement;
   documentList: HTMLUListElement;
   documentListItemTemplate: HTMLTemplateElement;
-  loginContainer: HTMLElement;
-  loginEmailSpan: HTMLSpanElement;
-  loginButton: HTMLButtonElement;
-  loginButtonText: HTMLSpanElement;
+  authContainer: HTMLElement;
+  authEmailSpan: HTMLSpanElement;
+  authButton: HTMLButtonElement;
+  authButtonText: HTMLSpanElement;
   documentNameForm: HTMLFormElement;
   documentNameInput: HTMLInputElement;
   documentNameError: HTMLParagraphElement;
@@ -40,15 +40,12 @@ export function getDOM() {
   const documentListItemTemplate = document.querySelector<HTMLTemplateElement>(
     "#document-list-item-template",
   );
-  const loginContainer =
-    document.querySelector<HTMLElement>("#login-container");
-  const loginEmailSpan =
-    document.querySelector<HTMLSpanElement>("#login-email-span");
-  const loginButton =
-    document.querySelector<HTMLButtonElement>("#login-button");
-  const loginButtonText = document.querySelector<HTMLSpanElement>(
-    "#login-button .text",
-  );
+  const authContainer = document.querySelector<HTMLElement>("#auth-container");
+  const authEmailSpan =
+    document.querySelector<HTMLSpanElement>("#auth-email-span");
+  const authButton = document.querySelector<HTMLButtonElement>("#auth-button");
+  const authButtonText =
+    document.querySelector<HTMLSpanElement>("#auth-button .text");
   const documentNameForm = document.querySelector<HTMLFormElement>(
     "#document-name-form",
   );
@@ -99,10 +96,10 @@ export function getDOM() {
     !newDocumentButton ||
     !documentList ||
     !documentListItemTemplate ||
-    !loginContainer ||
-    !loginEmailSpan ||
-    !loginButton ||
-    !loginButtonText ||
+    !authContainer ||
+    !authEmailSpan ||
+    !authButton ||
+    !authButtonText ||
     !documentNameForm ||
     !documentNameInput ||
     !documentNameError ||
@@ -131,10 +128,10 @@ export function getDOM() {
     newDocumentButton,
     documentList,
     documentListItemTemplate,
-    loginContainer,
-    loginEmailSpan,
-    loginButton,
-    loginButtonText,
+    authContainer,
+    authEmailSpan,
+    authButton,
+    authButtonText,
     documentNameForm,
     documentNameInput,
     documentNameError,

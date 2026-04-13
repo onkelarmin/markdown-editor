@@ -19,6 +19,7 @@ export function getInitialState(): State {
     auth: {
       status: "guest",
       userId: null,
+      email: null,
     },
     documents,
     activeDocumentId,
