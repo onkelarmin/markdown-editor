@@ -7,6 +7,7 @@ import {
 import { clearToastTimer, startToastTimer } from "./effects/toast";
 import { createStore, type Store } from "./store";
 import { getDOM, type DOM } from "./ui/dom";
+import { setupDragDrop } from "./ui/dragDrop";
 import { bindEvents } from "./ui/events";
 import { render } from "./ui/render";
 
@@ -39,7 +40,7 @@ function createMarkdownStore() {
 }
 
 function registerMarkdownSubscribers(dom: DOM, store: Store) {
-  let previousTheme = store.getState().theme;
+  let previousTheme = store.getState().ui.theme;
 
   let activeToastId: string | null = null;
 
@@ -48,11 +49,12 @@ function registerMarkdownSubscribers(dom: DOM, store: Store) {
   unsubscribes.push(
     store.subscribe(
       (state) => {
-        if (state.theme !== previousTheme) {
-          applyTheme(state.theme);
-          previousTheme = state.theme;
+        if (state.ui.theme !== previousTheme) {
+          applyTheme(state.ui.theme);
+          previousTheme = state.ui.theme;
 
-          if (state.themeSource === "user") saveThemePreference(state.theme);
+          if (state.ui.themeSource === "user")
+            saveThemePreference(state.ui.theme);
         }
       },
       { fireImmediately: true },
@@ -69,8 +71,7 @@ function registerMarkdownSubscribers(dom: DOM, store: Store) {
   unsubscribes.push(
     store.subscribe(
       (state) => {
-        console.log(state.toasts);
-        const activeToast = state.toasts[0] ?? null;
+        const activeToast = state.ui.toasts[0] ?? null;
 
         if (!activeToast) {
           clearToastTimer();
@@ -94,8 +95,10 @@ function registerMarkdownSubscribers(dom: DOM, store: Store) {
 
 function registerMarkdownInteractions(dom: DOM, store: Store) {
   const detachEvents = bindEvents(dom, store);
+  const destroyDragDrop = setupDragDrop(dom, store);
 
   return () => {
     detachEvents();
+    destroyDragDrop();
   };
 }

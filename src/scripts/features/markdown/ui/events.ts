@@ -1,6 +1,6 @@
 import { queueAutoSave } from "../effects/autoSave";
 import { createNewDocument } from "../effects/createDocument";
-import { deleteActiveDocument } from "../effects/deleteDocument";
+import { deleteDocument } from "../effects/deleteDocument";
 import { saveActiveDocument } from "../effects/saveDocument";
 import { normalizeDocumentName } from "../lib/normalizeDocumentName";
 import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
@@ -21,7 +21,7 @@ function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
     });
   } else {
     store.dispatch({
-      type: "document/updateName",
+      type: "document/commitName",
       payload: { name: normalized },
     });
     void saveActiveDocument(store);
@@ -38,7 +38,7 @@ export function bindEvents(dom: DOM, store: Store) {
 
   // Create document
   const onNewDocumentClick = () => {
-    store.dispatch({ type: "document/create" });
+    store.dispatch({ type: "document/createOptimistic" });
     void createNewDocument(store);
   };
   dom.newDocumentButton.addEventListener("click", onNewDocumentClick);
@@ -160,10 +160,13 @@ export function bindEvents(dom: DOM, store: Store) {
 
     if (!activeDocument) return;
 
-    store.dispatch({ type: "document/delete" });
+    store.dispatch({
+      type: "document/deleteStart",
+      payload: { id: activeDocument.id },
+    });
     store.dispatch({ type: "modal/closeDelete" });
 
-    void deleteActiveDocument(store, activeDocument);
+    void deleteDocument(store, activeDocument);
   };
   dom.deleteModalConfirmationButton.addEventListener(
     "click",

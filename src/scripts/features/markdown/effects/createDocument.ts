@@ -14,6 +14,7 @@ export async function createNewDocument(store: Store) {
     id: newDocument.id,
     name: newDocument.name,
     content: newDocument.content,
+    order: newDocument.order,
     createdAt: newDocument.createdAt,
     modifiedAt: newDocument.modifiedAt,
     userId: DEMO_USER_ID,

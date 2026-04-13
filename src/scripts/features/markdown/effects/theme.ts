@@ -21,7 +21,7 @@ export function setupSystemThemeListener(store: Store) {
   const handleChange = (e: MediaQueryListEvent) => {
     const state = store.getState();
 
-    if (state.themeSource !== "system") return;
+    if (state.ui.themeSource !== "system") return;
 
     store.dispatch({
       type: "theme/set",

@@ -9,16 +9,22 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/db": "^0.20.1",
     "@astrojs/netlify": "^7.0.5",
+    "@libsql/client": "^0.17.2",
+    "@types/sortablejs": "^1.15.9",
     "astro": "^6.0.5",
     "dompurify": "^3.3.3",
-    "marked": "^17.0.5"
+    "dotenv": "^17.4.0",
+    "drizzle-orm": "^1.0.0-beta.20",
+    "marked": "^17.0.5",
+    "sortablejs": "^1.15.7"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
     "autoprefixer": "^10.4.23",
     "cssnano": "^7.1.2",
-    "sass": "^1.97.2"
+    "drizzle-kit": "^1.0.0-beta.20",
+    "sass": "^1.97.2",
+    "tsx": "^4.21.0"
   }
 }

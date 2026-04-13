@@ -9,7 +9,7 @@ import WarningSvg from "@assets/icon-warning.svg";
   type="button"
   id="save-changes-button"
   class="btn"
-  data-status="save"
+  data-status="idle"
   aria-label="Save Changes"
 >
   <SaveSvg class="icon icon-save" aria-hidden="true" />
@@ -34,6 +34,7 @@ import WarningSvg from "@assets/icon-warning.svg";
     font: var(--font-6);
     text-transform: none;
     text-decoration: none;
+    cursor: pointer;
     border: none;
     border-radius: var(--btn-border-radius-default);
     padding-inline: var(--btn-padding-inline-default);
@@ -44,8 +45,9 @@ import WarningSvg from "@assets/icon-warning.svg";
       outline-color var(--trans-fast-in),
       outline-offset var(--trans-fast-out-sensitive);
 
-    &:not(:disabled) {
-      cursor: pointer;
+    &:disabled {
+      background-color: var(--btn-bg-color-disabled-default);
+      cursor: not-allowed;
     }
 
     @media (hover: hover) {
@@ -92,7 +94,7 @@ import WarningSvg from "@assets/icon-warning.svg";
       }
     }
 
-    &[data-status="saving"] {
+    &[data-status="pending"] {
       background-color: var(--btn-bg-color-disabled-default);
       cursor: not-allowed;
 
@@ -104,7 +106,7 @@ import WarningSvg from "@assets/icon-warning.svg";
       }
     }
 
-    &[data-status="saved"] {
+    &[data-status="success"] {
       .icon-tick {
         display: block;
       }

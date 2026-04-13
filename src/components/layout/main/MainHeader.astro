@@ -80,8 +80,12 @@ import DeleteSvg from "@assets/icon-delete.svg";
         scale var(--trans-fast-out-sensitive),
         color var(--trans-fast-out);
 
+      &:disabled {
+        cursor: not-allowed;
+      }
+
       @media (hover: hover) {
-        &:hover {
+        &:not(:disabled):hover {
           scale: 1.05;
           color: var(--fg-text-highlight);
         }

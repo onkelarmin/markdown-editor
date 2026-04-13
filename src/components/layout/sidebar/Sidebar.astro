@@ -17,18 +17,27 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
         <li class="document-list-item">
           <button type="button" class="document-list-button">
             <svg
-              class="document-list-button-icon saved"
+              class="document-list-button-icon active"
               aria-hidden="true"
-              viewBox="0 0 14 16"
+              viewBox="0 0 16 20"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M13.1071 3.39286C13.2738 3.55952 13.4167 3.78571 13.5357 4.07143C13.6548 4.35714 13.7143 4.61905 13.7143 4.85714V15.1429C13.7143 15.381 13.631 15.5833 13.4643 15.75C13.2976 15.9167 13.0952 16 12.8571 16H0.857143C0.619048 16 0.416667 15.9167 0.25 15.75C0.0833333 15.5833 0 15.381 0 15.1429V0.857143C0 0.619048 0.0833333 0.416667 0.25 0.25C0.416667 0.0833333 0.619048 0 0.857143 0H8.85714C9.09524 0 9.35714 0.0595238 9.64286 0.178571C9.92857 0.297619 10.1548 0.440476 10.3214 0.607143L13.1071 3.39286ZM9.14286 1.21429V4.57143H12.5C12.4405 4.39881 12.375 4.27679 12.3036 4.20536L9.50893 1.41071C9.4375 1.33929 9.31548 1.27381 9.14286 1.21429ZM12.5714 5.71429V14.8571H1.14286V1.14286H8V4.85714C8 5.09524 8.08333 5.29762 8.25 5.46429C8.41667 5.63095 8.61905 5.71429 8.85714 5.71429H12.5714Z"
-                fill="white"></path>
+                d="M8 0V6C8 6.53043 8.21071 7.03914 8.58579 7.41421C8.96086 7.78929 9.46957 8 10 8H16V18C16 18.5304 15.7893 19.0391 15.4142 19.4142C15.0391 19.7893 14.5304 20 14 20H2C1.46957 20 0.960859 19.7893 0.585786 19.4142C0.210714 19.0391 0 18.5304 0 18V2C0 1.46957 0.210714 0.960859 0.585786 0.585786C0.960859 0.210714 1.46957 0 2 0H8ZM9.5 0.5V6C9.5 6.13261 9.55268 6.25979 9.64645 6.35355C9.74021 6.44732 9.86739 6.5 10 6.5H15.5L9.5 0.5Z"
+                fill="currentColor"></path>
             </svg>
+
+            <svg
+              class="document-list-button-icon inactive"
+              aria-hidden="true"
+              viewBox="0 0 16 20"
+              fill="none"
+            >
+              <path
+                d="M2 0C1.46957 0 0.960859 0.210714 0.585786 0.585786C0.210714 0.960859 0 1.46957 0 2V18C0 18.5304 0.210714 19.0391 0.585786 19.4142C0.960859 19.7893 1.46957 20 2 20H14C14.5304 20 15.0391 19.7893 15.4142 19.4142C15.7893 19.0391 16 18.5304 16 18V7.828C15.9999 7.29761 15.7891 6.78899 15.414 6.414L9.586 0.586C9.21101 0.210901 8.70239 0.000113275 8.172 0H2ZM1.5 2C1.5 1.86739 1.55268 1.74021 1.64645 1.64645C1.74021 1.55268 1.86739 1.5 2 1.5H8V6C8 6.53043 8.21071 7.03914 8.58579 7.41421C8.96086 7.78929 9.46957 8 10 8H14.5V18C14.5 18.1326 14.4473 18.2598 14.3536 18.3536C14.2598 18.4473 14.1326 18.5 14 18.5H2C1.86739 18.5 1.74021 18.4473 1.64645 18.3536C1.55268 18.2598 1.5 18.1326 1.5 18V2ZM13.38 6.5H10C9.86739 6.5 9.74021 6.44732 9.64645 6.35355C9.55268 6.25979 9.5 6.13261 9.5 6V2.62L13.38 6.5Z"
+                fill="currentColor"></path>
+            </svg>
+
             <svg
               class="document-list-button-icon creating"
               aria-hidden="true"
@@ -130,6 +139,33 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
         }
       }
 
+      &-item {
+        transition: opacity var(--trans-fast-out);
+
+        @media (hover: hover) {
+          &:not(:has([aria-current="true"])):hover {
+            opacity: 0.5;
+          }
+        }
+
+        &.chosen {
+          opacity: 1 !important;
+          transition: none;
+        }
+
+        &.drag {
+          opacity: 0 !important;
+        }
+
+        &.is-moving:not(.chosen) {
+          scale: 0.95;
+          opacity: 0.5;
+          transition:
+            scale var(--trans-fast-out-sensitive) var(--delay-x-fast-sensitive),
+            opacity var(--trans-fast-out) var(--delay-x-fast);
+        }
+      }
+
       &-button {
         width: 100%;
         display: grid;
@@ -143,18 +179,6 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
         cursor: pointer;
         text-decoration: none;
 
-        &[aria-current="true"] .document-list-button-name {
-          color: var(--fg-text-highlight);
-        }
-
-        @media (hover: hover) {
-          &:hover {
-            .document-list-button-name {
-              color: var(--fg-text-highlight);
-            }
-          }
-        }
-
         &-icon {
           display: none;
           width: var(--size-svg-document);
@@ -165,8 +189,19 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
           display: block;
           animation: spinner 1.5s steps(12) infinite;
         }
-        &[data-status="saved"] .saved {
-          display: block;
+        &[data-status="created"]:not([aria-current="true"]) {
+          .inactive {
+            display: block;
+          }
+        }
+        &[data-status="created"][aria-current="true"] {
+          .document-list-button-name {
+            color: var(--fg-text-highlight);
+          }
+          .active {
+            display: block;
+            color: var(--fg-text-highlight);
+          }
         }
         &[data-status="error"] .error {
           display: block;

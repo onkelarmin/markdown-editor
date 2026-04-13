@@ -16,7 +16,7 @@ export async function loadDocuments(store: Store) {
   if (data) {
     const documents = data.map((document) => ({
       ...document,
-      persistStatus: "saved" as const,
+      persistStatus: "created" as const,
     }));
     store.dispatch({
       type: "documents/loadSuccess",

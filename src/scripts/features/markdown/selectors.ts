@@ -13,9 +13,17 @@ export function selectHasDocuments(state: State) {
 }
 
 export function selectSidebarOpen(state: State) {
-  return state.sidebarOpen;
+  return state.ui.sidebarOpen;
 }
 
 export function selectActiveToast(state: State) {
-  return state.toasts[0] ?? null;
+  return state.ui.toasts[0] ?? null;
+}
+
+export function selectDisableEditor(state: State) {
+  const isLoadingDocuments = state.requests.load.status === "pending";
+  const isDeletingDocument = state.requests.delete.status === "pending";
+  const hasActiveDocument = state.activeDocumentId !== null;
+
+  return isLoadingDocuments || isDeletingDocument || !hasActiveDocument;
 }

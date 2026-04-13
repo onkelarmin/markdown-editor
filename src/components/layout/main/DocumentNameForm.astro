@@ -1,6 +1,6 @@
 ---
 // Asset imports
-import DocumentSvg from "@assets/icon-document.svg";
+import DocumentSvg from "@assets/icon-document-active.svg";
 ---
 
 <form id="document-name-form" novalidate>
@@ -57,8 +57,12 @@ import DocumentSvg from "@assets/icon-document.svg";
       border-bottom-color: transparent;
       transition: border-color var(--trans-fast-out);
 
+      &:disabled {
+        cursor: not-allowed;
+      }
+
       @media (hover: hover) {
-        &:hover {
+        &:not(:disabled):hover {
           border-bottom-color: var(--bc-document-name-form-hover);
         }
       }

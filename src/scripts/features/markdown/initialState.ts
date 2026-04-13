@@ -18,16 +18,29 @@ export function getInitialState(): State {
   return {
     documents,
     activeDocumentId,
-    nameDraft: activeDocument?.name ?? "",
-    nameError: null,
-    view: "markdown",
-    sidebarOpen: false,
-    isDeleteModalOpen: false,
-    isLoading: false,
-    errorMessage: null,
-    saveStatus: "idle",
-    theme: theme,
-    themeSource: localStorage.getItem(themeStorageKey) ? "user" : "system",
-    toasts: [],
+    ui: {
+      sidebarOpen: false,
+      view: "markdown",
+      isDeleteModalOpen: false,
+      theme: theme,
+      themeSource: localStorage.getItem(themeStorageKey) ? "user" : "system",
+      toasts: [],
+    },
+    editor: {
+      nameDraft: activeDocument?.name ?? "",
+      nameError: null,
+    },
+    requests: {
+      load: {
+        status: "pending",
+        message: null,
+      },
+      save: {
+        status: "idle",
+      },
+      delete: {
+        status: "idle",
+      },
+    },
   };
 }

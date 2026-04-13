@@ -1,34 +1,29 @@
 import { actions } from "astro:actions";
 import type { Store } from "../store";
-import type { Document } from "../types";
 import { DEMO_USER_ID } from "@/server/config";
 import { loadDocuments } from "./loadDocuments";
 
-export async function deleteDocument(store: Store, document: Document) {
-  const { data, error } = await actions.deleteDocument({
+export async function saveReorderedDocuments(store: Store) {
+  const state = store.getState();
+
+  const reordered = state.documents.map((document) => ({
     id: document.id,
+    order: document.order,
     userId: DEMO_USER_ID,
-  });
+  }));
+
+  const { data, error } = await actions.reorderDocuments({ reordered });
 
   if (error) {
     store.dispatch({
       type: "toast/enqueue",
       payload: {
         id: crypto.randomUUID(),
-        message: "Failed to delete document.",
+        message: "Failed to save Reorder.",
         variant: "error",
       },
     });
 
     void loadDocuments(store);
-  }
-
-  if (data) {
-    console.log(data);
-
-    store.dispatch({
-      type: "document/deleteSuccess",
-      payload: { result: data },
-    });
   }
 }
