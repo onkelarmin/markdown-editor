@@ -145,6 +145,32 @@ export function render(state: State, dom: DOM) {
     }, DURATIONS.default * 1000);
   }
 
+  // Login
+  dom.loginContainer.dataset.state = state.auth.status;
+
+  switch (state.auth.status) {
+    case "guest": {
+      dom.loginEmailSpan.textContent = "";
+      dom.loginButtonText.textContent = "Sign in";
+      dom.loginButton.disabled = false;
+      break;
+    }
+
+    case "loading": {
+      dom.loginEmailSpan.textContent = "";
+      dom.loginButtonText.textContent = "Signing in";
+      dom.loginButton.disabled = true;
+      break;
+    }
+
+    case "authenticated": {
+      dom.loginEmailSpan.textContent = state.auth.userId ?? "";
+      dom.loginButtonText.textContent = "Sign out";
+      dom.loginButton.disabled = false;
+      break;
+    }
+  }
+
   // Toasts
   const activeToast = selectActiveToast(state);
   if (activeToast) {

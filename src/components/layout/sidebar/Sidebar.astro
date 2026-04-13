@@ -1,7 +1,9 @@
 ---
 // Component imports
-import Button from "@/components/ui/Button.astro";
 import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
+
+// Asset imports
+import SpinnerSvg from "@assets/icon-spinner.svg";
 ---
 
 <aside id="sidebar">
@@ -9,7 +11,9 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
     <h2>My documents</h2>
 
     <!-- Add new document -->
-    <Button text="+ New Document" id="new-document-button" />
+    <button type="button" id="new-document-button" class="button"
+      >+ New Document</button
+    >
 
     <!-- Document list -->
     <ul class="document-list">
@@ -85,12 +89,26 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
       </template>
     </ul>
 
+    <!-- Login -->
+    <div id="login-container" class="login-container" data-state="guest">
+      <p class="info sign-in">Save your documents</p>
+      <p class="info sign-out">
+        Signed in as<br /><span id="login-email-span"></span>
+      </p>
+      <button type="button" id="login-button" class="button">
+        <SpinnerSvg class="icon-spinner" aria-hidden="true" />
+        <span class="text">Sign in</span></button
+      >
+    </div>
+
     <!-- Theme switch -->
     <ThemeSwitch />
   </div>
 </aside>
 
 <style is:global lang="scss">
+  @use "../../../sass/miscellaneous/" as *;
+
   #sidebar {
     min-height: 0;
     background-color: var(--bg-container-sidebar);
@@ -101,7 +119,7 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
     .layout {
       height: 100%;
       display: grid;
-      grid-template-rows: auto auto 1fr auto;
+      grid-template-rows: auto auto 1fr auto auto;
     }
 
     h2 {
@@ -110,6 +128,42 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
       letter-spacing: var(--ls-9);
       color: var(--fg-text-muted);
       margin-block-end: var(--space-cont-xl);
+    }
+
+    .button {
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: var(--btn-gap-default);
+      background-color: var(--btn-bg-color-idle-default);
+      color: var(--btn-fg-color-idle-default);
+      font: var(--font-6);
+      text-transform: none;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      border-radius: var(--btn-border-radius-default);
+      padding-inline: var(--btn-padding-inline-default);
+      padding-block: var(--btn-padding-block-default);
+      transition:
+        transform var(--trans-fast-out-sensitive),
+        background-color var(--trans-fast-out),
+        outline-color var(--trans-fast-in),
+        outline-offset var(--trans-fast-out-sensitive);
+
+      &:disabled {
+        background-color: var(--btn-bg-color-disabled-default);
+        cursor: not-allowed;
+      }
+
+      @media (hover: hover) {
+        &:not(:disabled):hover {
+          transform: scale(1.02);
+          background-color: var(--btn-bg-color-hover-default);
+        }
+      }
     }
 
     .document-list {
@@ -217,6 +271,56 @@ import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
           color: var(--fg-text-neutral);
           text-align: start;
           transition: color var(--trans-fast-out);
+        }
+      }
+    }
+
+    .login-container {
+      display: grid;
+      gap: var(--space-cont-sm);
+      border-block-end: var(--border-sidebar);
+      margin-block-end: calc(var(--space-cont-lg) / 2);
+      padding-block-end: calc(var(--space-cont-lg) / 2);
+
+      .info {
+        display: none;
+        color: var(--fg-text-muted);
+        font: var(--font-6);
+
+        span {
+          color: var(--fg-text-neutral);
+        }
+      }
+
+      .button {
+        .icon-spinner {
+          display: none;
+          width: var(--size-svg-spinner);
+        }
+      }
+
+      &[data-state="guest"] {
+        .sign-in {
+          display: block;
+        }
+      }
+
+      &[data-state="loading"] {
+        .sign-in {
+          display: block;
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .icon-spinner {
+            display: block;
+            animation: spinner 1.5s steps(12) infinite;
+          }
+        }
+      }
+
+      &[data-state="authenticated"] {
+        .sign-out {
+          display: block;
         }
       }
     }

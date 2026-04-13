@@ -1,5 +1,13 @@
 import type { State } from "./types";
 
+export function selectIsAuthenticated(state: State) {
+  return state.auth.status === "authenticated";
+}
+
+export function selectIsGuest(state: State) {
+  return state.auth.status === "guest";
+}
+
 export function selectActiveDocument(state: State) {
   return (
     state.documents.find(

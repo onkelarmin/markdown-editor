@@ -1,5 +1,24 @@
 import { type Theme } from "./lib/constants";
 
+type AuthStatus = "guest" | "authenticated" | "loading";
+
+export type AuthState = {
+  status: AuthStatus;
+  userId: string | null;
+};
+
+export type View = "markdown" | "preview";
+
+export type ThemeSource = "system" | "user";
+
+export type ToastVariant = "success" | "error" | "info";
+
+export type Toast = {
+  id: string;
+  message: string;
+  variant: ToastVariant;
+} | null;
+
 export type PersistStatus = "creating" | "created" | "error";
 
 export type LoadRequestState = {
@@ -28,18 +47,6 @@ export type DeleteSuccessResult = {
   } | null;
 };
 
-export type View = "markdown" | "preview";
-
-export type ThemeSource = "system" | "user";
-
-export type ToastVariant = "success" | "error" | "info";
-
-export type Toast = {
-  id: string;
-  message: string;
-  variant: ToastVariant;
-} | null;
-
 export type Document = {
   id: string;
   name: string;
@@ -51,6 +58,8 @@ export type Document = {
 };
 
 export type State = {
+  auth: AuthState;
+
   documents: Document[];
   activeDocumentId: string | null;
 

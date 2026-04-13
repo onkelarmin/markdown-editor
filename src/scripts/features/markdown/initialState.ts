@@ -16,6 +16,10 @@ export function getInitialState(): State {
   if (dataTheme && isTheme(dataTheme)) theme = dataTheme;
 
   return {
+    auth: {
+      status: "guest",
+      userId: null,
+    },
     documents,
     activeDocumentId,
     ui: {

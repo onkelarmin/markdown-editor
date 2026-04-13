@@ -19,6 +19,10 @@ $border-colors: (
     light: "slate-500",
     dark: "slate-500",
   ),
+  sidebar: (
+    light: "slate-700",
+    dark: "slate-700",
+  ),
   editor: (
     light: "neutral-200",
     dark: "slate-500",
@@ -56,6 +60,11 @@ $borders: (
     width: "md",
     style: "solid",
     color: "header",
+  ),
+  sidebar: (
+    width: "md",
+    style: "solid",
+    color: "sidebar",
   ),
   editor: (
     width: "md",

@@ -34,6 +34,7 @@ const Icon = icon;
     font: var(--font-6);
     text-transform: none;
     text-decoration: none;
+    cursor: pointer;
     border: none;
     border-radius: var(--btn-border-radius-default);
     padding-inline: var(--btn-padding-inline-default);
@@ -44,8 +45,9 @@ const Icon = icon;
       outline-color var(--trans-fast-in),
       outline-offset var(--trans-fast-out-sensitive);
 
-    &:not(:disabled) {
-      cursor: pointer;
+    &:disabled {
+      background-color: var(--btn-bg-color-disabled-default);
+      cursor: not-allowed;
     }
 
     @media (hover: hover) {
