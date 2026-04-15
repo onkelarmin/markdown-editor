@@ -5,38 +5,44 @@ import {
   setupSystemThemeListener,
 } from "./effects/theme";
 import { clearToastTimer, startToastTimer } from "./effects/toast";
+import { guestDocumentSchema } from "./schema";
+import { selectCanReorderDocuments, selectIsGuest } from "./selectors";
 import { createStore, type Store } from "./store";
+import type { GuestDocument } from "./types";
 import { getDOM, type DOM } from "./ui/dom";
 import { setupDragDrop } from "./ui/dragDrop";
 import { bindEvents } from "./ui/events";
 import { render } from "./ui/render";
 
-export function initMarkdown() {
-  const dom = getDOM();
-  const store = createMarkdownStore();
-
-  // Subscriptions
-  const cleanupSubscribers = registerMarkdownSubscribers(dom, store);
-
-  // UI events
-  const cleanupInteractions = registerMarkdownInteractions(dom, store);
-
-  // Environment/effects
-  const cleanupThemeListener = setupSystemThemeListener(store);
-
-  // Data bootstrap
-  void loadDocuments(store);
-
-  // Cleanup handling
-  return () => {
-    cleanupSubscribers();
-    cleanupInteractions();
-    cleanupThemeListener();
-  };
-}
-
 function createMarkdownStore() {
   return createStore();
+}
+
+function loadGuestDocument(): GuestDocument | null {
+  if (typeof window === "undefined") return null;
+
+  const stored = localStorage.getItem("guest-document");
+
+  if (!stored) return null;
+
+  try {
+    const parsed = JSON.parse(stored);
+    const result = guestDocumentSchema.safeParse(parsed);
+    return result.success ? result.data : null;
+  } catch {
+    return null;
+  }
+}
+
+function createGuestDocument(): GuestDocument {
+  const now = Date.now();
+
+  return {
+    name: "undefined.md",
+    content: "",
+    createdAt: now,
+    modifiedAt: now,
+  };
 }
 
 function registerMarkdownSubscribers(dom: DOM, store: Store) {
@@ -95,10 +101,45 @@ function registerMarkdownSubscribers(dom: DOM, store: Store) {
 
 function registerMarkdownInteractions(dom: DOM, store: Store) {
   const detachEvents = bindEvents(dom, store);
-  const destroyDragDrop = setupDragDrop(dom, store);
+  const destroyDragDrop = selectCanReorderDocuments(store.getState())
+    ? setupDragDrop(dom, store)
+    : () => {};
 
   return () => {
     detachEvents();
     destroyDragDrop();
+  };
+}
+
+export function initMarkdown() {
+  const dom = getDOM();
+  const store = createMarkdownStore();
+
+  // Subscriptions
+  const cleanupSubscribers = registerMarkdownSubscribers(dom, store);
+
+  // UI events
+  const cleanupInteractions = registerMarkdownInteractions(dom, store);
+
+  // Environment/effects
+  const cleanupThemeListener = setupSystemThemeListener(store);
+
+  // Data bootstrap
+  if (selectIsGuest(store.getState())) {
+    const guestDocument = loadGuestDocument() ?? createGuestDocument();
+
+    store.dispatch({
+      type: "document/setGuest",
+      payload: { document: guestDocument },
+    });
+  } else {
+    void loadDocuments(store);
+  }
+
+  // Cleanup handling
+  return () => {
+    cleanupSubscribers();
+    cleanupInteractions();
+    cleanupThemeListener();
   };
 }

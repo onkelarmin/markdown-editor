@@ -6,7 +6,7 @@ import DocumentSvg from "@assets/icon-document-active.svg";
 <form id="document-name-form" novalidate>
   <DocumentSvg class="document-icon" aria-hidden="true" />
   <label>
-    Document Name
+    <span class="text">Document Name</span>
     <input
       type="text"
       name="document-name"
@@ -22,6 +22,8 @@ import DocumentSvg from "@assets/icon-document-active.svg";
 </form>
 
 <style lang="scss">
+  @use "../../../sass/miscellaneous/" as *;
+
   #document-name-form {
     width: 100%;
     display: grid;
@@ -38,14 +40,26 @@ import DocumentSvg from "@assets/icon-document-active.svg";
   label {
     position: relative;
     display: flex;
+    min-width: 0;
+    width: min(100%, 25rem);
     flex-direction: column;
     gap: var(--size-2);
     font: var(--font-11);
     color: var(--fg-text-muted);
     text-wrap: nowrap;
+    padding-inline-end: var(--size-8);
+
+    .text {
+      position: absolute;
+      opacity: 0;
+
+      @include mq(medium) {
+        position: relative;
+        opacity: 1;
+      }
+    }
 
     input {
-      width: min(100%, 25rem);
       font: var(--font-6);
       color: var(--fg-text-neutral);
       caret-color: var(--fg-text-highlight);

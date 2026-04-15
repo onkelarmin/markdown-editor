@@ -3,15 +3,11 @@ import SaveSvg from "@assets/icon-save.svg";
 import SpinnerSvg from "@assets/icon-spinner.svg";
 import TickSvg from "@assets/icon-tick.svg";
 import WarningSvg from "@assets/icon-warning.svg";
+import SignInSvg from "@assets/icon-sign-in.svg";
 ---
 
-<button
-  type="button"
-  id="save-changes-button"
-  class="btn"
-  data-status="idle"
-  aria-label="Save Changes"
->
+<button type="button" id="save-changes-button" class="btn" data-status="idle">
+  <SignInSvg class="icon icon-sign-in" aria-hidden="true" />
   <SaveSvg class="icon icon-save" aria-hidden="true" />
   <SpinnerSvg class="icon icon-spinner" aria-hidden="true" />
   <TickSvg class="icon icon-tick" aria-hidden="true" />
@@ -65,6 +61,9 @@ import WarningSvg from "@assets/icon-warning.svg";
       display: none;
       color: inherit;
 
+      &-sign-in {
+        width: var(--size-svg-sign-in);
+      }
       &-save {
         width: var(--size-svg-save);
       }
@@ -84,6 +83,12 @@ import WarningSvg from "@assets/icon-warning.svg";
 
       .text {
         display: inline;
+      }
+    }
+
+    &[data-status="guest"] {
+      .icon-sign-in {
+        display: block;
       }
     }
 

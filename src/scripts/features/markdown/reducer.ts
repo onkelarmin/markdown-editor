@@ -270,6 +270,26 @@ export function reducer(state: State, action: Action): State {
       };
     }
 
+    // Set guest document
+    case "document/setGuest": {
+      const guestDocument = {
+        id: "guest-document",
+        name: action.payload.document.name,
+        content: action.payload.document.content,
+        order: 1,
+        createdAt: action.payload.document.createdAt,
+        modifiedAt: action.payload.document.modifiedAt,
+        persistStatus: "local" as const,
+      };
+
+      return {
+        ...state,
+        documents: [guestDocument],
+        activeDocumentId: guestDocument.id,
+        editor: { nameDraft: guestDocument.name, nameError: null },
+      };
+    }
+
     // Reorder documents
     case "document/reorder": {
       const { orderedIds } = action.payload;

@@ -16,6 +16,7 @@ export type DOM = {
   deleteModalDocumentName: HTMLSpanElement;
   deleteModalConfirmationButton: HTMLButtonElement;
   editor: HTMLElement;
+  draftSavedInfo: HTMLParagraphElement;
   markdownContent: HTMLTextAreaElement;
   previewContent: HTMLElement;
   saveChangesButton: HTMLButtonElement;
@@ -67,6 +68,8 @@ export function getDOM() {
       "#delete-modal-confirmation-button",
     );
   const editor = document.querySelector<HTMLElement>(".editor");
+  const draftSavedInfo =
+    document.querySelector<HTMLParagraphElement>("#draft-saved-info");
   const markdownContent =
     document.querySelector<HTMLTextAreaElement>("#markdown-content");
   const previewContent =
@@ -108,6 +111,7 @@ export function getDOM() {
     !deleteModalDocumentName ||
     !deleteModalConfirmationButton ||
     !editor ||
+    !draftSavedInfo ||
     !markdownContent ||
     !previewContent ||
     !saveChangesButton ||
@@ -140,6 +144,7 @@ export function getDOM() {
     deleteModalDocumentName,
     deleteModalConfirmationButton,
     editor,
+    draftSavedInfo,
     markdownContent,
     previewContent,
     saveChangesButton,

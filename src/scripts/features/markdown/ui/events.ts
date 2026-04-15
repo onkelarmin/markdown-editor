@@ -4,7 +4,14 @@ import { deleteDocument } from "../effects/deleteDocument";
 import { saveActiveDocument } from "../effects/saveDocument";
 import { normalizeDocumentName } from "../lib/normalizeDocumentName";
 import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
-import { selectSidebarOpen } from "../selectors";
+import {
+  selectCanCreateDocuments,
+  selectCanDeleteDocuments,
+  selectCanManageDocuments,
+  selectCanPersistDocuments,
+  selectCanRenameDocuments,
+  selectSidebarOpen,
+} from "../selectors";
 import type { Store } from "../store";
 import type { DOM } from "./dom";
 
@@ -12,6 +19,7 @@ function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
   const normalized = normalizeDocumentName(input.value);
 
   const result = documentNameSchemaFull.safeParse(normalized);
+
   if (!result.success) {
     const message = result.error.issues[0]?.message ?? "Invalid value";
 
@@ -30,21 +38,53 @@ function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
 }
 
 export function bindEvents(dom: DOM, store: Store) {
-  // Save changes
-  const onSaveClick = () => {
-    void saveActiveDocument(store);
-  };
-  dom.saveChangesButton.addEventListener("click", onSaveClick);
-
   // Create document
   const onNewDocumentClick = () => {
+    if (!selectCanCreateDocuments(store.getState())) return;
+
     store.dispatch({ type: "document/createOptimistic" });
+
     void createNewDocument(store);
   };
   dom.newDocumentButton.addEventListener("click", onNewDocumentClick);
 
+  // Save changes
+  const onSaveClick = () => {
+    if (!selectCanPersistDocuments(store.getState())) return;
+
+    void saveActiveDocument(store);
+  };
+  dom.saveChangesButton.addEventListener("click", onSaveClick);
+
+  // Delete document
+  const onDeleteConfirmationClick = () => {
+    if (!selectCanDeleteDocuments(store.getState())) return;
+
+    const state = store.getState();
+
+    const activeDocument = state.documents.find(
+      (document) => document.id === state.activeDocumentId,
+    );
+
+    if (!activeDocument) return;
+
+    store.dispatch({
+      type: "document/deleteStart",
+      payload: { id: activeDocument.id },
+    });
+    store.dispatch({ type: "modal/closeDelete" });
+
+    void deleteDocument(store, activeDocument);
+  };
+  dom.deleteModalConfirmationButton.addEventListener(
+    "click",
+    onDeleteConfirmationClick,
+  );
+
   // Change document name
   const onDocumentNameInput = (e: Event) => {
+    if (!selectCanRenameDocuments(store.getState())) return;
+
     const input = e.currentTarget;
 
     if (!(input instanceof HTMLInputElement)) return;
@@ -68,6 +108,8 @@ export function bindEvents(dom: DOM, store: Store) {
   };
 
   const onDocumentNameChange = (e: Event) => {
+    if (!selectCanRenameDocuments(store.getState())) return;
+
     const input = e.currentTarget;
 
     if (!(input instanceof HTMLInputElement)) return;
@@ -77,6 +119,8 @@ export function bindEvents(dom: DOM, store: Store) {
 
   const onDocumentNameSubmit = (e: SubmitEvent) => {
     e.preventDefault();
+
+    if (!selectCanRenameDocuments(store.getState())) return;
 
     const form = e.currentTarget;
 
@@ -103,12 +147,15 @@ export function bindEvents(dom: DOM, store: Store) {
       type: "document/updateContent",
       payload: { content: textArea.value },
     });
-    queueAutoSave(store);
+
+    queueAutoSave(store, dom);
   };
   dom.markdownContent.addEventListener("input", onMarkdownInput);
 
   // Select document
   const onDocumentClick = (e: MouseEvent) => {
+    if (!selectCanManageDocuments(store.getState())) return;
+
     if (!(e.target instanceof Element)) return;
 
     const button = e.target.closest<HTMLButtonElement>(".document-list-button");
@@ -126,52 +173,18 @@ export function bindEvents(dom: DOM, store: Store) {
   };
   dom.documentList.addEventListener("click", onDocumentClick);
 
-  // Open delete modal
-  const onDeleteModalButtonClick = () => {
-    store.dispatch({ type: "modal/openDelete" });
+  // Preview toggle
+  const onPreviewClick = (e: MouseEvent) => {
+    const button = e.currentTarget;
+
+    if (!(button instanceof HTMLButtonElement)) return;
+
+    const newView =
+      button.getAttribute("aria-pressed") === "false" ? "preview" : "markdown";
+
+    store.dispatch({ type: "view/set", payload: { view: newView } });
   };
-  dom.openDeleteModalButton.addEventListener("click", onDeleteModalButtonClick);
-
-  // Close delete modal
-  const onDeleteModalOverlayClick = (e: MouseEvent) => {
-    const modal = e.currentTarget;
-
-    if (!(modal instanceof HTMLDialogElement)) return;
-
-    const dialogDimensions = modal.getBoundingClientRect();
-    if (
-      e.clientX < dialogDimensions.left ||
-      e.clientX > dialogDimensions.right ||
-      e.clientY < dialogDimensions.top ||
-      e.clientY > dialogDimensions.bottom
-    ) {
-      store.dispatch({ type: "modal/closeDelete" });
-    }
-  };
-  dom.deleteModal.addEventListener("click", onDeleteModalOverlayClick);
-
-  // Delete document
-  const onDeleteConfirmationClick = () => {
-    const state = store.getState();
-
-    const activeDocument = state.documents.find(
-      (document) => document.id === state.activeDocumentId,
-    );
-
-    if (!activeDocument) return;
-
-    store.dispatch({
-      type: "document/deleteStart",
-      payload: { id: activeDocument.id },
-    });
-    store.dispatch({ type: "modal/closeDelete" });
-
-    void deleteDocument(store, activeDocument);
-  };
-  dom.deleteModalConfirmationButton.addEventListener(
-    "click",
-    onDeleteConfirmationClick,
-  );
+  dom.viewToggle.addEventListener("click", onPreviewClick);
 
   // Sidebar toggle
   const onSidebarToggleClick = (e: MouseEvent) => {
@@ -193,18 +206,31 @@ export function bindEvents(dom: DOM, store: Store) {
   dom.sidebarToggle.addEventListener("click", onSidebarToggleClick);
   document.addEventListener("keydown", onEscape);
 
-  // Preview toggle
-  const onPreviewClick = (e: MouseEvent) => {
-    const button = e.currentTarget;
+  // Open delete modal
+  const onDeleteModalButtonClick = () => {
+    if (!selectCanDeleteDocuments(store.getState())) return;
 
-    if (!(button instanceof HTMLButtonElement)) return;
-
-    const newView =
-      button.getAttribute("aria-pressed") === "false" ? "preview" : "markdown";
-
-    store.dispatch({ type: "view/set", payload: { view: newView } });
+    store.dispatch({ type: "modal/openDelete" });
   };
-  dom.viewToggle.addEventListener("click", onPreviewClick);
+  dom.openDeleteModalButton.addEventListener("click", onDeleteModalButtonClick);
+
+  // Close delete modal
+  const onDeleteModalOverlayClick = (e: MouseEvent) => {
+    const modal = e.currentTarget;
+
+    if (!(modal instanceof HTMLDialogElement)) return;
+
+    const dialogDimensions = modal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      store.dispatch({ type: "modal/closeDelete" });
+    }
+  };
+  dom.deleteModal.addEventListener("click", onDeleteModalOverlayClick);
 
   // Theme toggle
   const onThemeToggleClick = (e: Event) => {
@@ -231,26 +257,26 @@ export function bindEvents(dom: DOM, store: Store) {
   dom.closeToastButton.addEventListener("click", onCloseToastClick);
 
   return () => {
-    dom.saveChangesButton.removeEventListener("click", onSaveClick);
     dom.newDocumentButton.removeEventListener("click", onNewDocumentClick);
+    dom.saveChangesButton.removeEventListener("click", onSaveClick);
+    dom.deleteModalConfirmationButton.removeEventListener(
+      "click",
+      onDeleteConfirmationClick,
+    );
     dom.documentNameInput.removeEventListener("input", onDocumentNameInput);
     dom.documentNameInput.removeEventListener("change", onDocumentNameChange);
     dom.documentNameForm.removeEventListener("submit", onDocumentNameSubmit);
     dom.markdownContent.removeEventListener("input", onMarkdownInput);
     dom.documentList.removeEventListener("click", onDocumentClick);
+    dom.viewToggle.removeEventListener("click", onPreviewClick);
+    dom.sidebarToggle.removeEventListener("click", onSidebarToggleClick);
+    document.removeEventListener("keydown", onEscape);
     dom.openDeleteModalButton.removeEventListener(
       "click",
       onDeleteModalButtonClick,
     );
     dom.deleteModal.removeEventListener("click", onDeleteModalOverlayClick);
 
-    dom.deleteModalConfirmationButton.removeEventListener(
-      "click",
-      onDeleteConfirmationClick,
-    );
-    dom.sidebarToggle.removeEventListener("click", onSidebarToggleClick);
-    document.removeEventListener("keydown", onEscape);
-    dom.viewToggle.removeEventListener("click", onPreviewClick);
     dom.themeToggle.removeEventListener("click", onThemeToggleClick);
     dom.closeToastButton.removeEventListener("click", onCloseToastClick);
   };

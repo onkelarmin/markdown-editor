@@ -11,8 +11,8 @@ export type Store = {
   ) => () => void;
 };
 
-export function createStore(preloadedState?: State) {
-  let state = preloadedState ?? getInitialState();
+export function createStore() {
+  let state = getInitialState();
   const listeners = new Set<(s: State) => void>();
 
   function getState() {

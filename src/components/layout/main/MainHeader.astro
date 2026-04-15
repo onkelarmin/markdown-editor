@@ -70,6 +70,7 @@ import DeleteSvg from "@assets/icon-delete.svg";
     gap: var(--space-cont-lg);
 
     .open-delete-modal {
+      position: relative;
       display: grid;
       place-items: center;
       background-color: transparent;
@@ -80,8 +81,27 @@ import DeleteSvg from "@assets/icon-delete.svg";
         scale var(--trans-fast-out-sensitive),
         color var(--trans-fast-out);
 
+      &::before {
+        display: none;
+        content: "";
+        position: absolute;
+        place-self: center;
+        width: 0.125rem;
+        height: 140%;
+        rotate: -45deg;
+        background-color: currentColor;
+      }
+
+      &[hidden] {
+        display: none !important;
+      }
+
       &:disabled {
         cursor: not-allowed;
+
+        &::before {
+          display: block;
+        }
       }
 
       @media (hover: hover) {

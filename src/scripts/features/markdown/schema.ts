@@ -13,3 +13,10 @@ export const documentNameSchemaFull = z
   .endsWith(".md", "File extension needs to be '.md'")
   .regex(/^[^\\/:*?"<>|]+$/, 'Invalid chars: / \ : * ? " < > |')
   .regex(/^.+\.md$/, "Must have a valid name before file extension");
+
+export const guestDocumentSchema = z.object({
+  name: z.string(),
+  content: z.string(),
+  createdAt: z.number(),
+  modifiedAt: z.number(),
+});

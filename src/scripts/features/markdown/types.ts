@@ -1,4 +1,6 @@
+import type { z } from "astro/zod";
 import { type Theme } from "./lib/constants";
+import type { guestDocumentSchema } from "./schema";
 
 type AuthStatus = "guest" | "authenticated" | "loading";
 
@@ -20,7 +22,7 @@ export type Toast = {
   variant: ToastVariant;
 } | null;
 
-export type PersistStatus = "creating" | "created" | "error";
+export type PersistStatus = "local" | "creating" | "created" | "error";
 
 export type LoadRequestState = {
   status: "idle" | "pending" | "success" | "error";
@@ -47,6 +49,8 @@ export type DeleteSuccessResult = {
     modifiedAt: number;
   } | null;
 };
+
+export type GuestDocument = z.infer<typeof guestDocumentSchema>;
 
 export type Document = {
   id: string;
@@ -101,6 +105,7 @@ export type Action =
   | { type: "document/deleteSuccess"; payload: { result: DeleteSuccessResult } }
   | { type: "document/deleteError" }
   // Domain
+  | { type: "document/setGuest"; payload: { document: GuestDocument } }
   | {
       type: "document/updateNameDraft";
       payload: { name: string; error?: string };

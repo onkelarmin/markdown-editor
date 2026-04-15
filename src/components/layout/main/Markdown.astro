@@ -6,6 +6,7 @@
   <!-- Header -->
   <header class="markdown-header">
     <h2 id="markdown-title">Markdown</h2>
+    <p id="draft-saved-info">Draft saved locally</p>
   </header>
   <label for="markdown-content" class="visually-hidden">Markdown content</label>
 
@@ -36,13 +37,38 @@
     }
 
     &-header {
-      font: var(--font-9);
-      letter-spacing: var(--ls-9);
-      color: var(--fg-text-base);
-      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: var(--space-cont-sm);
       background-color: var(--bg-container-editor-header);
       padding-inline: var(--pad-cont-editor-header-inline);
       padding-block: var(--pad-cont-editor-header-block);
+
+      #markdown-title {
+        font: var(--font-9);
+        letter-spacing: var(--ls-9);
+        color: var(--fg-text-base);
+        text-transform: uppercase;
+      }
+
+      #draft-saved-info {
+        display: none;
+        font: var(--font-11);
+        color: var(--fg-text-muted);
+        opacity: 0;
+        transition:
+          display var(--trans-fast-out) allow-discrete,
+          opacity var(--trans-fast-out);
+
+        &.show {
+          display: block;
+          opacity: 1;
+
+          @starting-style {
+            opacity: 0;
+          }
+        }
+      }
     }
 
     &-content {

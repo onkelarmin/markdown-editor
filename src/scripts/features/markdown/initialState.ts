@@ -1,5 +1,5 @@
 import { isTheme, themeStorageKey, type Theme } from "./lib/constants";
-import type { State, Document, ThemeSource } from "./types";
+import type { State, Document } from "./types";
 
 export function getInitialState(): State {
   const documents: Document[] = [];
@@ -17,7 +17,7 @@ export function getInitialState(): State {
 
   return {
     auth: {
-      status: "guest",
+      status: "authenticated",
       userId: null,
       email: null,
     },
@@ -37,7 +37,7 @@ export function getInitialState(): State {
     },
     requests: {
       load: {
-        status: "pending",
+        status: "idle",
         message: null,
       },
       save: {
