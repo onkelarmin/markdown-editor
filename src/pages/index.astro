@@ -10,6 +10,7 @@ import Main from "@/components/layout/main/Main.astro";
 import Sidebar from "@/components/layout/sidebar/Sidebar.astro";
 import SkipNavLink from "@/components/layout/SkipNavLink.astro";
 import Toast from "@/components/ui/Toast.astro";
+import SignInModal from "@/components/ui/SignInModal.astro";
 
 const page = sitePages.home;
 ---
@@ -26,6 +27,8 @@ const page = sitePages.home;
     <Sidebar />
     <Main />
     <Toast />
+    <!-- Sign-in modal -->
+    <SignInModal />
   </div>
 </MainLayout>
 

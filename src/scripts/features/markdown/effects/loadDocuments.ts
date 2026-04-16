@@ -3,6 +3,7 @@ import type { Store } from "../store";
 
 export async function loadDocuments(store: Store) {
   store.dispatch({ type: "documents/loadStart" });
+
   const { data, error } = await actions.getDocuments();
 
   if (error) {

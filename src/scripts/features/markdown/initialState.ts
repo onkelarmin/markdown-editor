@@ -17,7 +17,7 @@ export function getInitialState(): State {
 
   return {
     auth: {
-      status: "authenticated",
+      status: "guest",
       userId: null,
       email: null,
     },

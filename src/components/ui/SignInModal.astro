@@ -1,0 +1,260 @@
+---
+// Asset imports
+import CloseSvg from "@assets/icon-close.svg";
+import Button from "./Button.astro";
+---
+
+<dialog id="sign-in-modal" class="sign-in-modal" data-step="email">
+  <!-- Close button -->
+  <button type="button" id="close-sign-in-button" class="close-button"
+    ><span class="visually-hidden">Close</span>
+    <CloseSvg class="close-icon" aria-hidden="true" />
+  </button>
+
+  <!-- Email step -->
+  <section class="email-step">
+    <h2>Sign in</h2>
+    <p class="description">Enter your email to receive a sign-in code.</p>
+    <form id="send-otp-form" class="sign-in-form" novalidate>
+      <label
+        ><span class="text">Email address</span><input
+          type="email"
+          name="email"
+          id="email-input"
+          placeholder="you@example.com"
+          autocomplete="email"
+          inputmode="email"
+          required
+        />
+        <p id="send-otp-error" class="error"></p>
+      </label>
+      <Button type="submit" text="Send code" fullWidth />
+    </form>
+    <p class="note">We’ll email you a one-time code.</p>
+  </section>
+
+  <!-- OTP step -->
+  <section class="otp-step">
+    <h2>Enter your code</h2>
+    <p class="description">
+      We’ve sent a 6-digit code to <span id="otp-email" class="email"
+        >you@example.com</span
+      >.
+    </p>
+    <form id="verify-otp-form" class="sign-in-form" novalidate>
+      <label
+        ><span class="text">Verification code</span>
+        <input
+          type="number"
+          name="otp"
+          id="otp-input"
+          placeholder="Enter code"
+          autocomplete="one-time-code"
+          inputmode="numeric"
+          min="0"
+          required
+        />
+        <p id="verify-otp-error" class="error"></p>
+      </label>
+      <Button type="submit" text="Verify & sign in" fullWidth />
+    </form>
+    <div class="secondary-controls">
+      <Button variant="secondary" text="Resend code" />
+      <Button variant="tertiary" text="Change email" />
+    </div>
+  </section>
+</dialog>
+
+<style lang="scss">
+  .sign-in-modal {
+    position: relative;
+    place-self: center;
+    width: min(21.5rem, 100%);
+    background-color: var(--bg-container-modal);
+    border: none;
+    border-radius: var(--br-md);
+    padding-inline: var(--pad-cont-modal-inline);
+    padding-block: var(--pad-cont-modal-block);
+    margin-inline: var(--space-cont-sm);
+    opacity: 0;
+    transition:
+      opacity var(--trans-fast-out),
+      overlay var(--trans-fast-out) allow-discrete,
+      display var(--trans-fast-out) allow-discrete;
+
+    &::backdrop {
+      background-color: transparent;
+      transition:
+        background-color var(--trans-fast-out),
+        overlay var(--trans-fast-out) allow-discrete,
+        display var(--trans-fast-out) allow-discrete;
+    }
+
+    &[open] {
+      opacity: 1;
+
+      &::backdrop {
+        background-color: var(--bg-overlay-modal);
+      }
+
+      @starting-style {
+        opacity: 0;
+
+        &::backdrop {
+          background-color: transparent;
+        }
+      }
+    }
+
+    > section {
+      display: none;
+    }
+
+    &[data-step="email"] {
+      .email-step {
+        display: block;
+      }
+    }
+    &[data-step="otp"] {
+      .otp-step {
+        display: block;
+      }
+    }
+  }
+
+  .close-button {
+    position: absolute;
+    top: var(--pad-cont-modal-block);
+    right: var(--pad-cont-modal-inline);
+    display: grid;
+    place-items: center;
+    background-color: transparent;
+    cursor: pointer;
+    color: var(--fg-text-muted);
+    border: none;
+    transition:
+      scale var(--trans-fast-out-sensitive),
+      color var(--trans-fast-out);
+
+    @media (hover: hover) {
+      &:hover {
+        scale: 1.1;
+        color: var(--fg-text-highlight);
+      }
+    }
+
+    &:focus {
+      outline: 0px solid transparent;
+    }
+
+    &:focus-visible {
+      color: var(--fg-text-highlight);
+    }
+
+    .close-icon {
+      width: var(--size-svg-close);
+    }
+  }
+
+  h2 {
+    font: var(--font-4);
+    color: var(--fg-text-strong);
+  }
+
+  p {
+    font: var(--font-8);
+    color: var(--fg-text-base);
+  }
+
+  .description {
+    margin-block-start: var(--space-cont-sm);
+
+    .email {
+      font: var(--font-7);
+      color: var(--fg-text-neutral);
+    }
+  }
+
+  .sign-in-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-cont-sm);
+    margin-block: var(--space-cont-xl);
+
+    label {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--size-2);
+
+      .text {
+        font: var(--font-11);
+        color: var(--fg-text-muted);
+      }
+    }
+
+    input {
+      font: var(--font-6);
+      color: var(--fg-text-neutral);
+      caret-color: var(--fg-text-highlight);
+      background-color: transparent;
+      border-radius: var(--br-md);
+      border-width: var(--bw-md);
+      border-style: solid;
+      border-color: var(--bc-sign-in-form-idle);
+      padding-inline: var(--pad-cont-sign-in-input-inline);
+      padding-block: var(--pad-cont-sign-in-input-block);
+      transition: border-color var(--trans-fast-out);
+
+      &:disabled {
+        cursor: not-allowed;
+      }
+
+      @media (hover: hover) {
+        &:not(:disabled):hover {
+          border-color: var(--bc-sign-in-form-hover);
+        }
+      }
+
+      &:focus {
+        outline: 0px solid transparent;
+      }
+
+      &:not(:disabled):focus-visible {
+        border-color: var(--bc-sign-in-form-focus);
+      }
+
+      &[aria-invalid="true"] {
+        border-color: var(--bc-sign-in-form-error);
+
+        + .error {
+          display: block;
+        }
+      }
+    }
+
+    .error {
+      display: none;
+      position: absolute;
+      z-index: 1;
+      left: 0;
+      bottom: 0;
+      font: var(--font-11);
+      color: var(--fg-text-error);
+      transform: translateY(calc(100% + var(--size-2)));
+    }
+  }
+
+  .secondary-controls {
+    display: flex;
+  }
+
+  .note {
+    font: var(--font-8);
+    color: var(--fg-text-muted);
+  }
+</style>
+
+<script>
+  document.querySelector<HTMLDialogElement>("#sign-in-modal")?.showModal();
+</script>

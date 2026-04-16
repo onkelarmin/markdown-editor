@@ -9,8 +9,3 @@ export const documents = sqliteTable("documents", {
   createdAt: integer("created_at").notNull(),
   modifiedAt: integer("modified_at").notNull(),
 });
-
-export const users = sqliteTable("users", {
-  id: text("id").primaryKey(),
-  email: text("email").notNull(),
-});

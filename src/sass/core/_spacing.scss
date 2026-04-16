@@ -26,12 +26,15 @@ $padding-container: (
   blockquote-block: rem(24px),
   modal-inline: rem(24px),
   modal-block: rem(20px),
+  sign-in-input-inline: rem(6px),
+  sign-in-input-block: rem(8px),
   toast-inline: rem(24px),
   toast-block: rem(20px),
 );
 
 // Container spacing
 $spacer-container: (
+  xs: rem(12px),
   sm: rem(16px),
   md: rem(20px),
   lg: rem(24px),

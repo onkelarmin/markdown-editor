@@ -1,5 +1,6 @@
 ---
 // Component imports
+import Button from "@/components/ui/Button.astro";
 import ThemeSwitch from "@/components/ui/ThemeSwitch.astro";
 
 // Asset imports
@@ -11,9 +12,7 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
     <h2>My documents</h2>
 
     <!-- Add new document -->
-    <button type="button" id="new-document-button" class="button"
-      >+ New Document</button
-    >
+    <Button text="+ New Document" fullWidth id="new-document-button" />
 
     <!-- Document list -->
     <ul class="document-list">
@@ -95,10 +94,14 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
       <p class="info sign-out">
         Signed in as<br /><span id="auth-email-span"></span>
       </p>
-      <button type="button" id="auth-button" class="button secondary">
-        <SpinnerSvg class="icon-spinner" aria-hidden="true" />
-        <span class="text">Sign in</span></button
-      >
+
+      <Button
+        text="Sign in"
+        icon={SpinnerSvg}
+        variant="secondary"
+        id="auth-button"
+        fullWidth
+      />
     </div>
 
     <!-- Theme switch -->
@@ -130,67 +133,6 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
       margin-block-end: var(--space-cont-xl);
     }
 
-    .button {
-      width: 100%;
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      gap: var(--btn-gap-default);
-      background-color: var(--btn-bg-color-idle-default);
-      color: var(--btn-fg-color-idle-default);
-      font: var(--font-6);
-      text-transform: none;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      border-radius: var(--btn-border-radius-default);
-      padding-inline: var(--btn-padding-inline-default);
-      padding-block: var(--btn-padding-block-default);
-      transition:
-        transform var(--trans-fast-out-sensitive),
-        background-color var(--trans-fast-out),
-        border-color var(--trans-fast-out),
-        outline-color var(--trans-fast-in),
-        outline-offset var(--trans-fast-out-sensitive);
-
-      &:disabled {
-        background-color: var(--btn-bg-color-disabled-default);
-        cursor: not-allowed;
-      }
-
-      @media (hover: hover) {
-        &:not(:disabled):hover {
-          transform: scale(1.02);
-          background-color: var(--btn-bg-color-hover-default);
-        }
-      }
-
-      &.secondary {
-        background-color: var(--btn-bg-color-idle-secondary);
-        color: var(--btn-fg-color-idle-secondary);
-        border-width: var(--btn-border-width-default);
-        border-style: solid;
-        border-color: var(--btn-border-color-idle-secondary);
-
-        &:disabled {
-          background-color: var(--btn-bg-color-disabled-secondary);
-          color: var(--btn-fg-color-disabled-secondary);
-          border-color: var(--btn-border-color-disabled-secondary);
-          cursor: not-allowed;
-        }
-
-        @media (hover: hover) {
-          &:not(:disabled):hover {
-            transform: scale(1);
-            background-color: var(--btn-bg-color-hover-secondary);
-            color: var(--btn-fg-color-hover-secondary);
-            border-color: var(--btn-border-color-hover-secondary);
-          }
-        }
-      }
-    }
-
     .document-list {
       display: grid;
       align-content: start;
@@ -214,7 +156,7 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
         }
 
         p {
-          font: var(--font-6);
+          font: var(--font-8);
         }
       }
 
@@ -257,6 +199,10 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
         border: none;
         cursor: pointer;
         text-decoration: none;
+
+        &:focus-visible {
+          outline-offset: calc(var(--size-2) * -1);
+        }
 
         &-icon {
           display: none;
@@ -310,7 +256,8 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
       .info {
         display: none;
         color: var(--fg-text-muted);
-        font: var(--font-6);
+        font: var(--font-8);
+        line-height: 1.3;
 
         span {
           color: var(--fg-text-neutral);
@@ -318,7 +265,7 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
       }
 
       .button {
-        .icon-spinner {
+        .icon {
           display: none;
           width: var(--size-svg-spinner);
         }
@@ -336,9 +283,11 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
         }
 
         @media (prefers-reduced-motion: no-preference) {
-          .icon-spinner {
-            display: block;
-            animation: spinner 1.5s steps(12) infinite;
+          .button {
+            .icon {
+              display: block;
+              animation: spinner 1.5s steps(12) infinite;
+            }
           }
         }
       }

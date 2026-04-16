@@ -1,6 +1,6 @@
-import { db } from "@db/client";
+import { db } from "@/server/db/client";
 import { and, eq, gt, sql } from "drizzle-orm";
-import { documents } from "@db/schema";
+import { documents } from "@/server/db/schema";
 import { documentNameSchemaFull } from "@/scripts/features/markdown/schema";
 import { DEMO_USER_ID } from "@/server/config";
 import { z } from "astro/zod";

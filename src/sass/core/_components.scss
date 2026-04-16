@@ -2,7 +2,7 @@
 
 // Buttons
 $button-colors: (
-  default: (
+  primary: (
     idle: (
       bg: (
         light: "primary-600",
@@ -65,6 +65,26 @@ $button-colors: (
         dark: "slate-500",
       ),
       border: (
+        light: "slate-500",
+        dark: "slate-500",
+      ),
+    ),
+  ),
+  tertiary: (
+    idle: (
+      fg: (
+        light: "neutral-000",
+        dark: "neutral-000",
+      ),
+    ),
+    hover: (
+      fg: (
+        light: "primary-600",
+        dark: "primary-600",
+      ),
+    ),
+    disabled: (
+      fg: (
         light: "slate-500",
         dark: "slate-500",
       ),

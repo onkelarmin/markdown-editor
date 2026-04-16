@@ -44,13 +44,13 @@ import DocumentSvg from "@assets/icon-document-active.svg";
     width: min(100%, 25rem);
     flex-direction: column;
     gap: var(--size-2);
-    font: var(--font-11);
-    color: var(--fg-text-muted);
-    text-wrap: nowrap;
     padding-inline-end: var(--size-8);
 
     .text {
       position: absolute;
+      font: var(--font-11);
+      color: var(--fg-text-muted);
+      text-wrap: nowrap;
       opacity: 0;
 
       @include mq(medium) {
@@ -85,7 +85,7 @@ import DocumentSvg from "@assets/icon-document-active.svg";
         outline: 0px solid transparent;
       }
 
-      &:focus-visible {
+      &:not(:disabled):focus-visible {
         border-bottom-color: var(--bc-document-name-form-focus);
       }
 

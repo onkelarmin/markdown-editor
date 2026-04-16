@@ -39,6 +39,22 @@ $border-colors: (
     light: "red-500",
     dark: "red-500",
   ),
+  sign-in-form-idle: (
+    light: "slate-400",
+    dark: "slate-400",
+  ),
+  sign-in-form-hover: (
+    light: "slate-300",
+    dark: "slate-300",
+  ),
+  sign-in-form-focus: (
+    light: "primary-600",
+    dark: "primary-600",
+  ),
+  sign-in-form-error: (
+    light: "red-500",
+    dark: "red-500",
+  ),
   toast: (
     light: "primary-600",
     dark: "primary-600",

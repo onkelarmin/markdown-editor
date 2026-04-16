@@ -25,8 +25,8 @@ import SignInSvg from "@assets/icon-sign-in.svg";
     justify-content: center;
     align-items: center;
     gap: var(--btn-gap-default);
-    background-color: var(--btn-bg-color-idle-default);
-    color: var(--btn-fg-color-idle-default);
+    background-color: var(--btn-bg-color-idle-primary);
+    color: var(--btn-fg-color-idle-primary);
     font: var(--font-6);
     text-transform: none;
     text-decoration: none;
@@ -42,14 +42,14 @@ import SignInSvg from "@assets/icon-sign-in.svg";
       outline-offset var(--trans-fast-out-sensitive);
 
     &:disabled {
-      background-color: var(--btn-bg-color-disabled-default);
+      background-color: var(--btn-bg-color-disabled-primary);
       cursor: not-allowed;
     }
 
     @media (hover: hover) {
       &:not(:disabled):hover {
-        transform: scale(1.02);
-        background-color: var(--btn-bg-color-hover-default);
+        transform: scale(1.01);
+        background-color: var(--btn-bg-color-hover-primary);
       }
     }
 
@@ -100,7 +100,7 @@ import SignInSvg from "@assets/icon-sign-in.svg";
     }
 
     &[data-status="pending"] {
-      background-color: var(--btn-bg-color-disabled-default);
+      background-color: var(--btn-bg-color-disabled-primary);
       cursor: not-allowed;
 
       .icon-spinner {
