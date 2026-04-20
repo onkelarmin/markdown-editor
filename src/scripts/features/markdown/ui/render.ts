@@ -6,6 +6,8 @@ import {
   selectActiveToast,
   selectDisableEditor,
   selectHasDocuments,
+  selectHasSignInInputError,
+  selectHasSignInProcessError,
   selectIsAuthenticated,
   selectIsGuest,
   selectIsLoadingAuth,
@@ -13,6 +15,167 @@ import {
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { DURATIONS } from "@/scripts/shared/animations/global";
+
+function updateSignInDialog(state: State, dom: DOM) {
+  const showInputError = (
+    inputEl: HTMLInputElement,
+    errorEl: HTMLParagraphElement,
+    message: string,
+  ) => {
+    errorEl.textContent = message;
+    inputEl.setAttribute("aria-invalid", "true");
+    inputEl.setAttribute("aria-describedby", errorEl.id);
+  };
+  const hideInputError = (
+    inputEl: HTMLInputElement,
+    errorEl: HTMLParagraphElement,
+  ) => {
+    errorEl.textContent = "";
+    inputEl.removeAttribute("aria-invalid");
+    inputEl.removeAttribute("aria-describedby");
+  };
+  const showProcessError = (errorEl: HTMLParagraphElement, message: string) => {
+    errorEl.textContent = message;
+    errorEl.role = "alert";
+  };
+  const hideProcessError = (errorEl: HTMLParagraphElement) => {
+    errorEl.textContent = "";
+    errorEl.removeAttribute("role");
+  };
+
+  const step = state.ui.signInModal.step;
+  const status = state.ui.signInModal.status;
+
+  dom.signInModal.dataset.step = step;
+
+  dom.signInEmailSpan.textContent = state.ui.signInModal.email;
+
+  switch (step) {
+    case "closed": {
+      dom.signInModal.close();
+      break;
+    }
+    case "email": {
+      dom.signInModal.showModal();
+
+      dom.emailInput.focus();
+
+      const inputEl = dom.emailInput;
+      const inputErrorEl = dom.emailInputError;
+      const processErrorEl = dom.emailProcessError;
+
+      switch (status) {
+        case "idle": {
+          dom.emailSubmitButton.toggleAttribute("data-show-spinner", false);
+          dom.emailSubmitButton.disabled = false;
+          dom.emailSubmitButtonText.textContent = "Send code";
+          break;
+        }
+        case "sending": {
+          dom.emailSubmitButton.toggleAttribute("data-show-spinner", true);
+          dom.emailSubmitButton.disabled = true;
+          dom.emailSubmitButtonText.textContent = "Sending code";
+          break;
+        }
+        case "error": {
+          if (selectHasSignInProcessError(state)) {
+            dom.emailSubmitButton.toggleAttribute("data-show-spinner", false);
+            dom.emailSubmitButton.disabled = false;
+            dom.emailSubmitButtonText.textContent = "Retry";
+          }
+          break;
+        }
+      }
+
+      if (selectHasSignInInputError(state)) {
+        const message = state.ui.signInModal.inputError;
+
+        if (message) showInputError(inputEl, inputErrorEl, message);
+      } else {
+        hideInputError(inputEl, inputErrorEl);
+      }
+
+      if (selectHasSignInProcessError(state)) {
+        const message = state.ui.signInModal.processError;
+
+        if (message) showProcessError(processErrorEl, message);
+      } else {
+        hideProcessError(processErrorEl);
+      }
+    }
+
+    case "otp": {
+      dom.signInModal.showModal();
+
+      dom.otpInput.focus();
+
+      const inputEl = dom.otpInput;
+      const inputErrorEl = dom.otpInputError;
+      const processErrorEl = dom.otpProcessError;
+
+      switch (status) {
+        case "idle": {
+          dom.otpSubmitButton.toggleAttribute("data-show-spinner", false);
+          dom.otpSubmitButton.disabled = false;
+          dom.otpSubmitButtonText.textContent = "Verify & sign in";
+          break;
+        }
+        case "verifying": {
+          dom.otpSubmitButton.toggleAttribute("data-show-spinner", true);
+          dom.otpSubmitButton.disabled = true;
+          dom.otpSubmitButtonText.textContent = "Verifying";
+          break;
+        }
+        case "error": {
+          dom.otpSubmitButton.toggleAttribute("data-show-spinner", false);
+          dom.otpSubmitButton.disabled = false;
+          dom.otpSubmitButtonText.textContent = "Retry";
+          break;
+        }
+      }
+
+      if (selectHasSignInInputError(state)) {
+        const message = state.ui.signInModal.inputError;
+
+        if (message) showInputError(inputEl, inputErrorEl, message);
+      } else {
+        hideInputError(inputEl, inputErrorEl);
+      }
+
+      if (selectHasSignInProcessError(state)) {
+        const message = state.ui.signInModal.processError;
+
+        if (message) showProcessError(processErrorEl, message);
+      } else {
+        hideProcessError(processErrorEl);
+      }
+
+      // Resend button
+      const resendButton = dom.resendCodeButton;
+      const resendButtonText = dom.resendCodeButtonText;
+
+      switch (state.ui.signInModal.resendStatus) {
+        case "idle": {
+          resendButtonText.textContent = "Resend code";
+          resendButton.disabled = false;
+          resendButton.toggleAttribute("data-show-spinner", false);
+          break;
+        }
+        case "sending": {
+          resendButtonText.textContent = "Sending code";
+          resendButton.disabled = true;
+          resendButton.toggleAttribute("data-show-spinner", true);
+          break;
+        }
+        case "success": {
+          resendButtonText.textContent = "Code sent";
+          resendButton.disabled = false;
+          resendButton.toggleAttribute("data-show-spinner", false);
+        }
+      }
+    }
+  }
+}
 
 function updateThemeToggle(state: State, dom: DOM) {
   dom.themeToggle.checked = state.ui.theme === "dark" ? true : false;
@@ -119,18 +282,21 @@ function updateAuthPanel(state: State, dom: DOM) {
     email.textContent = "";
     buttonText.textContent = "Sign in";
     button.disabled = false;
+    button.toggleAttribute("data-show-spinner", false);
     return;
   }
   if (selectIsLoadingAuth(state)) {
     email.textContent = "";
     buttonText.textContent = "Signing in";
     button.disabled = true;
+    button.toggleAttribute("data-show-spinner", true);
     return;
   }
   if (selectIsAuthenticated(state)) {
     email.textContent = state.auth.email ?? "";
     buttonText.textContent = "Sign out";
     button.disabled = false;
+    button.toggleAttribute("data-show-spinner", false);
     return;
   }
 }
@@ -241,6 +407,9 @@ function updateToast(state: State, dom: DOM) {
 }
 
 export function render(state: State, dom: DOM) {
+  // Sign in dialog
+  updateSignInDialog(state, dom);
+
   // Theme toggle
   updateThemeToggle(state, dom);
 

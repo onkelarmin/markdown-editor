@@ -1,11 +1,14 @@
 ---
+// Asset imports
+import SpinnerSvg from "@assets/icon-spinner.svg";
+
 // Types
 import type { HTMLAttributes, SvgComponent } from "astro/types";
 
 interface Props extends HTMLAttributes<"button"> {
   type?: "button" | "submit";
   text?: string;
-  icon?: SvgComponent;
+  hasSpinner?: boolean;
   variant?: "primary" | "secondary" | "tertiary";
   fullWidth?: boolean;
   classes?: string;
@@ -14,22 +17,20 @@ interface Props extends HTMLAttributes<"button"> {
 const {
   type = "button",
   text,
-  icon,
+  hasSpinner = false,
   variant = "primary",
   fullWidth = false,
   classes,
   ...rest
 } = Astro.props;
-
-const Icon = icon;
 ---
 
 <button
-  class:list={["button", variant, { hasIcon: icon, fullWidth }, classes]}
+  class:list={["button", variant, { hasSpinner, fullWidth }, classes]}
   {type}
   {...rest}
 >
-  {Icon && <Icon class="icon" aria-hidden="true" />}
+  {hasSpinner && <SpinnerSvg class="icon" aria-hidden="true" />}
   {text && <span class="text">{text}</span>}
 </button>
 
@@ -61,10 +62,18 @@ const Icon = icon;
       cursor: not-allowed;
     }
 
-    &.hasIcon {
+    &.hasSpinner {
       .icon {
-        width: var(--btn-svg-width-default);
+        display: none;
+        width: var(--size-svg-spinner);
         color: inherit;
+        animation: spinner 1.5s steps(12) infinite;
+      }
+
+      &[data-show-spinner] {
+        .icon {
+          display: block;
+        }
       }
     }
 
@@ -136,6 +145,12 @@ const Icon = icon;
 
     &.fullWidth {
       width: 100%;
+    }
+  }
+
+  @keyframes spinner {
+    to {
+      rotate: 360deg;
     }
   }
 </style>

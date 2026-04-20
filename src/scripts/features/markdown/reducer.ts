@@ -21,6 +21,196 @@ function createEmptyDocument(
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
+    // Set input error
+    case "auth/setInputError": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            inputError: action.payload.message,
+            processError: null,
+            status: "error",
+          },
+        },
+      };
+    }
+
+    // Clear input error
+    case "auth/clearInputError": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            inputError: null,
+            status: "idle",
+          },
+        },
+      };
+    }
+
+    // Set process error
+    case "auth/setProcessError": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            inputError: null,
+            processError: action.payload.message,
+            status: "error",
+          },
+        },
+      };
+    }
+
+    // Send OTP code
+    case "auth/sendCodeStart": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            inputError: null,
+            processError: null,
+            status: "sending",
+          },
+        },
+      };
+    }
+
+    case "auth/sendCodeSuccess": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            step: "otp",
+            email: action.payload.email,
+            inputError: null,
+            processError: null,
+            status: "idle",
+          },
+        },
+      };
+    }
+
+    // Verify OTP code
+    case "auth/verifyCodeStart": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            inputError: null,
+            processError: null,
+            status: "verifying",
+          },
+        },
+      };
+    }
+
+    case "auth/verifyCodeSuccess": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            step: "closed",
+            inputError: null,
+            processError: null,
+            status: "idle",
+          },
+        },
+      };
+    }
+
+    // Resend code
+    case "auth/resendCodeStart": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            inputError: null,
+            processError: null,
+            resendStatus: "sending",
+          },
+        },
+      };
+    }
+
+    case "auth/resendCodeError": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            inputError: null,
+            processError: action.payload.message,
+            resendStatus: "idle",
+          },
+        },
+      };
+    }
+
+    case "auth/resendCodeSuccess": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            inputError: null,
+            processError: null,
+            resendStatus: "success",
+          },
+        },
+      };
+    }
+
+    case "auth/resendCodeReset": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            resendStatus: "idle",
+          },
+        },
+      };
+    }
+
+    // Change email
+    case "auth/changeEmail": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            step: "email",
+            email: "",
+            inputError: null,
+            processError: null,
+            status: "idle",
+            resendStatus: "idle",
+          },
+        },
+      };
+    }
+
     // Load documents
     case "documents/loadStart": {
       return {
@@ -31,6 +221,7 @@ export function reducer(state: State, action: Action): State {
         },
       };
     }
+
     case "documents/loadError": {
       return {
         ...state,
@@ -40,6 +231,7 @@ export function reducer(state: State, action: Action): State {
         },
       };
     }
+
     case "documents/loadSuccess": {
       const documents = action.payload.documents;
 
@@ -51,10 +243,10 @@ export function reducer(state: State, action: Action): State {
       return {
         ...state,
         documents,
-        activeDocumentId: activeDocument.id ?? null,
+        activeDocumentId: activeDocument?.id ?? null,
         editor: {
           ...state.editor,
-          nameDraft: activeDocument.name ?? "",
+          nameDraft: activeDocument?.name ?? "",
           nameError: null,
         },
         requests: {
@@ -70,8 +262,7 @@ export function reducer(state: State, action: Action): State {
         state.documents.map((document) => document.name),
       );
 
-      const newOrder =
-        state.documents.length === 1 ? 1 : state.documents.length + 1;
+      const newOrder = state.documents.length + 1;
 
       const document = createEmptyDocument(newName, newOrder, "creating");
 
@@ -170,18 +361,21 @@ export function reducer(state: State, action: Action): State {
         requests: { ...state.requests, save: { status: "pending" } },
       };
     }
+
     case "document/saveSuccess": {
       return {
         ...state,
         requests: { ...state.requests, save: { status: "success" } },
       };
     }
+
     case "document/saveReset": {
       return {
         ...state,
         requests: { ...state.requests, save: { status: "idle" } },
       };
     }
+
     case "document/saveError": {
       return {
         ...state,
@@ -290,6 +484,38 @@ export function reducer(state: State, action: Action): State {
       };
     }
 
+    // Migrate guest document
+    case "document/migrateGuest": {
+      const guestDocument = action.payload.document;
+
+      const newName = getNewDocumentName(
+        state.documents.map((document) => document.name),
+      );
+
+      const newOrder = state.documents.length + 1;
+
+      const newDocument: Document = {
+        id: crypto.randomUUID(),
+        name: newName,
+        content: guestDocument.content,
+        order: newOrder,
+        createdAt: guestDocument.createdAt,
+        modifiedAt: guestDocument.modifiedAt,
+        persistStatus: "creating",
+      };
+
+      return {
+        ...state,
+        documents: [...state.documents, newDocument],
+        activeDocumentId: newDocument.id,
+        editor: {
+          ...state.editor,
+          nameDraft: newDocument.name,
+          nameError: null,
+        },
+      };
+    }
+
     // Reorder documents
     case "document/reorder": {
       const { orderedIds } = action.payload;
@@ -324,10 +550,48 @@ export function reducer(state: State, action: Action): State {
       return { ...state, ui: { ...state.ui, isDeleteModalOpen: false } };
     }
 
+    // Open sign-in modal
+    case "modal/openSignInEmail": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          sidebarOpen: false,
+          signInModal: {
+            step: "email",
+            email: "",
+            inputError: null,
+            processError: null,
+            status: "idle",
+            resendStatus: "idle",
+          },
+        },
+      };
+    }
+
+    // Close sign-in modal
+    case "modal/closeSignIn": {
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          signInModal: {
+            ...state.ui.signInModal,
+            step: "closed",
+            email: "",
+            inputError: null,
+            processError: null,
+            status: "idle",
+          },
+        },
+      };
+    }
+
     // Sidebar
     case "sidebar/open": {
       return { ...state, ui: { ...state.ui, sidebarOpen: true } };
     }
+
     case "sidebar/close": {
       return { ...state, ui: { ...state.ui, sidebarOpen: false } };
     }

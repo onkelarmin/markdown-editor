@@ -1,6 +1,5 @@
 import { actions } from "astro:actions";
 import type { Store } from "../store";
-import { DEMO_USER_ID } from "@/server/config";
 import { loadDocuments } from "./loadDocuments";
 
 export async function saveReorderedDocuments(store: Store) {
@@ -9,7 +8,6 @@ export async function saveReorderedDocuments(store: Store) {
   const reordered = state.documents.map((document) => ({
     id: document.id,
     order: document.order,
-    userId: DEMO_USER_ID,
   }));
 
   const { data, error } = await actions.reorderDocuments({ reordered });

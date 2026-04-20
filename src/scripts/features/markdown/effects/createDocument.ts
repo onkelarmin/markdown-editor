@@ -1,7 +1,6 @@
 import { actions } from "astro:actions";
 import { selectActiveDocument } from "../selectors";
 import type { Store } from "../store";
-import { DEMO_USER_ID } from "@/server/config";
 
 export async function createNewDocument(store: Store) {
   const state = store.getState();
@@ -17,7 +16,6 @@ export async function createNewDocument(store: Store) {
     order: newDocument.order,
     createdAt: newDocument.createdAt,
     modifiedAt: newDocument.modifiedAt,
-    userId: DEMO_USER_ID,
   });
 
   if (error) {

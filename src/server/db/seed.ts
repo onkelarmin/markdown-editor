@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { db } from "./client";
-import { documents, users } from "./schema";
+import { documents } from "./schema";
 
 async function seed() {
   console.log("🌱 Seeding database...");
@@ -8,7 +8,6 @@ async function seed() {
   const now = Date.now();
 
   await db.delete(documents);
-  await db.delete(users);
 
   await db.insert(documents).values([
     {
@@ -39,10 +38,6 @@ async function seed() {
       modifiedAt: now,
     },
   ]);
-
-  await db
-    .insert(users)
-    .values([{ id: "demo-user-1", email: "demo@example.com" }]);
 
   console.log("✅ Seeding complete");
 }

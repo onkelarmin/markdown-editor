@@ -97,10 +97,10 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
 
       <Button
         text="Sign in"
-        icon={SpinnerSvg}
         variant="secondary"
-        id="auth-button"
+        hasSpinner
         fullWidth
+        id="auth-button"
       />
     </div>
 
@@ -264,13 +264,6 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
         }
       }
 
-      .button {
-        .icon {
-          display: none;
-          width: var(--size-svg-spinner);
-        }
-      }
-
       &[data-state="guest"] {
         .sign-in {
           display: block;
@@ -280,15 +273,6 @@ import SpinnerSvg from "@assets/icon-spinner.svg";
       &[data-state="loading"] {
         .sign-in {
           display: block;
-        }
-
-        @media (prefers-reduced-motion: no-preference) {
-          .button {
-            .icon {
-              display: block;
-              animation: spinner 1.5s steps(12) infinite;
-            }
-          }
         }
       }
 

@@ -20,3 +20,10 @@ export const guestDocumentSchema = z.object({
   createdAt: z.number(),
   modifiedAt: z.number(),
 });
+
+export const emailSchema = z.email();
+
+export const otpSchema = z
+  .string()
+  .regex(/^[0-9]+$/, "Code must only contain numbers")
+  .length(6, "The confirmation code must be 6 digits.");

@@ -1,10 +1,13 @@
 ---
 // Asset imports
 import CloseSvg from "@assets/icon-close.svg";
+import SpinnerSvg from "@assets/icon-spinner.svg";
+
+// Component imports
 import Button from "./Button.astro";
 ---
 
-<dialog id="sign-in-modal" class="sign-in-modal" data-step="email">
+<dialog id="sign-in-modal" class="sign-in-modal">
   <!-- Close button -->
   <button type="button" id="close-sign-in-button" class="close-button"
     ><span class="visually-hidden">Close</span>
@@ -26,9 +29,16 @@ import Button from "./Button.astro";
           inputmode="email"
           required
         />
-        <p id="send-otp-error" class="error"></p>
+        <p id="send-otp-input-error" class="input-error"></p>
       </label>
-      <Button type="submit" text="Send code" fullWidth />
+      <p id="send-otp-process-error" class="process-error"></p>
+      <Button
+        type="submit"
+        text="Send code"
+        hasSpinner
+        fullWidth
+        id="email-submit-button"
+      />
     </form>
     <p class="note">We’ll email you a one-time code.</p>
   </section>
@@ -45,22 +55,34 @@ import Button from "./Button.astro";
       <label
         ><span class="text">Verification code</span>
         <input
-          type="number"
+          type="text"
           name="otp"
           id="otp-input"
           placeholder="Enter code"
           autocomplete="one-time-code"
           inputmode="numeric"
-          min="0"
+          maxlength="6"
           required
         />
-        <p id="verify-otp-error" class="error"></p>
+        <p id="verify-otp-input-error" class="input-error"></p>
       </label>
-      <Button type="submit" text="Verify & sign in" fullWidth />
+      <p id="verify-otp-process-error" class="process-error"></p>
+      <Button
+        type="submit"
+        text="Verify & sign in"
+        hasSpinner
+        fullWidth
+        id="otp-submit-button"
+      />
     </form>
     <div class="secondary-controls">
-      <Button variant="secondary" text="Resend code" />
-      <Button variant="tertiary" text="Change email" />
+      <Button
+        text="Resend code"
+        variant="secondary"
+        hasSpinner
+        id="resend-code-button"
+      />
+      <Button variant="tertiary" text="Change email" id="change-email-button" />
     </div>
   </section>
 </dialog>
@@ -167,7 +189,7 @@ import Button from "./Button.astro";
   }
 
   .description {
-    margin-block-start: var(--space-cont-sm);
+    margin-block-start: var(--space-cont-xs);
 
     .email {
       font: var(--font-7);
@@ -224,16 +246,16 @@ import Button from "./Button.astro";
         border-color: var(--bc-sign-in-form-focus);
       }
 
-      &[aria-invalid="true"] {
+      &:not(:disabled)[aria-invalid="true"] {
         border-color: var(--bc-sign-in-form-error);
 
-        + .error {
+        + .input-error {
           display: block;
         }
       }
     }
 
-    .error {
+    .input-error {
       display: none;
       position: absolute;
       z-index: 1;
@@ -243,10 +265,16 @@ import Button from "./Button.astro";
       color: var(--fg-text-error);
       transform: translateY(calc(100% + var(--size-2)));
     }
+
+    .process-error {
+      font: var(--font-9);
+      color: var(--fg-text-error);
+    }
   }
 
   .secondary-controls {
     display: flex;
+    justify-content: center;
   }
 
   .note {
@@ -254,7 +282,3 @@ import Button from "./Button.astro";
     color: var(--fg-text-muted);
   }
 </style>
-
-<script>
-  document.querySelector<HTMLDialogElement>("#sign-in-modal")?.showModal();
-</script>

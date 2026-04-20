@@ -1,6 +1,7 @@
 import type { State } from "./types";
 
 // Auth
+
 export function selectIsGuest(state: State) {
   return state.auth.status === "guest";
 }
@@ -67,4 +68,20 @@ export function selectSidebarOpen(state: State) {
 
 export function selectActiveToast(state: State) {
   return state.ui.toasts[0] ?? null;
+}
+
+export function selectDeleteModalOpen(state: State) {
+  return state.ui.isDeleteModalOpen;
+}
+
+export function selectSignInModalOpen(state: State) {
+  return state.ui.signInModal.step !== "closed";
+}
+
+export function selectHasSignInInputError(state: State) {
+  return state.ui.signInModal.inputError !== null;
+}
+
+export function selectHasSignInProcessError(state: State) {
+  return state.ui.signInModal.processError !== null;
 }

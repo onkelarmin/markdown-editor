@@ -2,13 +2,19 @@ import type { z } from "astro/zod";
 import { type Theme } from "./lib/constants";
 import type { guestDocumentSchema } from "./schema";
 
-type AuthStatus = "guest" | "authenticated" | "loading";
+export type AuthStatus = "guest" | "authenticated" | "loading";
 
 export type AuthState = {
   status: AuthStatus;
   userId: string | null;
   email: string | null;
 };
+
+export type SignInModalStep = "closed" | "email" | "otp";
+
+export type SignInModalStatus = "idle" | "sending" | "verifying" | "error";
+
+export type ResendStatus = "idle" | "sending" | "success";
 
 export type View = "markdown" | "preview";
 
@@ -75,6 +81,14 @@ export type State = {
     theme: Theme;
     themeSource: ThemeSource;
     toasts: Toast[];
+    signInModal: {
+      step: SignInModalStep;
+      email: string;
+      inputError: string | null;
+      processError: string | null;
+      status: SignInModalStatus;
+      resendStatus: ResendStatus;
+    };
   };
 
   editor: {
@@ -90,6 +104,19 @@ export type State = {
 };
 
 export type Action =
+  // Auth
+  | { type: "auth/clearInputError" }
+  | { type: "auth/setInputError"; payload: { message: string } }
+  | { type: "auth/setProcessError"; payload: { message: string } }
+  | { type: "auth/sendCodeStart" }
+  | { type: "auth/sendCodeSuccess"; payload: { email: string } }
+  | { type: "auth/verifyCodeStart" }
+  | { type: "auth/verifyCodeSuccess" }
+  | { type: "auth/resendCodeStart" }
+  | { type: "auth/resendCodeError"; payload: { message: string } }
+  | { type: "auth/resendCodeSuccess" }
+  | { type: "auth/resendCodeReset" }
+  | { type: "auth/changeEmail" }
   // Requests
   | { type: "document/createOptimistic" }
   | { type: "document/createSuccess"; payload: { id: string } }
@@ -106,6 +133,7 @@ export type Action =
   | { type: "document/deleteError" }
   // Domain
   | { type: "document/setGuest"; payload: { document: GuestDocument } }
+  | { type: "document/migrateGuest"; payload: { document: GuestDocument } }
   | {
       type: "document/updateNameDraft";
       payload: { name: string; error?: string };
@@ -123,6 +151,8 @@ export type Action =
   | { type: "sidebar/close" }
   | { type: "modal/openDelete" }
   | { type: "modal/closeDelete" }
+  | { type: "modal/openSignInEmail" }
+  | { type: "modal/closeSignIn" }
   | { type: "theme/toggle" }
   | { type: "theme/set"; payload: { theme: Theme; themeSource: ThemeSource } }
   // App

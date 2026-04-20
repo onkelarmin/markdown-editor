@@ -2,7 +2,6 @@ import { db } from "@/server/db/client";
 import { and, eq, gt, sql } from "drizzle-orm";
 import { documents } from "@/server/db/schema";
 import { documentNameSchemaFull } from "@/scripts/features/markdown/schema";
-import { DEMO_USER_ID } from "@/server/config";
 import { z } from "astro/zod";
 import { ActionError, defineAction } from "astro:actions";
 import { getNewDocumentName } from "@/scripts/features/markdown/lib/getNewDocumentName";
@@ -16,34 +15,48 @@ export const server = {
       order: z.number().positive(),
       createdAt: z.number(),
       modifiedAt: z.number(),
-      userId: z.string(),
     }),
 
-    handler: async ({
-      id,
-      name,
-      content,
-      order,
-      createdAt,
-      modifiedAt,
-      userId,
-    }) => {
-      await db
-        .insert(documents)
-        .values({ id, name, content, order, createdAt, modifiedAt, userId });
+    handler: async (
+      { id, name, content, order, createdAt, modifiedAt },
+      context,
+    ) => {
+      const user = context.locals.user;
+
+      if (!user)
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "User must be logged in.",
+        });
+
+      await db.insert(documents).values({
+        id,
+        name,
+        content,
+        order,
+        createdAt,
+        modifiedAt,
+        userId: user.id,
+      });
 
       return { id };
     },
   }),
 
   getDocuments: defineAction({
-    handler: async () => {
-      const userId = DEMO_USER_ID;
+    handler: async (_, context) => {
+      const user = context.locals.user;
+
+      if (!user)
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "User must be logged in.",
+        });
 
       const rows = await db
         .select()
         .from(documents)
-        .where(eq(documents.userId, userId))
+        .where(eq(documents.userId, user.id))
         .orderBy(documents.order);
 
       const loaded = rows.map((row) => ({
@@ -65,14 +78,21 @@ export const server = {
       name: documentNameSchemaFull,
       content: z.string(),
       modifiedAt: z.number(),
-      userId: z.string(),
     }),
 
-    handler: async ({ id, name, content, modifiedAt, userId }) => {
+    handler: async ({ id, name, content, modifiedAt }, context) => {
+      const user = context.locals.user;
+
+      if (!user)
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "User must be logged in.",
+        });
+
       await db
         .update(documents)
         .set({ name, content, modifiedAt })
-        .where(and(eq(documents.id, id), eq(documents.userId, userId)));
+        .where(and(eq(documents.id, id), eq(documents.userId, user.id)));
 
       return { id };
     },
@@ -84,22 +104,26 @@ export const server = {
         z.object({
           id: z.string(),
           order: z.number(),
-          userId: z.string(),
         }),
       ),
     }),
 
-    handler: async ({ reordered }) => {
+    handler: async ({ reordered }, context) => {
+      const user = context.locals.user;
+
+      if (!user)
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "User must be logged in.",
+        });
+
       await db.transaction(async (tx) => {
         reordered.forEach(async (document) => {
           await tx
             .update(documents)
             .set({ order: document.order })
             .where(
-              and(
-                eq(documents.id, document.id),
-                eq(documents.userId, document.userId),
-              ),
+              and(eq(documents.id, document.id), eq(documents.userId, user.id)),
             );
         });
       });
@@ -107,14 +131,22 @@ export const server = {
   }),
 
   deleteDocument: defineAction({
-    input: z.object({ id: z.string(), userId: z.string() }),
+    input: z.object({ id: z.string() }),
 
-    handler: async ({ id, userId }) => {
+    handler: async ({ id }, context) => {
+      const user = context.locals.user;
+
+      if (!user)
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "User must be logged in.",
+        });
+
       const result = await db.transaction(async (tx) => {
         const [documentToDelete] = await tx
           .select({ id: documents.id, order: documents.order })
           .from(documents)
-          .where(and(eq(documents.id, id), eq(documents.userId, userId)));
+          .where(and(eq(documents.id, id), eq(documents.userId, user.id)));
 
         if (!documentToDelete)
           throw new ActionError({
@@ -125,20 +157,20 @@ export const server = {
         const userDocuments = await tx
           .select({ id: documents.id, name: documents.name })
           .from(documents)
-          .where(eq(documents.userId, userId));
+          .where(eq(documents.userId, user.id));
 
         const isOnlyDocument = userDocuments.length === 1;
 
         await tx
           .delete(documents)
-          .where(and(eq(documents.id, id), eq(documents.userId, userId)));
+          .where(and(eq(documents.id, id), eq(documents.userId, user.id)));
 
         if (isOnlyDocument) {
           const now = Date.now();
 
           const fallbackDocument = {
             id: crypto.randomUUID(),
-            userId: userId,
+            userId: user.id,
             name: getNewDocumentName([]),
             content: "",
             order: 1,
@@ -158,7 +190,7 @@ export const server = {
           .set({ order: sql`${documents.order} - 1` })
           .where(
             and(
-              eq(documents.userId, userId),
+              eq(documents.userId, user.id),
               gt(documents.order, documentToDelete.order),
             ),
           );

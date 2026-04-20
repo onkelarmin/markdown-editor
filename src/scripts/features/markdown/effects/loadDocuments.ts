@@ -19,6 +19,7 @@ export async function loadDocuments(store: Store) {
       ...document,
       persistStatus: "created" as const,
     }));
+
     store.dispatch({
       type: "documents/loadSuccess",
       payload: { documents },

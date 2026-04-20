@@ -11,8 +11,7 @@ export type Store = {
   ) => () => void;
 };
 
-export function createStore() {
-  let state = getInitialState();
+export function createStore(state: State) {
   const listeners = new Set<(s: State) => void>();
 
   function getState() {

@@ -1,3 +1,4 @@
+import { createNewDocument } from "./effects/createDocument";
 import { loadDocuments } from "./effects/loadDocuments";
 import {
   applyTheme,
@@ -5,6 +6,7 @@ import {
   setupSystemThemeListener,
 } from "./effects/theme";
 import { clearToastTimer, startToastTimer } from "./effects/toast";
+import { getInitialState } from "./initialState";
 import { guestDocumentSchema } from "./schema";
 import { selectCanReorderDocuments, selectIsGuest } from "./selectors";
 import { createStore, type Store } from "./store";
@@ -13,10 +15,6 @@ import { getDOM, type DOM } from "./ui/dom";
 import { setupDragDrop } from "./ui/dragDrop";
 import { bindEvents } from "./ui/events";
 import { render } from "./ui/render";
-
-function createMarkdownStore() {
-  return createStore();
-}
 
 function loadGuestDocument(): GuestDocument | null {
   if (typeof window === "undefined") return null;
@@ -43,6 +41,23 @@ function createGuestDocument(): GuestDocument {
     createdAt: now,
     modifiedAt: now,
   };
+}
+
+async function initAuthenticatedFlow(store: Store) {
+  await loadDocuments(store);
+
+  const guestDocument = loadGuestDocument();
+
+  if (!guestDocument || guestDocument.content === "") return;
+
+  store.dispatch({
+    type: "document/migrateGuest",
+    payload: { document: guestDocument },
+  });
+
+  await createNewDocument(store);
+
+  localStorage.removeItem("guest-document");
 }
 
 function registerMarkdownSubscribers(dom: DOM, store: Store) {
@@ -112,8 +127,11 @@ function registerMarkdownInteractions(dom: DOM, store: Store) {
 }
 
 export function initMarkdown() {
+  const initialState = getInitialState();
+
   const dom = getDOM();
-  const store = createMarkdownStore();
+
+  const store = createStore(initialState);
 
   // Subscriptions
   const cleanupSubscribers = registerMarkdownSubscribers(dom, store);
@@ -133,7 +151,7 @@ export function initMarkdown() {
       payload: { document: guestDocument },
     });
   } else {
-    void loadDocuments(store);
+    void initAuthenticatedFlow(store);
   }
 
   // Cleanup handling

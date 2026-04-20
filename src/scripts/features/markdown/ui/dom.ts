@@ -1,5 +1,23 @@
 export type DOM = {
   appLayout: HTMLElement;
+  signInModal: HTMLDialogElement;
+  closeSignInModalButton: HTMLButtonElement;
+  emailForm: HTMLFormElement;
+  emailInput: HTMLInputElement;
+  emailSubmitButton: HTMLButtonElement;
+  emailSubmitButtonText: HTMLSpanElement;
+  emailInputError: HTMLParagraphElement;
+  emailProcessError: HTMLParagraphElement;
+  otpForm: HTMLFormElement;
+  otpInput: HTMLInputElement;
+  otpSubmitButton: HTMLButtonElement;
+  otpSubmitButtonText: HTMLSpanElement;
+  otpInputError: HTMLParagraphElement;
+  otpProcessError: HTMLParagraphElement;
+  signInEmailSpan: HTMLSpanElement;
+  resendCodeButton: HTMLButtonElement;
+  resendCodeButtonText: HTMLSpanElement;
+  changeEmailButton: HTMLButtonElement;
   sidebar: HTMLElement;
   newDocumentButton: HTMLButtonElement;
   documentList: HTMLUListElement;
@@ -31,6 +49,48 @@ export type DOM = {
 
 export function getDOM() {
   const appLayout = document.querySelector<HTMLElement>("#app-layout");
+  const signInModal =
+    document.querySelector<HTMLDialogElement>("#sign-in-modal");
+  const closeSignInModalButton = document.querySelector<HTMLButtonElement>(
+    "#close-sign-in-button",
+  );
+  const emailForm = document.querySelector<HTMLFormElement>("#send-otp-form");
+  const emailInput = document.querySelector<HTMLInputElement>("#email-input");
+  const emailSubmitButton = document.querySelector<HTMLButtonElement>(
+    "#email-submit-button",
+  );
+  const emailSubmitButtonText = document.querySelector<HTMLSpanElement>(
+    "#email-submit-button .text",
+  );
+  const emailInputError = document.querySelector<HTMLParagraphElement>(
+    "#send-otp-input-error",
+  );
+  const emailProcessError = document.querySelector<HTMLParagraphElement>(
+    "#send-otp-process-error",
+  );
+  const otpForm = document.querySelector<HTMLFormElement>("#verify-otp-form");
+  const otpInput = document.querySelector<HTMLInputElement>("#otp-input");
+  const otpSubmitButton =
+    document.querySelector<HTMLButtonElement>("#otp-submit-button");
+  const otpSubmitButtonText = document.querySelector<HTMLSpanElement>(
+    "#otp-submit-button .text",
+  );
+  const otpInputError = document.querySelector<HTMLParagraphElement>(
+    "#verify-otp-input-error",
+  );
+  const otpProcessError = document.querySelector<HTMLParagraphElement>(
+    "#verify-otp-process-error",
+  );
+  const signInEmailSpan = document.querySelector<HTMLSpanElement>("#otp-email");
+  const resendCodeButton = document.querySelector<HTMLButtonElement>(
+    "#resend-code-button",
+  );
+  const resendCodeButtonText = document.querySelector<HTMLSpanElement>(
+    "#resend-code-button .text",
+  );
+  const changeEmailButton = document.querySelector<HTMLButtonElement>(
+    "#change-email-button",
+  );
   const sidebar = document.querySelector<HTMLElement>("#sidebar");
   const newDocumentButton = document.querySelector<HTMLButtonElement>(
     "#new-document-button",
@@ -95,6 +155,24 @@ export function getDOM() {
 
   if (
     !appLayout ||
+    !signInModal ||
+    !closeSignInModalButton ||
+    !emailForm ||
+    !emailInput ||
+    !emailSubmitButton ||
+    !emailSubmitButtonText ||
+    !emailInputError ||
+    !emailProcessError ||
+    !otpForm ||
+    !otpInput ||
+    !otpSubmitButton ||
+    !otpSubmitButtonText ||
+    !otpInputError ||
+    !otpProcessError ||
+    !signInEmailSpan ||
+    !resendCodeButton ||
+    !resendCodeButtonText ||
+    !changeEmailButton ||
     !sidebar ||
     !newDocumentButton ||
     !documentList ||
@@ -128,6 +206,24 @@ export function getDOM() {
 
   return {
     appLayout,
+    signInModal,
+    closeSignInModalButton,
+    emailForm,
+    emailInput,
+    emailSubmitButton,
+    emailSubmitButtonText,
+    emailInputError,
+    emailProcessError,
+    otpForm,
+    otpInput,
+    otpSubmitButton,
+    otpSubmitButtonText,
+    otpInputError,
+    otpProcessError,
+    signInEmailSpan,
+    resendCodeButton,
+    resendCodeButtonText,
+    changeEmailButton,
     sidebar,
     newDocumentButton,
     documentList,

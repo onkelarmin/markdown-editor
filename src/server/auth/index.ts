@@ -4,11 +4,11 @@ import { db } from "../db/client";
 import { emailOTP } from "better-auth/plugins";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL,
-  secret: process.env.BETTER_AUTH_SECRET,
+  baseURL: import.meta.env.BETTER_AUTH_URL,
+  secret: import.meta.env.BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: "sqlite",
   }),
@@ -35,7 +35,7 @@ export const auth = betterAuth({
         `;
 
         const { error } = await resend.emails.send({
-          from: process.env.AUTH_EMAIL_FROM!,
+          from: import.meta.env.AUTH_EMAIL_FROM!,
           to: [email],
           subject,
           html,

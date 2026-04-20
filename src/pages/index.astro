@@ -13,6 +13,15 @@ import Toast from "@/components/ui/Toast.astro";
 import SignInModal from "@/components/ui/SignInModal.astro";
 
 const page = sitePages.home;
+
+const initialAuth =
+  Astro.locals.session && Astro.locals.user
+    ? {
+        status: "authenticated" as const,
+        userId: Astro.locals.user.id,
+        email: Astro.locals.user.email,
+      }
+    : { status: "guest" as const, userId: null, email: null };
 ---
 
 <MainLayout
@@ -30,6 +39,13 @@ const page = sitePages.home;
     <!-- Sign-in modal -->
     <SignInModal />
   </div>
+
+  <!-- Auth state -->
+  <script
+    id="initial-auth"
+    type="application/json"
+    set:html={JSON.stringify(initialAuth)}
+  />
 </MainLayout>
 
 <style lang="scss">

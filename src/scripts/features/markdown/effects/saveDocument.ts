@@ -1,7 +1,6 @@
 import { actions } from "astro:actions";
 import { selectActiveDocument } from "../selectors";
 import type { Store } from "../store";
-import { DEMO_USER_ID } from "@/server/config";
 
 export async function saveActiveDocument(store: Store) {
   store.dispatch({ type: "document/saveStart" });
@@ -17,7 +16,6 @@ export async function saveActiveDocument(store: Store) {
     name: activeDocument.name,
     content: activeDocument.content,
     modifiedAt: activeDocument.modifiedAt,
-    userId: DEMO_USER_ID,
   });
 
   if (error) {
@@ -37,6 +35,7 @@ export async function saveActiveDocument(store: Store) {
 
   if (data) {
     store.dispatch({ type: "document/saveSuccess" });
+
     setTimeout(() => {
       store.dispatch({ type: "document/saveReset" });
     }, 2000);

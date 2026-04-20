@@ -1,16 +1,30 @@
 import { queueAutoSave } from "../effects/autoSave";
 import { createNewDocument } from "../effects/createDocument";
 import { deleteDocument } from "../effects/deleteDocument";
+import { resendAuthCode } from "../effects/resendAuthCode";
 import { saveActiveDocument } from "../effects/saveDocument";
+import { sendAuthCode } from "../effects/sendAuthCode";
+import { signOutUser } from "../effects/signOut";
+import { verifyAuthCode } from "../effects/verifyAuthCode";
 import { normalizeDocumentName } from "../lib/normalizeDocumentName";
-import { documentNameSchemaFull, documentNameSchemaLight } from "../schema";
+import {
+  documentNameSchemaFull,
+  documentNameSchemaLight,
+  emailSchema,
+  otpSchema,
+} from "../schema";
 import {
   selectCanCreateDocuments,
   selectCanDeleteDocuments,
   selectCanManageDocuments,
   selectCanPersistDocuments,
   selectCanRenameDocuments,
+  selectDeleteModalOpen,
+  selectHasSignInInputError,
+  selectIsAuthenticated,
+  selectIsGuest,
   selectSidebarOpen,
+  selectSignInModalOpen,
 } from "../selectors";
 import type { Store } from "../store";
 import type { DOM } from "./dom";
@@ -38,6 +52,176 @@ function handleDocumentNameChange(store: Store, input: HTMLInputElement) {
 }
 
 export function bindEvents(dom: DOM, store: Store) {
+  // Auth button click
+  const onAuthButtonClick = () => {
+    if (selectIsGuest(store.getState()))
+      store.dispatch({ type: "modal/openSignInEmail" });
+
+    if (selectIsAuthenticated(store.getState())) void signOutUser(store, dom);
+  };
+  dom.authButton.addEventListener("click", onAuthButtonClick);
+
+  // Email input
+  const onEmailInput = () => {
+    if (
+      !selectIsGuest(store.getState()) ||
+      !selectHasSignInInputError(store.getState())
+    )
+      return;
+
+    store.dispatch({ type: "auth/clearInputError" });
+  };
+
+  const onEmailChange = (e: Event) => {
+    if (!selectIsGuest(store.getState())) return;
+
+    const input = e.currentTarget;
+
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const result = emailSchema.safeParse(input.value);
+
+    if (!result.success) {
+      const message =
+        result.error.issues[0]?.message ?? "Invalid email address";
+
+      store.dispatch({ type: "auth/setInputError", payload: { message } });
+    }
+  };
+
+  const onEmailSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+
+    if (!selectIsGuest(store.getState())) return;
+
+    const form = e.currentTarget;
+
+    if (!(form instanceof HTMLFormElement)) return;
+
+    const input = form.elements.namedItem("email");
+
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const result = emailSchema.safeParse(input.value);
+
+    if (!result.success) {
+      const message =
+        result.error.issues[0]?.message ?? "Invalid email address";
+
+      store.dispatch({ type: "auth/setInputError", payload: { message } });
+    } else {
+      store.dispatch({ type: "auth/sendCodeStart" });
+
+      void sendAuthCode(store, input.value);
+    }
+  };
+
+  dom.emailInput.addEventListener("input", onEmailInput);
+  dom.emailInput.addEventListener("change", onEmailChange);
+  dom.emailForm.addEventListener("submit", onEmailSubmit);
+
+  // OTP input
+  const onOtpInput = (e: Event) => {
+    if (
+      !selectIsGuest(store.getState()) ||
+      !selectHasSignInInputError(store.getState())
+    )
+      return;
+
+    store.dispatch({ type: "auth/clearInputError" });
+  };
+
+  const onOtpChange = (e: Event) => {
+    if (!selectIsGuest(store.getState())) return;
+
+    const input = e.currentTarget;
+
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const result = otpSchema.safeParse(input.value);
+
+    if (!result.success) {
+      const message =
+        result.error.issues[0]?.message ?? "Incorrect code format";
+
+      store.dispatch({ type: "auth/setInputError", payload: { message } });
+    }
+  };
+
+  const onOtpSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+
+    if (!selectIsGuest(store.getState())) return;
+
+    const form = e.currentTarget;
+
+    if (!(form instanceof HTMLFormElement)) return;
+
+    const input = form.elements.namedItem("otp");
+
+    if (!(input instanceof HTMLInputElement)) return;
+
+    const result = otpSchema.safeParse(input.value);
+
+    if (!result.success) {
+      const message =
+        result.error.issues[0]?.message ?? "Incorrect code format";
+
+      store.dispatch({ type: "auth/setInputError", payload: { message } });
+    } else {
+      store.dispatch({ type: "auth/verifyCodeStart" });
+
+      void verifyAuthCode(store, input.value);
+    }
+  };
+
+  dom.otpInput.addEventListener("input", onOtpInput);
+  dom.otpInput.addEventListener("change", onOtpChange);
+  dom.otpForm.addEventListener("submit", onOtpSubmit);
+
+  // Resend code
+  const onResendCodeClick = () => {
+    const email = store.getState().ui.signInModal.email;
+
+    if (!email) return;
+
+    store.dispatch({ type: "auth/resendCodeStart" });
+
+    void resendAuthCode(store, email);
+  };
+  dom.resendCodeButton.addEventListener("click", onResendCodeClick);
+
+  // Change email
+  const onChangeEmailClick = () => {
+    store.dispatch({ type: "auth/changeEmail" });
+  };
+
+  dom.changeEmailButton.addEventListener("click", onChangeEmailClick);
+
+  // Close sign-in modal
+  const onCloseSignInModalClick = () => {
+    store.dispatch({ type: "modal/closeSignIn" });
+  };
+  const onSignInModalOverlayClick = (e: MouseEvent) => {
+    const modal = e.currentTarget;
+
+    if (!(modal instanceof HTMLDialogElement)) return;
+    if (e.target !== modal) return;
+
+    const dialogDimensions = modal.getBoundingClientRect();
+    if (
+      e.clientX < dialogDimensions.left ||
+      e.clientX > dialogDimensions.right ||
+      e.clientY < dialogDimensions.top ||
+      e.clientY > dialogDimensions.bottom
+    ) {
+      store.dispatch({ type: "modal/closeSignIn" });
+    }
+  };
+
+  dom.closeSignInModalButton.addEventListener("click", onCloseSignInModalClick);
+  dom.signInModal.addEventListener("click", onSignInModalOverlayClick);
+
   // Create document
   const onNewDocumentClick = () => {
     if (!selectCanCreateDocuments(store.getState())) return;
@@ -50,9 +234,11 @@ export function bindEvents(dom: DOM, store: Store) {
 
   // Save changes
   const onSaveClick = () => {
-    if (!selectCanPersistDocuments(store.getState())) return;
-
-    void saveActiveDocument(store);
+    if (selectCanPersistDocuments(store.getState())) {
+      void saveActiveDocument(store);
+    } else {
+      store.dispatch({ type: "modal/openSignInEmail" });
+    }
   };
   dom.saveChangesButton.addEventListener("click", onSaveClick);
 
@@ -197,14 +383,7 @@ export function bindEvents(dom: DOM, store: Store) {
     else store.dispatch({ type: "sidebar/open" });
   };
 
-  const onEscape = (e: KeyboardEvent) => {
-    if (selectSidebarOpen(store.getState()) && e.key === "Escape") {
-      store.dispatch({ type: "sidebar/close" });
-    }
-  };
-
   dom.sidebarToggle.addEventListener("click", onSidebarToggleClick);
-  document.addEventListener("keydown", onEscape);
 
   // Open delete modal
   const onDeleteModalButtonClick = () => {
@@ -219,6 +398,7 @@ export function bindEvents(dom: DOM, store: Store) {
     const modal = e.currentTarget;
 
     if (!(modal instanceof HTMLDialogElement)) return;
+    if (e.target !== modal) return;
 
     const dialogDimensions = modal.getBoundingClientRect();
     if (
@@ -256,7 +436,37 @@ export function bindEvents(dom: DOM, store: Store) {
   };
   dom.closeToastButton.addEventListener("click", onCloseToastClick);
 
+  // Escape key
+  const onEscape = (e: KeyboardEvent) => {
+    if (e.key !== "Escape") return;
+
+    if (selectSidebarOpen(store.getState())) {
+      store.dispatch({ type: "sidebar/close" });
+    }
+    if (selectDeleteModalOpen(store.getState())) {
+      store.dispatch({ type: "modal/closeDelete" });
+    }
+    if (selectSignInModalOpen(store.getState())) {
+      store.dispatch({ type: "modal/closeSignIn" });
+    }
+  };
+  document.addEventListener("keydown", onEscape);
+
   return () => {
+    dom.authButton.removeEventListener("click", onAuthButtonClick);
+    dom.emailInput.removeEventListener("input", onEmailInput);
+    dom.emailInput.removeEventListener("change", onEmailChange);
+    dom.emailForm.removeEventListener("submit", onEmailSubmit);
+    dom.otpInput.removeEventListener("input", onOtpInput);
+    dom.otpInput.removeEventListener("change", onOtpChange);
+    dom.otpForm.removeEventListener("submit", onOtpSubmit);
+    dom.resendCodeButton.removeEventListener("click", onResendCodeClick);
+    dom.changeEmailButton.removeEventListener("click", onChangeEmailClick);
+    dom.closeSignInModalButton.removeEventListener(
+      "click",
+      onCloseSignInModalClick,
+    );
+    dom.signInModal.removeEventListener("click", onSignInModalOverlayClick);
     dom.newDocumentButton.removeEventListener("click", onNewDocumentClick);
     dom.saveChangesButton.removeEventListener("click", onSaveClick);
     dom.deleteModalConfirmationButton.removeEventListener(

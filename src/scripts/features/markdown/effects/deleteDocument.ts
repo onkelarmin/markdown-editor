@@ -1,13 +1,11 @@
 import { actions } from "astro:actions";
 import type { Store } from "../store";
 import type { Document } from "../types";
-import { DEMO_USER_ID } from "@/server/config";
 import { loadDocuments } from "./loadDocuments";
 
 export async function deleteDocument(store: Store, document: Document) {
   const { data, error } = await actions.deleteDocument({
     id: document.id,
-    userId: DEMO_USER_ID,
   });
 
   if (error) {
