@@ -427,11 +427,7 @@ export function reducer(state: State, action: Action): State {
         ...state,
         documents: state.documents
           .filter((document) => document !== toBeDeleted)
-          .map((document, index) =>
-            index > newIndex
-              ? { ...document, order: document.order - 1 }
-              : document,
-          ),
+          .map((document, index) => ({ ...document, order: index + 1 })),
         activeDocumentId: newActiveId,
         editor: { ...state.editor, nameDraft: state.documents[newIndex].name },
         requests: { ...state.requests, delete: { status: "pending" } },

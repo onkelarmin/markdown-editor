@@ -60,6 +60,10 @@ export function selectDisableEditor(state: State) {
   return isLoadingDocuments || isDeletingDocument || !hasActiveDocument;
 }
 
+export function selectIsSaving(state: State) {
+  return state.requests.save.status === "pending";
+}
+
 // UI
 
 export function selectSidebarOpen(state: State) {

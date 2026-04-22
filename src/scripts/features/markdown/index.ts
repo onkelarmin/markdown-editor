@@ -55,9 +55,9 @@ async function initAuthenticatedFlow(store: Store) {
     payload: { document: guestDocument },
   });
 
-  await createNewDocument(store);
+  const result = await createNewDocument(store);
 
-  localStorage.removeItem("guest-document");
+  if (result.success) localStorage.removeItem("guest-document");
 }
 
 function registerMarkdownSubscribers(dom: DOM, store: Store) {

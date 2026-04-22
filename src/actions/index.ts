@@ -118,14 +118,14 @@ export const server = {
         });
 
       await db.transaction(async (tx) => {
-        reordered.forEach(async (document) => {
+        for (const document of reordered) {
           await tx
             .update(documents)
             .set({ order: document.order })
             .where(
               and(eq(documents.id, document.id), eq(documents.userId, user.id)),
             );
-        });
+        }
       });
     },
   }),

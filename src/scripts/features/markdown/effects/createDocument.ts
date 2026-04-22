@@ -1,13 +1,14 @@
 import { actions } from "astro:actions";
 import { selectActiveDocument } from "../selectors";
 import type { Store } from "../store";
+import { success } from "astro:schema";
 
 export async function createNewDocument(store: Store) {
   const state = store.getState();
 
   const newDocument = selectActiveDocument(state);
 
-  if (!newDocument) return;
+  if (!newDocument) return { success: false };
 
   const { data, error } = await actions.createDocument({
     id: newDocument.id,
@@ -34,6 +35,8 @@ export async function createNewDocument(store: Store) {
         variant: "error",
       },
     });
+
+    return { success: false };
   }
   if (data) {
     store.dispatch({
@@ -41,4 +44,6 @@ export async function createNewDocument(store: Store) {
       payload: { id: newDocument.id },
     });
   }
+
+  return { success: true };
 }

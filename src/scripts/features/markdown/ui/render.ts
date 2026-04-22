@@ -102,6 +102,7 @@ function updateSignInDialog(state: State, dom: DOM) {
       } else {
         hideProcessError(processErrorEl);
       }
+      break;
     }
 
     case "otp": {

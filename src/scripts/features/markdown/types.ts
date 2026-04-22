@@ -39,6 +39,13 @@ export type SaveRequestState = {
   status: "idle" | "dirty" | "pending" | "success" | "error";
 };
 
+export type SavePayload = {
+  id: string;
+  name: string;
+  content: string;
+  modifiedAt: number;
+};
+
 export type DeleteRequestState = {
   status: "idle" | "pending";
 };
