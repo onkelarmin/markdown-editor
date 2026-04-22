@@ -222,7 +222,7 @@ function updateDocumentList(state: State, dom: DOM) {
   dom.documentList.replaceChildren();
 
   if (selectIsGuest(state) || selectIsLoadingAuth(state)) {
-    dom.documentList.innerHTML = `<div class='status'><p>Sign in to create and manage documents</p></div>`;
+    dom.documentList.innerHTML = `<li class='status'><p>Sign in to create and manage documents</p></li>`;
     return;
   }
 
@@ -231,15 +231,15 @@ function updateDocumentList(state: State, dom: DOM) {
       const spinner =
         "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'><circle cx='17' cy='2' r='2' fill='currentColor' /><circle cx='17' cy='32' r='2' fill='currentColor' opacity='0.3' /><circle cx='24.5' cy='4' r='2' fill='currentColor' opacity='0.3' /><circle cx='9.5' cy='30' r='2' fill='currentColor' opacity='0.3' /><circle cx='9.5' cy='4' r='2' fill='currentColor' opacity='0.93' /><circle cx='24.5' cy='30' r='2' fill='currentColor' opacity='0.3' /><circle cx='2' cy='17' r='2' fill='currentColor' opacity='0.65' /><circle cx='32' cy='17' r='2' fill='currentColor' opacity='0.3' /><circle cx='4' cy='9.5' r='2' fill='currentColor' opacity='0.86' /><circle cx='30' cy='24.5' r='2' fill='currentColor' opacity='0.3' /><circle cx='4' cy='24.5' r='2' fill='currentColor' opacity='0.44' /><circle cx='30' cy='9.5' r='2' fill='currentColor' opacity='0.3' /></svg>";
 
-      dom.documentList.innerHTML = `<div class='status'>${spinner}<p>Loading documents...</p></div>`;
+      dom.documentList.innerHTML = `<li class='status'>${spinner}<p>Loading documents...</p></li>`;
       break;
 
     case "error":
-      dom.documentList.innerHTML = `<div class='status'><p>${state.requests.load.message ?? ""}</p></div>`;
+      dom.documentList.innerHTML = `<li class='status'><p>${state.requests.load.message ?? ""}</p></li>`;
       break;
     case "success":
       if (!selectHasDocuments(state)) {
-        dom.documentList.innerHTML = `<div class='status'><p>No documents yet</p></div>`;
+        dom.documentList.innerHTML = `<li class='status'><p>No documents yet</p></li>`;
       } else {
         state.documents.forEach((document) => {
           const clone = dom.documentListItemTemplate.content.cloneNode(
