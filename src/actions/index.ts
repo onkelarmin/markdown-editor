@@ -121,6 +121,14 @@ export const server = {
         for (const document of reordered) {
           await tx
             .update(documents)
+            .set({ order: -document.order })
+            .where(
+              and(eq(documents.id, document.id), eq(documents.userId, user.id)),
+            );
+        }
+        for (const document of reordered) {
+          await tx
+            .update(documents)
             .set({ order: document.order })
             .where(
               and(eq(documents.id, document.id), eq(documents.userId, user.id)),
