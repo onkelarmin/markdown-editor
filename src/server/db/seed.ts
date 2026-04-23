@@ -1,11 +1,24 @@
 import "dotenv/config";
 import { db } from "./client";
 import { documents } from "./schema";
+import { user } from "./auth-schema";
 
 async function seed() {
   console.log("🌱 Seeding database...");
 
   const now = Date.now();
+
+  await db.delete(user);
+
+  await db.insert(user).values({
+    id: "user-1",
+    name: "user-1-name",
+    email: "user-1@test.com",
+    emailVerified: true,
+    image: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  });
 
   await db.delete(documents);
 

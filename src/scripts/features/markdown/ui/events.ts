@@ -480,14 +480,14 @@ export function bindEvents(dom: DOM, store: Store) {
     dom.documentList.removeEventListener("click", onDocumentClick);
     dom.viewToggle.removeEventListener("click", onPreviewClick);
     dom.sidebarToggle.removeEventListener("click", onSidebarToggleClick);
-    document.removeEventListener("keydown", onEscape);
     dom.openDeleteModalButton.removeEventListener(
       "click",
       onDeleteModalButtonClick,
     );
     dom.deleteModal.removeEventListener("click", onDeleteModalOverlayClick);
 
-    dom.themeToggle.removeEventListener("click", onThemeToggleClick);
+    dom.themeToggle.removeEventListener("change", onThemeToggleClick);
     dom.closeToastButton.removeEventListener("click", onCloseToastClick);
+    document.removeEventListener("keydown", onEscape);
   };
 }

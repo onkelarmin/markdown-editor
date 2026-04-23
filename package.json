@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "seed": "tsx src/server/db/seed.ts"
   },
   "dependencies": {
     "@astrojs/netlify": "^7.0.5",

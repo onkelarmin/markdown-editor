@@ -3,8 +3,14 @@ import { betterAuth } from "better-auth";
 import { db } from "../db/client";
 import { emailOTP } from "better-auth/plugins";
 import { Resend } from "resend";
+import {
+  BETTER_AUTH_URL,
+  BETTER_AUTH_SECRET,
+  RESEND_API_KEY,
+  AUTH_EMAIL_FROM,
+} from "astro:env/server";
 
-const resend = new Resend(import.meta.env.RESEND_API_KEY);
+const resend = new Resend(RESEND_API_KEY);
 
 function otpEmailTemplate(email: string, otp: string) {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -178,8 +184,8 @@ function otpEmailTemplate(email: string, otp: string) {
 }
 
 export const auth = betterAuth({
-  baseURL: import.meta.env.BETTER_AUTH_URL,
-  secret: import.meta.env.BETTER_AUTH_SECRET,
+  baseURL: BETTER_AUTH_URL,
+  secret: BETTER_AUTH_SECRET,
   database: drizzleAdapter(db, {
     provider: "sqlite",
   }),
@@ -197,7 +203,7 @@ export const auth = betterAuth({
         const html = otpEmailTemplate(email, otp);
 
         const { error } = await resend.emails.send({
-          from: import.meta.env.AUTH_EMAIL_FROM!,
+          from: AUTH_EMAIL_FROM!,
           to: [email],
           subject,
           html,
