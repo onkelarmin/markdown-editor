@@ -135,7 +135,7 @@ export type Action =
   | { type: "document/saveSuccess" }
   | { type: "document/saveError" }
   | { type: "document/saveReset" }
-  | { type: "document/deleteStart"; payload: { id: string } }
+  | { type: "document/deleteOptimistic"; payload: { id: string } }
   | { type: "document/deleteSuccess"; payload: { result: DeleteSuccessResult } }
   | { type: "document/deleteError" }
   // Domain

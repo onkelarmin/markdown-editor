@@ -18,12 +18,12 @@ export async function deleteDocument(store: Store, document: Document) {
       },
     });
 
+    store.dispatch({ type: "document/deleteError" });
+
     void loadDocuments(store);
   }
 
   if (data) {
-    console.log(data);
-
     store.dispatch({
       type: "document/deleteSuccess",
       payload: { result: data },

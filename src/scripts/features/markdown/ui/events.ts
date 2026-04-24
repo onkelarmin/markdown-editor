@@ -255,7 +255,7 @@ export function bindEvents(dom: DOM, store: Store) {
     if (!activeDocument) return;
 
     store.dispatch({
-      type: "document/deleteStart",
+      type: "document/deleteOptimistic",
       payload: { id: activeDocument.id },
     });
     store.dispatch({ type: "modal/closeDelete" });

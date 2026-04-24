@@ -399,7 +399,7 @@ export function reducer(state: State, action: Action): State {
     }
 
     // Delete document
-    case "document/deleteStart": {
+    case "document/deleteOptimistic": {
       const toBeDeleted = state.documents.find(
         (document) => document.id === action.payload.id,
       );
@@ -529,10 +529,10 @@ export function reducer(state: State, action: Action): State {
             return null;
           }
 
-          return { ...document, order: index + 1 };
+          return document;
         })
-        .filter((document) => document !== null);
-
+        .filter((document) => document !== null)
+        .map((document, index) => ({ ...document, order: index + 1 }));
       return { ...state, documents: reorderedDocuments };
     }
 
