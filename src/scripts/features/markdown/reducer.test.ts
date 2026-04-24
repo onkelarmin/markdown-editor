@@ -1,68 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { Document, State } from "./types";
 import { reducer } from "./reducer";
-
-function makeDocument(overrides: Partial<Document> = {}): Document {
-  return {
-    id: "doc-1",
-    name: "Document-1.md",
-    content: "",
-    order: 1,
-    createdAt: 1,
-    modifiedAt: 1,
-    persistStatus: "created",
-    ...overrides,
-  };
-}
-
-function makeState(overrides: Partial<State> = {}): State {
-  return {
-    auth: {
-      status: "guest",
-      userId: null,
-      email: null,
-    },
-
-    documents: [],
-    activeDocumentId: null,
-
-    ui: {
-      sidebarOpen: false,
-      view: "markdown",
-      isDeleteModalOpen: false,
-      theme: "light",
-      themeSource: "system",
-      toasts: [],
-      signInModal: {
-        step: "closed",
-        email: "",
-        inputError: null,
-        processError: null,
-        status: "idle",
-        resendStatus: "idle",
-      },
-    },
-
-    editor: {
-      nameDraft: "",
-      nameError: null,
-    },
-
-    requests: {
-      load: {
-        status: "idle",
-        message: null,
-      },
-      save: {
-        status: "idle",
-      },
-      delete: {
-        status: "idle",
-      },
-    },
-    ...overrides,
-  };
-}
+import { makeDocument, makeState } from "./lib/test-utils";
 
 describe("markdown reducer - document/deleteOptimistic", () => {
   it("closes the delete modal if the document doesn't exist", () => {
