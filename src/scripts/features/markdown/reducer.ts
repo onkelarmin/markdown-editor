@@ -309,6 +309,12 @@ export function reducer(state: State, action: Action): State {
     }
 
     case "document/commitName": {
+      const activeDocument = state.documents.find(
+        (document) => document.id === state.activeDocumentId,
+      );
+      if (!activeDocument || action.payload.name === activeDocument.name)
+        return state;
+
       const names = state.documents
         .filter((document) => document.id !== state.activeDocumentId)
         .map((document) => document.name);
@@ -339,6 +345,8 @@ export function reducer(state: State, action: Action): State {
 
     // Update document content
     case "document/updateContent": {
+      if (!state.activeDocumentId) return state;
+
       return {
         ...state,
         documents: state.documents.map((document) =>
@@ -521,7 +529,7 @@ export function reducer(state: State, action: Action): State {
       );
 
       const reorderedDocuments = orderedIds
-        .map((id, index) => {
+        .map((id) => {
           const document = documentMap.get(id);
 
           if (!document) {
