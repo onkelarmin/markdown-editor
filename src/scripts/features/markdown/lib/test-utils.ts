@@ -71,6 +71,17 @@ export function makeStore(state: State) {
   };
 }
 
+export function makeDom() {
+  return {
+    draftSavedInfo: {
+      classList: {
+        add: vi.fn(),
+        remove: vi.fn(),
+      },
+    },
+  } as any;
+}
+
 export const saveDocumentMock = vi.fn();
 export const createDocumentMock = vi.fn();
 

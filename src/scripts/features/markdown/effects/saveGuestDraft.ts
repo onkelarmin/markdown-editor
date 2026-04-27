@@ -7,6 +7,8 @@ let hideTimer: ReturnType<typeof setTimeout> | null = null;
 export function saveGuestDraft(store: Store, dom: DOM) {
   const guestDraft = store.getState().documents[0];
 
+  if (!guestDraft) return;
+
   const guestDocument: GuestDocument = {
     name: guestDraft.name,
     content: guestDraft.content,
