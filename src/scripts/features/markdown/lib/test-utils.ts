@@ -1,4 +1,5 @@
 import type { Document, State } from "@features/types";
+import { vi } from "vitest";
 
 export function makeDocument(overrides: Partial<Document> = {}): Document {
   return {
@@ -61,3 +62,21 @@ export function makeState(overrides: Partial<State> = {}): State {
     ...overrides,
   };
 }
+
+export function makeStore(state: State) {
+  return {
+    getState: vi.fn(() => state),
+    dispatch: vi.fn(),
+    subscribe: vi.fn(),
+  };
+}
+
+export const saveDocumentMock = vi.fn();
+export const createDocumentMock = vi.fn();
+
+vi.mock("astro:actions", () => ({
+  actions: {
+    saveDocument: saveDocumentMock,
+    createDocument: createDocumentMock,
+  },
+}));
