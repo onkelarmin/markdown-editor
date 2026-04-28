@@ -13,6 +13,7 @@ export default defineConfig({
           import.meta.url,
         ),
       ),
+      "astro:schema": "zod",
     },
   },
 });
