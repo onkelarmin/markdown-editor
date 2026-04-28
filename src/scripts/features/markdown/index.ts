@@ -1,4 +1,9 @@
 import { createNewDocument } from "./effects/createDocument";
+import {
+  createGuestDocument,
+  loadGuestDocument,
+} from "./effects/guestDocument";
+import { initAuthenticatedFlow } from "./effects/initAuthenticatedFlow";
 import { loadDocuments } from "./effects/loadDocuments";
 import {
   applyTheme,
@@ -15,50 +20,6 @@ import { getDOM, type DOM } from "./ui/dom";
 import { setupDragDrop } from "./ui/dragDrop";
 import { bindEvents } from "./ui/events";
 import { render } from "./ui/render";
-
-function loadGuestDocument(): GuestDocument | null {
-  if (typeof window === "undefined") return null;
-
-  const stored = localStorage.getItem("guest-document");
-
-  if (!stored) return null;
-
-  try {
-    const parsed = JSON.parse(stored);
-    const result = guestDocumentSchema.safeParse(parsed);
-    return result.success ? result.data : null;
-  } catch {
-    return null;
-  }
-}
-
-function createGuestDocument(): GuestDocument {
-  const now = Date.now();
-
-  return {
-    name: "undefined.md",
-    content: "",
-    createdAt: now,
-    modifiedAt: now,
-  };
-}
-
-async function initAuthenticatedFlow(store: Store) {
-  await loadDocuments(store);
-
-  const guestDocument = loadGuestDocument();
-
-  if (!guestDocument || guestDocument.content === "") return;
-
-  store.dispatch({
-    type: "document/migrateGuest",
-    payload: { document: guestDocument },
-  });
-
-  const result = await createNewDocument(store);
-
-  if (result.success) localStorage.removeItem("guest-document");
-}
 
 function registerMarkdownSubscribers(dom: DOM, store: Store) {
   let previousTheme = store.getState().ui.theme;

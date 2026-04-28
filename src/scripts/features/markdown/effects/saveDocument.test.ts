@@ -1,11 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  makeDocument,
-  makeState,
-  makeStore,
-  saveDocumentMock,
-} from "../lib/test-utils";
+import { actions } from "astro:actions";
+import { makeDocument, makeState, makeStore } from "../lib/test-utils";
 import { saveActiveDocument } from "./saveDocument";
+
+const saveDocumentMock = vi.mocked(actions.saveDocument);
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -30,8 +28,8 @@ describe("saveActiveDocument", () => {
 
   it("saves the active document and dispatches success/reset", async () => {
     saveDocumentMock.mockResolvedValueOnce({
-      data: { success: true },
-      error: null,
+      data: { id: "doc-1" },
+      error: undefined,
     });
 
     const store = makeStore(
@@ -74,8 +72,14 @@ describe("saveActiveDocument", () => {
 
   it("dispatches error state and toast when save fails", async () => {
     saveDocumentMock.mockResolvedValueOnce({
-      data: null,
-      error: { message: "Failed" },
+      data: undefined,
+      error: {
+        type: "AstroActionError",
+        code: "INTERNAL_SERVER_ERROR",
+        status: 500,
+        name: "ActionError",
+        message: "Failed",
+      },
     });
 
     const store = makeStore(

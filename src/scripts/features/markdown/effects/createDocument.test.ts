@@ -1,11 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  createDocumentMock,
-  makeDocument,
-  makeState,
-  makeStore,
-} from "../lib/test-utils";
+import { makeDocument, makeState, makeStore } from "../lib/test-utils";
 import { createNewDocument } from "./createDocument";
+import { actions } from "astro:actions";
+
+const createDocumentMock = vi.mocked(actions.createDocument);
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -28,7 +26,7 @@ describe("createNewDocument", () => {
   it("creates the new document, dispatches document/createSuccess and returns { success: true }", async () => {
     createDocumentMock.mockResolvedValueOnce({
       data: { id: "doc-2" },
-      error: null,
+      error: undefined,
     });
 
     const doc1 = makeDocument({
@@ -61,8 +59,14 @@ describe("createNewDocument", () => {
 
   it("it dispatches document/createError, enqueues a toast and returns { success: false } when DB creation fails", async () => {
     createDocumentMock.mockResolvedValueOnce({
-      data: null,
-      error: { message: "Failed" },
+      data: undefined,
+      error: {
+        type: "AstroActionError",
+        code: "INTERNAL_SERVER_ERROR",
+        status: 500,
+        name: "ActionError",
+        message: "Failed",
+      },
     });
 
     const doc1 = makeDocument({

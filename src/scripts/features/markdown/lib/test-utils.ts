@@ -82,12 +82,7 @@ export function makeDom() {
   } as any;
 }
 
-export const saveDocumentMock = vi.fn();
-export const createDocumentMock = vi.fn();
-
-vi.mock("astro:actions", () => ({
-  actions: {
-    saveDocument: saveDocumentMock,
-    createDocument: createDocumentMock,
-  },
-}));
+export const actions = {
+  saveDocument: vi.fn(),
+  createDocument: vi.fn(),
+};
