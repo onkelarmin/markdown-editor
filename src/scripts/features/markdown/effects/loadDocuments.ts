@@ -4,17 +4,15 @@ import type { Store } from "../store";
 export async function loadDocuments(store: Store) {
   store.dispatch({ type: "documents/loadStart" });
 
-  const { data, error } = await actions.getDocuments();
+  try {
+    const { data, error } = await actions.getDocuments();
 
-  if (error) {
-    console.error(error.message);
+    if (error || !data) {
+      handleLoadingError(store, error);
 
-    store.dispatch({
-      type: "documents/loadError",
-      payload: { message: "Failed to load documents." },
-    });
-  }
-  if (data) {
+      return;
+    }
+
     const documents = data.map((document) => ({
       ...document,
       persistStatus: "created" as const,
@@ -24,5 +22,16 @@ export async function loadDocuments(store: Store) {
       type: "documents/loadSuccess",
       payload: { documents },
     });
+  } catch (error) {
+    handleLoadingError(store, error);
   }
+}
+
+function handleLoadingError(store: Store, error: unknown) {
+  console.error("Load documents failed:", error);
+
+  store.dispatch({
+    type: "documents/loadError",
+    payload: { message: "Failed to load documents." },
+  });
 }
