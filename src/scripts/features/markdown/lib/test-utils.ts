@@ -86,4 +86,5 @@ export const actions = {
   saveDocument: vi.fn(),
   createDocument: vi.fn(),
   getDocuments: vi.fn(),
+  deleteDocument: vi.fn(),
 };

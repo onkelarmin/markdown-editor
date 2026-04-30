@@ -4,29 +4,39 @@ import type { Document } from "../types";
 import { loadDocuments } from "./loadDocuments";
 
 export async function deleteDocument(store: Store, document: Document) {
-  const { data, error } = await actions.deleteDocument({
-    id: document.id,
-  });
-
-  if (error) {
-    store.dispatch({
-      type: "toast/enqueue",
-      payload: {
-        id: crypto.randomUUID(),
-        message: "Failed to delete document.",
-        variant: "error",
-      },
+  try {
+    const { data, error } = await actions.deleteDocument({
+      id: document.id,
     });
 
-    store.dispatch({ type: "document/deleteError" });
+    if (error || !data) {
+      handleDeleteError(store, error);
 
-    void loadDocuments(store);
-  }
+      return;
+    }
 
-  if (data) {
     store.dispatch({
       type: "document/deleteSuccess",
       payload: { result: data },
     });
+  } catch (error) {
+    handleDeleteError(store, error);
   }
+}
+
+function handleDeleteError(store: Store, error: unknown) {
+  console.error("Deleting document failed:", error);
+
+  store.dispatch({
+    type: "toast/enqueue",
+    payload: {
+      id: crypto.randomUUID(),
+      message: "Failed to delete document.",
+      variant: "error",
+    },
+  });
+
+  store.dispatch({ type: "document/deleteError" });
+
+  void loadDocuments(store);
 }
