@@ -1,5 +1,6 @@
-import type { Document, State } from "@features/types";
+import type { Action, Document, State } from "@features/types";
 import { vi } from "vitest";
+import { reducer } from "../reducer";
 
 export function makeDocument(overrides: Partial<Document> = {}): Document {
   return {
@@ -66,7 +67,9 @@ export function makeState(overrides: Partial<State> = {}): State {
 export function makeStore(state: State) {
   return {
     getState: vi.fn(() => state),
-    dispatch: vi.fn(),
+    dispatch: vi.fn((action: Action) => {
+      state = reducer(state, action);
+    }),
     subscribe: vi.fn(),
   };
 }

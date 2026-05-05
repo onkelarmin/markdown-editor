@@ -5,6 +5,7 @@ export function loadGuestDocument(): GuestDocument | null {
   if (typeof window === "undefined") return null;
 
   const stored = localStorage.getItem("guest-document");
+
   if (!stored) return null;
 
   try {
