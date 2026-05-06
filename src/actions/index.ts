@@ -200,15 +200,33 @@ export const server = {
           };
         }
 
-        await tx
-          .update(documents)
-          .set({ order: sql`${documents.order} - 1` })
+        const affectedDocuments = await tx
+          .select({ id: documents.id, order: documents.order })
+          .from(documents)
           .where(
             and(
               eq(documents.userId, user.id),
               gt(documents.order, documentToDelete.order),
             ),
           );
+
+        for (const document of affectedDocuments) {
+          await tx
+            .update(documents)
+            .set({ order: -document.order })
+            .where(
+              and(eq(documents.id, document.id), eq(documents.userId, user.id)),
+            );
+        }
+
+        for (const document of affectedDocuments) {
+          await tx
+            .update(documents)
+            .set({ order: document.order - 1 })
+            .where(
+              and(eq(documents.id, document.id), eq(documents.userId, user.id)),
+            );
+        }
 
         return {
           deletedId: id,
