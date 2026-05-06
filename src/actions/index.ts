@@ -89,11 +89,18 @@ export const server = {
           message: "User must be logged in.",
         });
 
-      await db
+      const result = await db
         .update(documents)
         .set({ name, content, modifiedAt })
-        .where(and(eq(documents.id, id), eq(documents.userId, user.id)));
+        .where(and(eq(documents.id, id), eq(documents.userId, user.id)))
+        .returning({ id: documents.id });
 
+      if (result.length === 0) {
+        throw new ActionError({
+          code: "NOT_FOUND",
+          message: "Document not found",
+        });
+      }
       return { id };
     },
   }),
