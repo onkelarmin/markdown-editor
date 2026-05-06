@@ -5,7 +5,7 @@ import netlify from "@astrojs/netlify";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "http://localhost:4321/",
+  site: "https://markdown-editor.net/",
 
   image: {
     responsiveStyles: true,
