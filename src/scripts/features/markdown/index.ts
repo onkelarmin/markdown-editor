@@ -1,10 +1,8 @@
-import { createNewDocument } from "./effects/createDocument";
 import {
   createGuestDocument,
   loadGuestDocument,
 } from "./effects/guestDocument";
 import { initAuthenticatedFlow } from "./effects/initAuthenticatedFlow";
-import { loadDocuments } from "./effects/loadDocuments";
 import {
   applyTheme,
   saveThemePreference,
@@ -12,10 +10,8 @@ import {
 } from "./effects/theme";
 import { clearToastTimer, startToastTimer } from "./effects/toast";
 import { getInitialState } from "./initialState";
-import { guestDocumentSchema } from "./schema";
 import { selectCanReorderDocuments, selectIsGuest } from "./selectors";
 import { createStore, type Store } from "./store";
-import type { GuestDocument } from "./types";
 import { getDOM, type DOM } from "./ui/dom";
 import { setupDragDrop } from "./ui/dragDrop";
 import { bindEvents } from "./ui/events";
