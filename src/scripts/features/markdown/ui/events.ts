@@ -121,7 +121,7 @@ export function bindEvents(dom: DOM, store: Store) {
   dom.emailForm.addEventListener("submit", onEmailSubmit);
 
   // OTP input
-  const onOtpInput = (e: Event) => {
+  const onOtpInput = () => {
     if (
       !selectIsGuest(store.getState()) ||
       !selectHasSignInInputError(store.getState())
@@ -413,7 +413,7 @@ export function bindEvents(dom: DOM, store: Store) {
   dom.deleteModal.addEventListener("click", onDeleteModalOverlayClick);
 
   // Theme toggle
-  const onThemeToggleClick = (e: Event) => {
+  const onThemeToggleClick = () => {
     store.dispatch({ type: "theme/toggle" });
   };
   dom.themeToggle.addEventListener("change", onThemeToggleClick);

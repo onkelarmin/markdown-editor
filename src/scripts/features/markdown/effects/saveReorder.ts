@@ -10,7 +10,7 @@ export async function saveReorderedDocuments(store: Store) {
     order: document.order,
   }));
 
-  const { data, error } = await actions.reorderDocuments({ reordered });
+  const { error } = await actions.reorderDocuments({ reordered });
 
   if (error) {
     store.dispatch({

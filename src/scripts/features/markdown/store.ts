@@ -1,4 +1,3 @@
-import { getInitialState } from "./initialState";
 import { reducer } from "./reducer";
 import type { Action, State, subscribeOptions } from "./types";
 

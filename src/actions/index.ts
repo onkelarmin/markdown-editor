@@ -1,5 +1,5 @@
 import { db } from "@/server/db/client";
-import { and, eq, gt, sql } from "drizzle-orm";
+import { and, eq, gt } from "drizzle-orm";
 import { documents } from "@/server/db/schema";
 import { documentNameSchemaFull } from "@/scripts/features/markdown/schema";
 import { z } from "astro/zod";

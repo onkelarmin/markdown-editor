@@ -6,11 +6,15 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "check": "astro check",
     "astro": "astro",
     "seed": "tsx src/server/db/seed.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest run",
+    "netlify:build": "npm run check && npm run test:run && npm run build"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.9",
     "@astrojs/netlify": "^7.0.5",
     "@better-auth/drizzle-adapter": "^1.6.3",
     "@libsql/client": "^0.17.2",
@@ -22,7 +26,8 @@
     "drizzle-orm": "^0.45.2",
     "marked": "^17.0.5",
     "resend": "^6.11.0",
-    "sortablejs": "^1.15.7"
+    "sortablejs": "^1.15.7",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@types/dompurify": "^3.0.5",
