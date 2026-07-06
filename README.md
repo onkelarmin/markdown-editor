@@ -259,4 +259,4 @@ https://markdown-editor.net/
 
 ## Preview
 
-(Add screenshots or recording here)
+https://github.com/user-attachments/assets/76e6e366-72d7-4aba-9e67-480b4dc79dcd
